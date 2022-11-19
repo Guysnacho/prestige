@@ -1,5 +1,7 @@
 # Welcome to your new ignited app!
 
+# Git example
+
 [![CircleCI](https://circleci.com/gh/infinitered/ignite.svg?style=svg)](https://circleci.com/gh/infinitered/ignite)
 
 ## The latest and greatest boilerplate for Infinite Red opinions
