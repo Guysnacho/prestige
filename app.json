@@ -4,6 +4,7 @@
   "expo": {
     "name": "prestige",
     "slug": "prestige",
+    "scheme": "prestige",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/app-icon-all.png",
