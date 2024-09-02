@@ -1,21 +1,24 @@
 package handlers
 
 import (
+	"net/http"
 	workflows "prestige/workflows"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 )
 
-var Domain = "prestige-api"
-
-type message struct {
-	Name string `json:"name" binding:"required"`
-}
-
 func DriverRequestTrip(c *gin.Context) {
 	requestID := uuid.New()
-	workflows.JoinPool()
+	var body workflows.User
+	if err := c.BindJSON(&body); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message":   "Invalid request",
+			"requestId": requestID,
+		})
+		return
+	}
+	workflows.JoinPool(body)
 
 	c.JSON(200, gin.H{
 		"message":   "Joined driver pool",
@@ -25,7 +28,15 @@ func DriverRequestTrip(c *gin.Context) {
 
 func RiderRequestTrip(c *gin.Context) {
 	requestID := uuid.New()
-	workflows.RequestTrip()
+	var body workflows.User
+	if err := c.BindJSON(&body); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message":   "Invalid request",
+			"requestId": requestID,
+		})
+		return
+	}
+	workflows.RequestTrip(body)
 
 	c.JSON(200, gin.H{
 		"message":   "ride requested",
