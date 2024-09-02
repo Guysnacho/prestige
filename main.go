@@ -11,17 +11,12 @@ type routes struct {
 	router *gin.Engine
 }
 
-var HostPort = "127.0.0.1:7833"
-
-// var HostPort = "localhost:8800"
-var Domain = "prestige-api"
-
 func main() {
 	logger := util.DefaultLogger()
 
 	logger.Info("Starting server")
 	r := initRoutes()
-	err := r.Run(":8800")
+	err := r.Run()
 
 	if err != nil {
 		panic(err)
