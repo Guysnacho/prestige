@@ -2,6 +2,7 @@ package workflows
 
 import (
 	"context"
+	"log"
 	"time"
 
 	"go.uber.org/cadence/activity"
@@ -9,12 +10,13 @@ import (
 	"go.uber.org/zap"
 )
 
-func init() {
-	workflow.Register(rideRequestWorkflow)
-	activity.Register(rideRequestActivity)
+func InitDriverJoin() {
+	log.Println("Initializing JoinPoolWorkflow")
+	workflow.Register(JoinPoolWorkflow)
+	activity.Register(joinPoolActivity)
 }
 
-func rideRequestWorkflow(ctx workflow.Context, name string) error {
+func JoinPoolWorkflow(ctx workflow.Context, name string) error {
 	ao := workflow.ActivityOptions{
 		ScheduleToStartTimeout: time.Minute,
 		StartToCloseTimeout:    time.Minute,
@@ -24,19 +26,19 @@ func rideRequestWorkflow(ctx workflow.Context, name string) error {
 
 	logger := workflow.GetLogger(ctx)
 	logger.Info("helloworld workflow started")
-	var rideRequestResult string
-	err := workflow.ExecuteActivity(ctx, rideRequestActivity, name).Get(ctx, &rideRequestResult)
+	var joinPoolResult string
+	err := workflow.ExecuteActivity(ctx, joinPoolActivity, name).Get(ctx, &joinPoolResult)
 	if err != nil {
 		logger.Error("Activity failed.", zap.Error(err))
 		return err
 	}
 
-	logger.Info("Workflow completed.", zap.String("Result", rideRequestResult))
+	logger.Info("Workflow completed.", zap.String("Result", joinPoolResult))
 
 	return nil
 }
 
-func rideRequestActivity(ctx context.Context, name string) (string, error) {
+func joinPoolActivity(ctx context.Context, name string) (string, error) {
 	logger := activity.GetLogger(ctx)
 	logger.Info("initiating ride - " + name)
 

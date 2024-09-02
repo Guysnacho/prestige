@@ -2,6 +2,7 @@ package workflows
 
 import (
 	"context"
+	"log"
 	"time"
 
 	"go.uber.org/cadence/activity"
@@ -10,6 +11,7 @@ import (
 )
 
 func init() {
+	log.Println("Initializing helloWorldWorkflow")
 	workflow.Register(helloWorldWorkflow)
 	activity.Register(helloWorldActivity)
 }
