@@ -2,8 +2,7 @@ package main
 
 import (
 	"prestige/handlers"
-	"prestige/util"
-	workflows "prestige/workflows"
+	util "prestige/util"
 
 	"github.com/gin-gonic/gin"
 )
@@ -20,8 +19,6 @@ var Domain = "prestige-api"
 func main() {
 	logger := util.DefaultLogger()
 
-	util.DefaultWorker(Domain + "-worker")
-
 	logger.Info("Starting server")
 	r := initRoutes()
 	err := r.Run(":8800")
@@ -36,8 +33,6 @@ func initRoutes() routes {
 		router: gin.Default(),
 	}
 
-	workflows.InitRideRequest()
-	workflows.InitDriverJoin()
 	driver := r.router.Group("/driver")
 	rider := r.router.Group("/rider")
 
