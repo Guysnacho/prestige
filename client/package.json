@@ -10,7 +10,8 @@
     "web": "DARK_MODE=media expo start --web",
     "test": "jest --watchAll",
     "lint": "expo lint",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package",
+    "eas-build-pre-install": "corepack enable && yarn set version 4"
   },
   "jest": {
     "preset": "jest-expo"
