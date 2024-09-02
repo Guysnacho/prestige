@@ -2,13 +2,11 @@ package handlers
 
 import (
 	"context"
-	"net/http"
 	"time"
 
 	util "prestige/util"
 
 	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/binding"
 	"github.com/pborman/uuid"
 	"go.uber.org/cadence/.gen/go/shared"
 
@@ -19,15 +17,6 @@ var Domain = "prestige-api"
 
 type message struct {
 	Name string `json:"name" binding:"required"`
-}
-
-func Ping(c *gin.Context) {
-	var message message
-	if err := c.ShouldBindBodyWith(&message, binding.JSON); err != nil {
-		c.JSON(http.StatusBadRequest, err.Error())
-		return
-	}
-	c.JSON(http.StatusOK, message)
 }
 
 func DriverRequestTrip(c *gin.Context) {
@@ -62,7 +51,6 @@ func DriverRequestTrip(c *gin.Context) {
 	res, err := cClient.StartWorkflowExecution(
 		enrichedContext,
 		&req,
-		yarpc.WithRoutingKey(workflowType),
 	)
 
 	if err != nil {
