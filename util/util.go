@@ -16,8 +16,8 @@ import (
 var HostPort = "127.0.0.1:7833"
 
 // var HostPort = ":8800"
-var Domain = "prestige-api"
-var TaskListName = "prestige-queue"
+var Domain = "prestige"
+var TaskListName = "prestige"
 var ClientName = "client"
 var CadenceService = "cadence-frontend"
 

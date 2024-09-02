@@ -1,8 +1,9 @@
 package handlers
 
 import (
-	"log"
+	"context"
 	"net/http"
+	"time"
 
 	util "prestige/util"
 
@@ -30,19 +31,20 @@ func Ping(c *gin.Context) {
 }
 
 func DriverRequestTrip(c *gin.Context) {
-	domain := "prestige-api"
-	tasklist := "prestige-queue"
+	tasklist := "prestige"
 	workflowID := uuid.New()
 	requestID := uuid.New()
 	executionTimeout := int32(60)
-	closeTimeout := int32(60)
 
-	workflowType := "JoinPoolWorkflow"
+	workflowType := "prestige/workflows.JoinPoolWorkflow"
 	input := []byte(`{"name": "` + "Tunji" + `"}`)
 
-	cClient := util.BuildCadenceClient("driver-" + c.HandlerName())
+	logger, cClient := util.DefaultLogger(), util.BuildCadenceClient("driver-"+c.HandlerName())
+	enrichedContext, cancel := context.WithTimeout(c, time.Minute*time.Duration(float64(1)))
+	ttl := int32(60)
+
 	req := shared.StartWorkflowExecutionRequest{
-		Domain:     &domain,
+		Domain:     &util.Domain,
 		WorkflowId: &workflowID,
 		WorkflowType: &shared.WorkflowType{
 			Name: &workflowType,
@@ -52,17 +54,19 @@ func DriverRequestTrip(c *gin.Context) {
 		},
 		Input:                               input,
 		ExecutionStartToCloseTimeoutSeconds: &executionTimeout,
-		TaskStartToCloseTimeoutSeconds:      &closeTimeout,
+		TaskStartToCloseTimeoutSeconds:      &ttl,
 		RequestId:                           &requestID,
 	}
 
+	defer cancel()
 	res, err := cClient.StartWorkflowExecution(
-		c,
+		enrichedContext,
 		&req,
+		yarpc.WithRoutingKey(workflowType),
 	)
 
 	if err != nil {
-		log.Default().Println(err.Error())
+		logger.Error(err.Error())
 		c.JSON(500, gin.H{
 			"message":   "error starting workflow",
 			"requestId": requestID,
@@ -78,7 +82,7 @@ func DriverRequestTrip(c *gin.Context) {
 
 func RiderRequestTrip(c *gin.Context) {
 	domain := "prestige-api"
-	tasklist := "prestige-queue"
+	tasklist := "prestige"
 	workflowID := uuid.New()
 	requestID := uuid.New()
 	executionTimeout := int32(60)
@@ -87,7 +91,7 @@ func RiderRequestTrip(c *gin.Context) {
 	workflowType := "workflows.JoinPoolWorkflow"
 	input := []byte(`{"name": "` + "Tunji" + `"}`)
 
-	cClient := util.BuildCadenceClient("driver-" + c.HandlerName())
+	logger, cClient := util.DefaultLogger(), util.BuildCadenceClient("driver-"+c.HandlerName())
 	req := shared.StartWorkflowExecutionRequest{
 		Domain:     &domain,
 		WorkflowId: &workflowID,
@@ -110,7 +114,7 @@ func RiderRequestTrip(c *gin.Context) {
 	)
 
 	if err != nil {
-		log.Default().Println(err.Error())
+		logger.Error(err.Error())
 		c.JSON(500, gin.H{
 			"message":   "error starting workflow",
 			"requestId": requestID,
