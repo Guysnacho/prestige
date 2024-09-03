@@ -54,6 +54,20 @@ export function HomeScreen() {
       </YStack>
 
       <Button {...linkProps}>Link to user</Button>
+      <Button
+        {...useLink({
+          href: '/driver',
+        })}
+      >
+        Driver Page
+      </Button>
+      <Button
+        {...useLink({
+          href: '/rider',
+        })}
+      >
+        Rider Page
+      </Button>
 
       <SheetDemo />
     </YStack>
