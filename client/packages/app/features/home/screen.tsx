@@ -41,14 +41,14 @@ export function HomeScreen() {
 
       <YStack gap="$4">
         <H1 ta="center" col="$color12">
-          Welcome to Tamagui.
+          Welcome to De Prestige Chauffeur.
         </H1>
         <Paragraph col="$color10" ta="center">
-          Here's a basic starter to show navigating from one screen to another.
+          “ De Prestige Chauffeur ” offers a seamless luxury on-demand transportation service
         </Paragraph>
         <Separator />
         <Paragraph ta="center">
-          This screen uses the same code on Next.js and React Native.
+          Sign up today to gain access to our services through our app!
         </Paragraph>
         <Separator />
       </YStack>
