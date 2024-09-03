@@ -43,7 +43,7 @@ export function DriverHomeScreen() {
   return (
     <YStack f={1} jc="center" ai="center" gap="$4" bg="$background">
       <Paragraph ta="center" fow="700" col="$blue10">
-        {`Driver : ` + '${id}'}
+        {`Driver : ${user ? user : 'Who are you??'}`}
       </Paragraph>
       <XStack alignItems="center" gap="$4">
         <Label width={90} htmlFor="name">
