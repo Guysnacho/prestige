@@ -1,5 +1,5 @@
 import { Button, Paragraph, YStack } from '@my/ui'
-import { ChevronLeft } from '@tamagui/lucide-icons'
+import { Car, ChevronLeft } from '@tamagui/lucide-icons'
 import { useParams, useRouter } from 'solito/navigation'
 
 export function DriverHomeScreen() {
@@ -15,7 +15,7 @@ export function DriverHomeScreen() {
       <Paragraph ta="center" fow="700" col="$blue10">
         {`Driver : ` + '${id}'}
       </Paragraph>
-      <Button icon={ChevronLeft} onPress={() => joinDriverPool()}>
+      <Button iconAfter={Car} onPress={() => joinDriverPool()}>
         Join Pool
       </Button>
       <Button icon={ChevronLeft} onPress={() => router.back()}>
