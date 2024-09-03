@@ -15,7 +15,6 @@ export function DriverHomeScreen() {
       fetch(`${process.env.NEXT_PUBLIC_SERVER_HOST}/driver/trip`, {
         method: 'POST',
         referrer: process.env.NEXT_PUBLIC_SERVER_HOST,
-        referrerPolicy: 'origin',
         body: JSON.stringify({ name: user }),
       }),
     onError(err, v, c) {
