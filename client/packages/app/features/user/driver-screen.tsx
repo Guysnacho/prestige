@@ -1,4 +1,13 @@
-import { Button, Paragraph, Spinner, YStack, useToastController } from '@my/ui'
+import {
+  Button,
+  Input,
+  Label,
+  Paragraph,
+  Spinner,
+  XStack,
+  YStack,
+  useToastController,
+} from '@my/ui'
 import { Car, ChevronLeft } from '@tamagui/lucide-icons'
 import { useMutation } from '@tanstack/react-query'
 import { useState } from 'react'
@@ -10,12 +19,12 @@ export function DriverHomeScreen() {
   const [user, setUser] = useState('')
   const [isPolling, setIsPolling] = useState(false)
 
-  const { mutate, data, isIdle, isPending } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: async () =>
       fetch(`${process.env.NEXT_PUBLIC_SERVER_HOST}/driver/trip`, {
         method: 'POST',
         referrer: process.env.NEXT_PUBLIC_SERVER_HOST,
-        body: JSON.stringify({ name: user }),
+        body: JSON.stringify({ name: 'Tunji' }),
       }),
     onError(err, v, c) {
       console.error(err)
@@ -29,10 +38,6 @@ export function DriverHomeScreen() {
     },
   })
 
-  function joinDriverPool() {
-    console.error('Function not implemented.')
-  }
-
   // const { id } = useParams()
 
   return (
@@ -40,10 +45,21 @@ export function DriverHomeScreen() {
       <Paragraph ta="center" fow="700" col="$blue10">
         {`Driver : ` + '${id}'}
       </Paragraph>
+      <XStack alignItems="center" gap="$4">
+        <Label width={90} htmlFor="name">
+          Name
+        </Label>
+        <Input
+          flex={1}
+          id="name"
+          placeholder="Nate Wienert"
+          onChange={(e) => setUser(e.target.value)}
+        />
+      </XStack>
       <Button
         iconAfter={isPending ? Spinner : Car}
-        variant={isPending ? 'outlined' : undefined}
-        disabled={isPending}
+        variant={user === '' || isPending ? 'outlined' : undefined}
+        disabled={user === '' || isPending}
         onPress={() => mutate()}
       >
         Join Pool
