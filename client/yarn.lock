@@ -1777,7 +1777,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint-community/eslint-utils@npm:^4.2.0":
+"@eslint-community/eslint-utils@npm:^4.2.0, @eslint-community/eslint-utils@npm:^4.4.0":
   version: 4.4.0
   resolution: "@eslint-community/eslint-utils@npm:4.4.0"
   dependencies:
@@ -2641,7 +2641,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@my/ui@npm:*, @my/ui@npm:0.0.1, @my/ui@workspace:packages/ui":
+"@my/ui@npm:0.0.1, @my/ui@workspace:packages/ui":
   version: 0.0.0-use.local
   resolution: "@my/ui@workspace:packages/ui"
   dependencies:
@@ -5534,6 +5534,35 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/eslint-plugin-query@npm:^5.53.0":
+  version: 5.53.0
+  resolution: "@tanstack/eslint-plugin-query@npm:5.53.0"
+  dependencies:
+    "@typescript-eslint/utils": "npm:^8.3.0"
+  peerDependencies:
+    eslint: ^8.57.0 || ^9.0.0
+  checksum: 10/cd94e96897ed696da1f2098bbf01db5cfb80efded21a0794b3fb1f152ea09c4ac815f4ca4b1dac5c60cbbb8d67eae0c242ea622b5ae60af6461efa8413410fd3
+  languageName: node
+  linkType: hard
+
+"@tanstack/query-core@npm:5.53.3":
+  version: 5.53.3
+  resolution: "@tanstack/query-core@npm:5.53.3"
+  checksum: 10/4a611ae1efbebb1f39578b0d679d75e713f9e9d1788c9b91644c6745964c35483ea2739cf20c643e72a7beb9baec8fa5892d1eeacb6dcb85daa1c98f9829f2ee
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query@npm:^5.53.3":
+  version: 5.53.3
+  resolution: "@tanstack/react-query@npm:5.53.3"
+  dependencies:
+    "@tanstack/query-core": "npm:5.53.3"
+  peerDependencies:
+    react: ^18 || ^19
+  checksum: 10/5ff7b315efaf6e34069a85a6fc4ef785cbac4d8ea0f0d5bf096d915392f2fd2b2883458f63a9cea2e8df18400a2b94c784f8fef381ad6e8a215d590611fbc473
+  languageName: node
+  linkType: hard
+
 "@tootallnate/once@npm:2.0.0":
   version: 2.0.0
   resolution: "@tootallnate/once@npm:2.0.0"
@@ -5791,10 +5820,27 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@typescript-eslint/scope-manager@npm:8.4.0":
+  version: 8.4.0
+  resolution: "@typescript-eslint/scope-manager@npm:8.4.0"
+  dependencies:
+    "@typescript-eslint/types": "npm:8.4.0"
+    "@typescript-eslint/visitor-keys": "npm:8.4.0"
+  checksum: 10/e43a96ef057ccef2ad7dc4a04713d362f5cd17a684e867548c9744ad79960c41e56a706d9ff86b851bec989771e535b1c72fd922e1dee3fe6fdd9bf167c5f0f4
+  languageName: node
+  linkType: hard
+
 "@typescript-eslint/types@npm:7.2.0":
   version: 7.2.0
   resolution: "@typescript-eslint/types@npm:7.2.0"
   checksum: 10/d70cbd77f21caddbb1c3519bb523b5217a300d52682e9acfa9ff645d7250f7f07653f48930f531675216e848b5f83cb9b14cf63db76239cec1159550a989e16d
+  languageName: node
+  linkType: hard
+
+"@typescript-eslint/types@npm:8.4.0":
+  version: 8.4.0
+  resolution: "@typescript-eslint/types@npm:8.4.0"
+  checksum: 10/962eb0b45ca7634264698086dadb917d96684bd8a88926026e0c314984e68d14e1f30e0291f196408935a507aa9e9976ec4d27fc6aa632d34295059b4e436bae
   languageName: node
   linkType: hard
 
@@ -5817,6 +5863,39 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@typescript-eslint/typescript-estree@npm:8.4.0":
+  version: 8.4.0
+  resolution: "@typescript-eslint/typescript-estree@npm:8.4.0"
+  dependencies:
+    "@typescript-eslint/types": "npm:8.4.0"
+    "@typescript-eslint/visitor-keys": "npm:8.4.0"
+    debug: "npm:^4.3.4"
+    fast-glob: "npm:^3.3.2"
+    is-glob: "npm:^4.0.3"
+    minimatch: "npm:^9.0.4"
+    semver: "npm:^7.6.0"
+    ts-api-utils: "npm:^1.3.0"
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 10/ec3396795b877c8ea0c3f0bdfb67c60b5e195f94569c0581ae7b9f3acbed047714722ff908f0ea1cbf19c16aaaa57826c2069c6383fcb9a3ad29bc26898a7125
+  languageName: node
+  linkType: hard
+
+"@typescript-eslint/utils@npm:^8.3.0":
+  version: 8.4.0
+  resolution: "@typescript-eslint/utils@npm:8.4.0"
+  dependencies:
+    "@eslint-community/eslint-utils": "npm:^4.4.0"
+    "@typescript-eslint/scope-manager": "npm:8.4.0"
+    "@typescript-eslint/types": "npm:8.4.0"
+    "@typescript-eslint/typescript-estree": "npm:8.4.0"
+  peerDependencies:
+    eslint: ^8.57.0 || ^9.0.0
+  checksum: 10/46d6dda136e5513c703a905264fb96b9cc560ec1501a991fb9ef7386baf878081494bc9131f25d772b34ccfecbfa8c2fce0fb5ad6deb447b0f24758e131afd47
+  languageName: node
+  linkType: hard
+
 "@typescript-eslint/visitor-keys@npm:7.2.0":
   version: 7.2.0
   resolution: "@typescript-eslint/visitor-keys@npm:7.2.0"
@@ -5824,6 +5903,16 @@ __metadata:
     "@typescript-eslint/types": "npm:7.2.0"
     eslint-visitor-keys: "npm:^3.4.1"
   checksum: 10/e0c9c7a9bb1ae93149e7a4816aed12651fd7374d0eb17e1f45348dbfddd8ee7014d3de35b40bc46b9df73cc1c9053aaf5d82b43270d93a0b551ed14e8afde37a
+  languageName: node
+  linkType: hard
+
+"@typescript-eslint/visitor-keys@npm:8.4.0":
+  version: 8.4.0
+  resolution: "@typescript-eslint/visitor-keys@npm:8.4.0"
+  dependencies:
+    "@typescript-eslint/types": "npm:8.4.0"
+    eslint-visitor-keys: "npm:^3.4.3"
+  checksum: 10/3ac1d15d1beca887b333b9f1da9d6b819da5f965dbd7eb1c76342574adeaffe584b27c7e00a0e7fb69db7f4c307eeb8dd4410bdf177d6b14395cdd52e3e205e7
   languageName: node
   linkType: hard
 
@@ -6389,6 +6478,8 @@ __metadata:
     "@tamagui/lucide-icons": "npm:^1.110.1"
     "@tamagui/shorthands": "npm:^1.110.1"
     "@tamagui/themes": "npm:^1.110.1"
+    "@tanstack/eslint-plugin-query": "npm:^5.53.0"
+    "@tanstack/react-query": "npm:^5.53.3"
     "@types/react": "npm:^18.3.3"
     "@types/react-native": "npm:^0.73.0"
     burnt: "npm:^0.12.2"
@@ -9278,7 +9369,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-visitor-keys@npm:^3.3.0, eslint-visitor-keys@npm:^3.4.1":
+"eslint-visitor-keys@npm:^3.3.0, eslint-visitor-keys@npm:^3.4.1, eslint-visitor-keys@npm:^3.4.3":
   version: 3.4.3
   resolution: "eslint-visitor-keys@npm:3.4.3"
   checksum: 10/3f357c554a9ea794b094a09bd4187e5eacd1bc0d0653c3adeb87962c548e6a1ab8f982b86963ae1337f5d976004146536dcee5d0e2806665b193fbfbf1a9231b
@@ -9489,7 +9580,7 @@ __metadata:
     "@babel/runtime": "npm:^7.24.6"
     "@expo/config-plugins": "npm:~8.0.4"
     "@expo/metro-config": "npm:~0.18.4"
-    "@my/ui": "npm:*"
+    "@my/ui": "npm:0.0.1"
     "@tamagui/babel-plugin": "npm:1.110.0"
     app: "npm:*"
     babel-plugin-module-resolver: "npm:^5.0.2"
@@ -16554,7 +16645,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-api-utils@npm:^1.0.1":
+"ts-api-utils@npm:^1.0.1, ts-api-utils@npm:^1.3.0":
   version: 1.3.0
   resolution: "ts-api-utils@npm:1.3.0"
   peerDependencies:
