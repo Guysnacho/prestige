@@ -4,6 +4,7 @@ import (
 	"prestige/handlers"
 	util "prestige/util"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -27,6 +28,12 @@ func initRoutes() routes {
 	r := routes{
 		router: gin.Default(),
 	}
+
+	r.router.Use(cors.New(cors.Config{
+		// AllowOrigins: []string{"https://deptransp.com", "http://localhost:3000", "*"},
+		AllowOrigins: []string{"*"},
+		AllowMethods: []string{"POST", "GET"},
+	}))
 
 	driver := r.router.Group("/driver")
 	rider := r.router.Group("/rider")
