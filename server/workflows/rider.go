@@ -2,11 +2,11 @@ package workflows
 
 import util "prestige/util"
 
-type User struct {
+type Rider struct {
 	Name string `json:"name" binding:"required"`
 }
 
-func RequestTrip(user User) {
+func RequestTrip(user Rider) {
 	logger := util.DefaultLogger()
 
 	logger.Info("Requesting ride")
