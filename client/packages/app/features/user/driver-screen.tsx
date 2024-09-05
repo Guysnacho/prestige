@@ -11,6 +11,7 @@ import {
 import { Car, ChevronLeft } from '@tamagui/lucide-icons'
 import { useMutation } from '@tanstack/react-query'
 import { useState } from 'react'
+import { LngLat } from 'react-map-gl'
 import { useRouter } from 'solito/navigation'
 import { MapBox } from '../common/MapView'
 
@@ -18,6 +19,7 @@ export function DriverHomeScreen() {
   const router = useRouter()
   const toast = useToastController()
   const [id, setId] = useState('')
+  const [lngLat, setLnglat] = useState<LngLat | undefined>()
   const [isPolling, setIsPolling] = useState(false)
 
   const { mutate, isPending } = useMutation({
@@ -46,10 +48,11 @@ export function DriverHomeScreen() {
 
   return (
     <YStack f={1} jc="center" ai="center" gap="$4" bg="$background">
-      <MapBox />
+      <MapBox setLnglat={setLnglat} />
       <Paragraph ta="center" fow="700" col="$blue10">
         {`Driver : ${id ? id : 'Who are you??'}`}
       </Paragraph>
+      <Paragraph>Location: {lngLat ? lngLat.lng + ' ' + lngLat.lat : 'unset'}</Paragraph>
       <XStack alignItems="center" gap="$4">
         <Label width={90} htmlFor="name">
           Name

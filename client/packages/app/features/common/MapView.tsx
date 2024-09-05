@@ -1,12 +1,16 @@
-import { useEffect, useState } from 'react'
-import { Protocol } from 'pmtiles'
-import maplibregl from 'maplibre-gl'
+import { H2, YStack } from '@my/ui'
+import maplibregl, { LngLat } from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
+import { Protocol } from 'pmtiles'
 import { default as layers } from 'protomaps-themes-base'
-import { H2, YStack, createSelectItemParentScope } from '@my/ui'
+import { Dispatch, SetStateAction, useEffect } from 'react'
 import { Map } from 'react-map-gl'
 
-export const MapBox = () => {
+export const MapBox = ({
+  setLnglat,
+}: {
+  setLnglat: Dispatch<SetStateAction<LngLat | undefined>>
+}) => {
   useEffect(() => {
     let protocol = new Protocol()
     maplibregl.addProtocol('pmtiles', protocol.tile)
@@ -35,7 +39,10 @@ export const MapBox = () => {
         }}
         // @ts-expect-error Awkard typing BUT RENDERS
         mapLib={maplibregl}
-      ></Map>
+        onClick={(e) => {
+          setLnglat(e.lngLat)
+        }}
+      />
     </YStack>
   )
 }
