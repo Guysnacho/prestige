@@ -27,7 +27,7 @@ export const MapBox = () => {
             protomaps: {
               attribution: `<a href="https://github.com/protomaps/basemaps">Protomaps</a> C <a href="https://openstreetmap.org">OpenStreetMap</a>`,
               type: 'vector',
-              url: `pmtiles://${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/map/my_area.pmtiles`,
+              url: `pmtiles://${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/get-private-asset/map/my_area.pmtiles`,
             },
           },
           // @ts-expect-error Awkard typing on protomap use
