@@ -20,6 +20,7 @@ func DriverStartDrive(c *gin.Context) {
 	}
 
 	err := workflows.JoinPool(body)
+
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message":   "Issue joining pool, please try again later",
