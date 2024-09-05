@@ -16,7 +16,7 @@ import { useRouter } from 'solito/navigation'
 export function DriverHomeScreen() {
   const router = useRouter()
   const toast = useToastController()
-  const [user, setUser] = useState('')
+  const [id, setId] = useState('')
   const [isPolling, setIsPolling] = useState(false)
 
   const { mutate, isPending } = useMutation({
@@ -24,7 +24,7 @@ export function DriverHomeScreen() {
       fetch(`${process.env.NEXT_PUBLIC_SERVER_HOST}/driver/trip`, {
         method: 'POST',
         referrer: process.env.NEXT_PUBLIC_SERVER_HOST,
-        body: JSON.stringify({ name: 'Tunji' }),
+        body: JSON.stringify({ id }),
       }),
     onError(err, v, c) {
       console.error(err)
@@ -43,7 +43,7 @@ export function DriverHomeScreen() {
   return (
     <YStack f={1} jc="center" ai="center" gap="$4" bg="$background">
       <Paragraph ta="center" fow="700" col="$blue10">
-        {`Driver : ${user ? user : 'Who are you??'}`}
+        {`Driver : ${id ? id : 'Who are you??'}`}
       </Paragraph>
       <XStack alignItems="center" gap="$4">
         <Label width={90} htmlFor="name">
@@ -53,13 +53,13 @@ export function DriverHomeScreen() {
           flex={1}
           id="name"
           placeholder="Nate Wienert"
-          onChange={(e) => setUser(e.target.value)}
+          onChange={(e) => setId(e.target.value)}
         />
       </XStack>
       <Button
         iconAfter={isPending ? Spinner : Car}
-        variant={user === '' || isPending ? 'outlined' : undefined}
-        disabled={user === '' || isPending}
+        variant={id === '' || isPending ? 'outlined' : undefined}
+        disabled={id === '' || isPending}
         onPress={() => mutate()}
       >
         Join Pool
