@@ -30,8 +30,7 @@ func initRoutes() routes {
 	}
 
 	r.router.Use(cors.New(cors.Config{
-		// AllowOrigins: []string{"https://deptransp.com", "http://localhost:3000", "*"},
-		AllowOrigins: []string{"*"},
+		AllowOrigins: []string{"https://deptransp.com", "http://localhost:3000"},
 		AllowMethods: []string{"POST", "GET"},
 	}))
 
@@ -49,7 +48,7 @@ func (r routes) Run(addr ...string) error {
 }
 
 func (r routes) addDriverRoutes(rg *gin.RouterGroup) {
-	rg.POST("/trip", handlers.DriverRequestTrip)
+	rg.POST("/trip", handlers.DriverStartDrive)
 }
 
 func (r routes) addRiderRoutes(rg *gin.RouterGroup) {

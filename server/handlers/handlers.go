@@ -8,9 +8,9 @@ import (
 	"github.com/google/uuid"
 )
 
-func DriverRequestTrip(c *gin.Context) {
+func DriverStartDrive(c *gin.Context) {
 	requestID := uuid.New()
-	var body workflows.User
+	var body workflows.Driver
 	if err := c.BindJSON(&body); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message":   "Invalid request",
@@ -18,7 +18,16 @@ func DriverRequestTrip(c *gin.Context) {
 		})
 		return
 	}
-	workflows.JoinPool(body)
+
+	err := workflows.JoinPool(body)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message":   "Issue joining pool, please try again later",
+			"requestId": requestID,
+		})
+		return
+	}
 
 	c.JSON(200, gin.H{
 		"message":   "Joined driver pool",
@@ -28,7 +37,7 @@ func DriverRequestTrip(c *gin.Context) {
 
 func RiderRequestTrip(c *gin.Context) {
 	requestID := uuid.New()
-	var body workflows.User
+	var body workflows.Rider
 	if err := c.BindJSON(&body); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message":   "Invalid request",
@@ -36,6 +45,7 @@ func RiderRequestTrip(c *gin.Context) {
 		})
 		return
 	}
+
 	workflows.RequestTrip(body)
 
 	c.JSON(200, gin.H{
