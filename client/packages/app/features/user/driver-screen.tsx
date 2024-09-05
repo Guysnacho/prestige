@@ -30,11 +30,14 @@ export function DriverHomeScreen() {
       console.error(err)
       toast.show('Issue while joining the driver pool', { message: err?.message })
     },
-    async onSuccess(data, v, c) {
-      var res = await data.json()
-      toast.show('Successfully joined the pool!', {
-        message: `${res.message}\n${res.requestId}`,
-      })
+    onSuccess(data, v, c) {
+      data
+        .json()
+        .then((res) => toast.show(`${res.message}\n${res.requestId}`))
+        .catch((err) => {
+          toast.show('Issue speaking with the server')
+          console.error(err)
+        })
     },
   })
 
