@@ -12,6 +12,7 @@ import { Car, ChevronLeft } from '@tamagui/lucide-icons'
 import { useMutation } from '@tanstack/react-query'
 import { useState } from 'react'
 import { useRouter } from 'solito/navigation'
+import { MapBox } from '../common/MapView'
 
 export function DriverHomeScreen() {
   const router = useRouter()
@@ -45,6 +46,7 @@ export function DriverHomeScreen() {
 
   return (
     <YStack f={1} jc="center" ai="center" gap="$4" bg="$background">
+      <MapBox />
       <Paragraph ta="center" fow="700" col="$blue10">
         {`Driver : ${id ? id : 'Who are you??'}`}
       </Paragraph>
