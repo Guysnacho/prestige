@@ -48,7 +48,7 @@ func (r routes) Run(addr ...string) error {
 }
 
 func (r routes) addDriverRoutes(rg *gin.RouterGroup) {
-	rg.POST("/trip", handlers.DriverRequestTrip)
+	rg.POST("/trip", handlers.DriverStartDrive)
 }
 
 func (r routes) addRiderRoutes(rg *gin.RouterGroup) {
