@@ -13664,6 +13664,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "next-app@workspace:apps/next"
   dependencies:
+    "@supabase/ssr": "npm:^0.5.1"
+    "@supabase/supabase-js": "npm:^2.45.3"
     "@tamagui/config": "npm:1.110.0"
     "@tamagui/next-plugin": "npm:1.110.0"
     "@tamagui/next-theme": "npm:^1.110.1"
