@@ -17,8 +17,8 @@ function MyApp({ Component, pageProps }: SolitoAppProps) {
   return (
     <>
       <Head>
-        <title>Tamagui • Pages Router</title>
-        <meta name="description" content="Tamagui, Solito, Expo & Next.js" />
+        <title>De Prestige</title>
+        <meta name="description" content="Home of De Prestige Chauffer" />
         <link rel="icon" href="/favicon.ico" />
         <script
           dangerouslySetInnerHTML={{
