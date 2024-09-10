@@ -3,8 +3,8 @@
     "baseUrl": ".",
     "rootDir": ".",
     "paths": {
-      "@my/*": ["packages/*"],
-      "app/*": ["packages/app/*"],
+      "@my/*": ["./packages/*"],
+      "app/*": ["./packages/app/*"],
     },
     "importHelpers": true,
     "allowJs": false,
