@@ -121,6 +121,7 @@ const handleSignIn = async (
   const client = createClient()
   const { data, error } = await client.auth.signInWithPassword({ email, password })
   if (error) {
+    console.error(error)
     alert('Ran into an issue signing in')
     return
   }
@@ -146,7 +147,8 @@ const handleSignUp = async (
     },
   })
   if (error) {
-    alert('Ran into an issue signing in')
+    console.error(error)
+    alert('Ran into an issue signing up')
     return
   }
   alert('loading')
