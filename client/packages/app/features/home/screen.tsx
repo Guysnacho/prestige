@@ -68,14 +68,14 @@ export function HomeScreen({ user }: HomeProps) {
       <Button {...linkProps}>Link to user</Button>
       <Button
         {...useLink({
-          href: '/driver',
+          href: `/driver?id=${user?.id}`,
         })}
       >
         Driver Page
       </Button>
       <Button
         {...useLink({
-          href: '/rider',
+          href: `/rider?id=${user?.id}`,
         })}
       >
         Rider Page
