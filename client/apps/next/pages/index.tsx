@@ -6,7 +6,7 @@ import { GetServerSidePropsContext } from 'next/types'
 import type { InferGetServerSidePropsType, GetServerSideProps } from 'next'
 import { useState } from 'react'
 
-type HomeProps = {
+export type HomeProps = {
   user: User | null
 }
 
@@ -25,5 +25,9 @@ export const getServerSideProps = (async (context: GetServerSidePropsContext) =>
 export default function Page({ user }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const [signUp, setSignUp] = useState(false)
 
-  return <>{user?.id ? <HomeScreen /> : <AuthScreen signUp={signUp} setSignUp={setSignUp} />}</>
+  return (
+    <>
+      {user?.id ? <HomeScreen user={user} /> : <AuthScreen signUp={signUp} setSignUp={setSignUp} />}
+    </>
+  )
 }

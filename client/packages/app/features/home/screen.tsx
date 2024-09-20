@@ -10,16 +10,28 @@ import {
   XStack,
   YStack,
 } from '@my/ui'
+import { User } from '@supabase/supabase-js'
 import { ChevronDown, ChevronUp, X } from '@tamagui/lucide-icons'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Platform } from 'react-native'
-import { useLink } from 'solito/navigation'
+import { useLink, useRouter } from 'solito/navigation'
 
-export function HomeScreen() {
+export type HomeProps = {
+  user: User | null
+}
+
+export function HomeScreen({ user }: HomeProps) {
+  const router = useRouter()
   const linkTarget = '/user'
   const linkProps = useLink({
     href: `${linkTarget}/nate`,
   })
+
+  useEffect(() => {
+    if (user == null) {
+      router.replace('/')
+    }
+  }, [])
 
   return (
     <YStack f={1} jc="center" ai="center" gap="$8" p="$4" bg="$background">
