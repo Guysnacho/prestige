@@ -29,11 +29,17 @@ export function DriverHomeScreen() {
       fetch(`${process.env.NEXT_PUBLIC_SERVER_HOST}/driver/trip`, {
         method,
         referrer: process.env.NEXT_PUBLIC_SERVER_HOST,
-        body: JSON.stringify({
-          id: nRouter.query.id,
-          coordinateX: method === 'POST' ? lngLat?.lng.toPrecision(17) : undefined,
-          coordinateY: method === 'POST' ? lngLat?.lat.toPrecision(17) : undefined,
-        }),
+        body: JSON.stringify(
+          method == 'POST'
+            ? {
+                id: nRouter.query.id,
+                coordinateX: lngLat?.lng.toPrecision(17),
+                coordinateY: lngLat?.lat.toPrecision(17),
+              }
+            : {
+                id: nRouter.query.id,
+              }
+        ),
       }),
     onError(err, v, c) {
       console.error(err)
@@ -69,7 +75,7 @@ export function DriverHomeScreen() {
         />
       </XStack> */}
       <Button
-        iconAfter={isPending ? Spinner : Car}
+        iconAfter={isPending && method === 'POST' ? Spinner : Car}
         variant={nRouter.query.id === '' || isPending ? 'outlined' : undefined}
         disabled={nRouter.query.id === '' || isPending}
         onPress={() => {
@@ -80,7 +86,7 @@ export function DriverHomeScreen() {
         Start Drive
       </Button>
       <Button
-        iconAfter={isPending ? Spinner : Car}
+        iconAfter={isPending && method === 'DELETE' ? Spinner : Car}
         variant={nRouter.query.id === '' || isPending ? 'outlined' : undefined}
         disabled={nRouter.query.id === '' || isPending}
         onPress={() => {
