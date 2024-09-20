@@ -18,6 +18,8 @@ export const SignIn = () => {
     }
   }, [status])
 
+  const signIn = async () => await handleSignIn(email, password, router)
+
   return (
     <Form
       alignItems="center"
@@ -46,11 +48,7 @@ export const SignIn = () => {
         onChange={(e: { target: { value: SetStateAction<string> } }) => setPassword(e.target.value)}
       />
 
-      <Form.Trigger
-        onPress={() => handleSignIn(email, password, router)}
-        asChild
-        disabled={status !== 'off'}
-      >
+      <Form.Trigger onPress={signIn} asChild disabled={status !== 'off'}>
         <Button icon={status === 'submitting' ? () => <Spinner /> : undefined}>Submit</Button>
       </Form.Trigger>
     </Form>
@@ -73,6 +71,8 @@ export const SignUp = () => {
       }
     }
   }, [status])
+
+  const signUp = async () => await handleSignUp(email, password, fname, lname, router)
 
   return (
     <Form
@@ -100,11 +100,7 @@ export const SignUp = () => {
         onChange={(e) => setPassword(e.target.value)}
       />
 
-      <Form.Trigger
-        onPress={() => handleSignUp(email, password, fname, lname, router)}
-        asChild
-        disabled={status !== 'off'}
-      >
+      <Form.Trigger onPress={signUp} asChild disabled={status !== 'off'}>
         <Button icon={status === 'submitting' ? () => <Spinner /> : undefined}>Submit</Button>
       </Form.Trigger>
     </Form>
@@ -119,13 +115,12 @@ const handleSignIn = async (
   }
 ) => {
   const client = createClient()
-  const { data, error } = await client.auth.signInWithPassword({ email, password })
+  const { error } = await client.auth.signInWithPassword({ email, password })
   if (error) {
     console.error(error)
     alert('Ran into an issue signing in')
-    return
+    throw error
   }
-  alert('loading')
   router.push('/')
 }
 
@@ -139,7 +134,7 @@ const handleSignUp = async (
   }
 ) => {
   const client = createClient()
-  const { data, error } = await client.auth.signUp({
+  const { error } = await client.auth.signUp({
     email,
     password,
     options: {
@@ -149,8 +144,7 @@ const handleSignUp = async (
   if (error) {
     console.error(error)
     alert('Ran into an issue signing up')
-    return
+    throw error
   }
-  alert('loading')
   router.push('/')
 }
