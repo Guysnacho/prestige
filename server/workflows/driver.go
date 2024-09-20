@@ -75,7 +75,7 @@ func LeavePool(user LeavePoolRequest, c *gin.Context, requestID uuid.UUID) (int,
 
 	if err != nil {
 		logger.Sugar().Warn("Issue leaving pool")
-		c.AbortWithError(http.StatusInternalServerError, errors.New("issue leaving pool, please try again later"))
+		return http.StatusInternalServerError, "issue leaving pool, please try again later"
 	}
 
 	logger.Sugar().Info("User removed from the driver pool")
