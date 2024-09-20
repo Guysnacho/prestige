@@ -21,17 +21,18 @@ export function DriverHomeScreen() {
   const nRouter = useNextRouter()
   const toast = useToastController()
   const [lngLat, setLnglat] = useState<LngLat | undefined>()
+  const [method, setMethod] = useState<'POST' | 'DELETE'>('POST')
   const [isPolling, setIsPolling] = useState(false)
 
   const { mutate, isPending } = useMutation({
     mutationFn: async () =>
       fetch(`${process.env.NEXT_PUBLIC_SERVER_HOST}/driver/trip`, {
-        method: 'POST',
+        method,
         referrer: process.env.NEXT_PUBLIC_SERVER_HOST,
         body: JSON.stringify({
           id: nRouter.query.id,
-          coordinateX: lngLat?.lng.toPrecision(17),
-          coordinateY: lngLat?.lat.toPrecision(17),
+          coordinateX: method === 'POST' ? lngLat?.lng.toPrecision(17) : undefined,
+          coordinateY: method === 'POST' ? lngLat?.lat.toPrecision(17) : undefined,
         }),
       }),
     onError(err, v, c) {
@@ -71,9 +72,23 @@ export function DriverHomeScreen() {
         iconAfter={isPending ? Spinner : Car}
         variant={nRouter.query.id === '' || isPending ? 'outlined' : undefined}
         disabled={nRouter.query.id === '' || isPending}
-        onPress={() => mutate()}
+        onPress={() => {
+          setMethod('POST')
+          mutate()
+        }}
       >
-        Join Pool
+        Start Drive
+      </Button>
+      <Button
+        iconAfter={isPending ? Spinner : Car}
+        variant={nRouter.query.id === '' || isPending ? 'outlined' : undefined}
+        disabled={nRouter.query.id === '' || isPending}
+        onPress={() => {
+          setMethod('DELETE')
+          mutate()
+        }}
+      >
+        End Drive
       </Button>
       <Button icon={ChevronLeft} onPress={() => router.back()}>
         Go Home
