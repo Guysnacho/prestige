@@ -8,26 +8,32 @@ import {
   YStack,
   useToastController,
 } from '@my/ui'
-import { Car, ChevronLeft } from '@tamagui/lucide-icons'
+import { Car, ChevronLeft, User } from '@tamagui/lucide-icons'
 import { useMutation } from '@tanstack/react-query'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { LngLat } from 'react-map-gl'
-import { useRouter } from 'solito/navigation'
+import { useParams, useRouter } from 'solito/navigation'
 import { MapBox } from '../common/MapView'
+import { useRouter as useNextRouter } from 'next/router'
 
 export function DriverHomeScreen() {
   const router = useRouter()
+  const nRouter = useNextRouter()
   const toast = useToastController()
-  const [id, setId] = useState('')
   const [lngLat, setLnglat] = useState<LngLat | undefined>()
+  const [method, setMethod] = useState<'POST' | 'DELETE'>('POST')
   const [isPolling, setIsPolling] = useState(false)
 
   const { mutate, isPending } = useMutation({
     mutationFn: async () =>
       fetch(`${process.env.NEXT_PUBLIC_SERVER_HOST}/driver/trip`, {
-        method: 'POST',
+        method,
         referrer: process.env.NEXT_PUBLIC_SERVER_HOST,
-        body: JSON.stringify({ id }),
+        body: JSON.stringify({
+          id: nRouter.query.id,
+          coordinateX: method === 'POST' ? lngLat?.lng.toPrecision(17) : undefined,
+          coordinateY: method === 'POST' ? lngLat?.lat.toPrecision(17) : undefined,
+        }),
       }),
     onError(err, v, c) {
       console.error(err)
@@ -44,16 +50,14 @@ export function DriverHomeScreen() {
     },
   })
 
-  // const { id } = useParams()
-
   return (
     <YStack f={1} jc="center" ai="center" gap="$4" bg="$background">
       <MapBox setLnglat={setLnglat} />
       <Paragraph ta="center" fow="700" col="$blue10">
-        {`Driver : ${id ? id : 'Who are you??'}`}
+        {`Driver : ${nRouter.query.id ? nRouter.query.id : 'Who are you??'}`}
       </Paragraph>
       <Paragraph>Location: {lngLat ? lngLat.lng + ' ' + lngLat.lat : 'unset'}</Paragraph>
-      <XStack alignItems="center" gap="$4">
+      {/* <XStack alignItems="center" gap="$4">
         <Label width={90} htmlFor="name">
           Name
         </Label>
@@ -63,14 +67,28 @@ export function DriverHomeScreen() {
           placeholder="Nate Wienert"
           onChange={(e) => setId(e.target.value)}
         />
-      </XStack>
+      </XStack> */}
       <Button
         iconAfter={isPending ? Spinner : Car}
-        variant={id === '' || isPending ? 'outlined' : undefined}
-        disabled={id === '' || isPending}
-        onPress={() => mutate()}
+        variant={nRouter.query.id === '' || isPending ? 'outlined' : undefined}
+        disabled={nRouter.query.id === '' || isPending}
+        onPress={() => {
+          setMethod('POST')
+          mutate()
+        }}
       >
-        Join Pool
+        Start Drive
+      </Button>
+      <Button
+        iconAfter={isPending ? Spinner : Car}
+        variant={nRouter.query.id === '' || isPending ? 'outlined' : undefined}
+        disabled={nRouter.query.id === '' || isPending}
+        onPress={() => {
+          setMethod('DELETE')
+          mutate()
+        }}
+      >
+        End Drive
       </Button>
       <Button icon={ChevronLeft} onPress={() => router.back()}>
         Go Home

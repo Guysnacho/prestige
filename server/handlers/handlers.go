@@ -19,18 +19,29 @@ func DriverStartDrive(c *gin.Context) {
 		return
 	}
 
-	err := workflows.JoinPool(body)
+	status, message := workflows.JoinPool(body, c, requestID)
 
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"message":   "Issue joining pool, please try again later",
+	c.JSON(status, gin.H{
+		"message":   message,
+		"requestId": requestID,
+	})
+}
+
+func DriverEndDrive(c *gin.Context) {
+	requestID := uuid.New()
+	var body workflows.LeavePoolRequest
+	if err := c.BindJSON(&body); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message":   "Invalid request",
 			"requestId": requestID,
 		})
 		return
 	}
 
-	c.JSON(200, gin.H{
-		"message":   "Joined driver pool",
+	status, message := workflows.LeavePool(body, c, requestID)
+
+	c.JSON(status, gin.H{
+		"message":   message,
 		"requestId": requestID,
 	})
 }
