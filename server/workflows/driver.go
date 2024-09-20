@@ -1,6 +1,7 @@
 package workflows
 
 import (
+	"errors"
 	util "prestige/util"
 
 	"go.uber.org/zap"
@@ -18,16 +19,26 @@ func JoinPool(user Driver) error {
 	client := util.BuildSupaClient()
 	logger.Info("Joining pool")
 
-	_, count, err := client.From("driver").Update(map[string]interface{}{
+	_, count, err := client.From("driver").Select("id, active", "planned", true).Eq("id", user.Id).Execute()
+
+	if err != nil {
+		logger.Sugar().Warn("Issue joining pool")
+		return err
+	} else if count < 1 {
+		logger.Sugar().Warn("user not found")
+		return errors.New("user not found")
+	}
+
+	_, _, err = client.From("driver").Update(map[string]interface{}{
 		"id":     user.Id,
 		"active": true,
-	}, "*", "planned").Eq("id", user.Id).Execute()
+	}, "*", "planned").Eq("id", user.Id).Single().Execute()
 
 	if err != nil {
 		logger.Sugar().Warn("Issue joining pool")
 		return err
 	}
 
-	logger.Sugar().Info("User added to driver pool. Updated rows - ", count)
+	logger.Sugar().Info("User added to driver pool")
 	return nil
 }
