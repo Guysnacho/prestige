@@ -10,8 +10,8 @@ import (
 type Driver struct {
 	Id           string `json:"id" binding:"required"`
 	Active       bool
-	Coordinate_x float32 `json:"coordinateX" binding:"required"`
-	Coordinate_y float32 `json:"coordinateY" binding:"required"`
+	Coordinate_x string `json:"coordinateX" binding:"required"`
+	Coordinate_y string `json:"coordinateY" binding:"required"`
 }
 
 func JoinPool(user Driver) error {

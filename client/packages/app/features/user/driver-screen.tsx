@@ -28,7 +28,11 @@ export function DriverHomeScreen() {
       fetch(`${process.env.NEXT_PUBLIC_SERVER_HOST}/driver/trip`, {
         method: 'POST',
         referrer: process.env.NEXT_PUBLIC_SERVER_HOST,
-        body: JSON.stringify({ id: nRouter.query.id }),
+        body: JSON.stringify({
+          id: nRouter.query.id,
+          coordinateX: lngLat?.lng.toPrecision(17),
+          coordinateY: lngLat?.lat.toPrecision(17),
+        }),
       }),
     onError(err, v, c) {
       console.error(err)
@@ -44,10 +48,7 @@ export function DriverHomeScreen() {
         })
     },
   })
-  useEffect(() => {
-    console.debug('Path params')
-    console.debug(nRouter.query.id)
-  }, [])
+
   return (
     <YStack f={1} jc="center" ai="center" gap="$4" bg="$background">
       <MapBox setLnglat={setLnglat} />
