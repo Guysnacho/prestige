@@ -10,8 +10,8 @@ import (
 type Driver struct {
 	Id           string `json:"id" binding:"required"`
 	Active       bool
-	Coordinate_x float32
-	Coordinate_y float32
+	Coordinate_x float32 `json:"coordinateX" binding:"required"`
+	Coordinate_y float32 `json:"coordinateY" binding:"required"`
 }
 
 func JoinPool(user Driver) error {
@@ -30,8 +30,10 @@ func JoinPool(user Driver) error {
 	}
 
 	_, _, err = client.From("driver").Update(map[string]interface{}{
-		"id":     user.Id,
-		"active": true,
+		"id":           user.Id,
+		"active":       true,
+		"coordinate_x": user.Coordinate_x,
+		"coordinate_y": user.Coordinate_y,
 	}, "*", "planned").Eq("id", user.Id).Single().Execute()
 
 	if err != nil {
