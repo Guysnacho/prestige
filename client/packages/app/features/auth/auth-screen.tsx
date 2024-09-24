@@ -1,3 +1,4 @@
+import { useStore, useUserStore } from '@my/app/util'
 import { Button, H1, Paragraph, Separator, SwitchThemeButton, XStack, YStack } from '@my/ui'
 import { Dispatch, SetStateAction } from 'react'
 import { Platform } from 'react-native'
@@ -10,6 +11,8 @@ export function AuthScreen({
   signUp: boolean
   setSignUp: Dispatch<SetStateAction<boolean>>
 }) {
+  const store = useStore(useUserStore, (store) => store)
+
   return (
     <YStack jc="center" ai="center" gap="$8" mb="$5" p="$4" bg="$background">
       <XStack w="100%" t="$6" gap="$6" jc="center" $sm={{ pos: 'relative', t: 0 }}>
@@ -45,7 +48,7 @@ export function AuthScreen({
         <Separator />
       </YStack>
 
-      {signUp ? <SignUp /> : <SignIn />}
+      {signUp ? <SignUp store={store!} /> : <SignIn store={store!} />}
     </YStack>
   )
 }

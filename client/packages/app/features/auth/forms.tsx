@@ -1,9 +1,14 @@
+import { UserState } from '@my/app/util'
 import { createClient } from '@my/app/util/components'
-import { Button, Form, H4, Input, Label, Spinner, useToastController } from '@my/ui'
+import { Button, Form, H4, Input, Label, Spinner } from '@my/ui'
 import { SetStateAction, useEffect, useState } from 'react'
 import { useRouter } from 'solito/navigation'
 
-export const SignIn = () => {
+type AuthProps = {
+  store: UserState
+}
+
+export const SignIn = ({ store }: AuthProps) => {
   const [status, setStatus] = useState<'off' | 'submitting' | 'submitted'>('off')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -18,7 +23,7 @@ export const SignIn = () => {
     }
   }, [status])
 
-  const signIn = async () => await handleSignIn(email, password, router)
+  const signIn = async () => await handleSignIn(email, password, router, store)
 
   return (
     <Form
@@ -55,7 +60,7 @@ export const SignIn = () => {
   )
 }
 
-export const SignUp = () => {
+export const SignUp = ({ store }: AuthProps) => {
   const [status, setStatus] = useState<'off' | 'submitting' | 'submitted'>('off')
   const [email, setEmail] = useState('')
   const [fname, setFname] = useState('')
@@ -72,7 +77,7 @@ export const SignUp = () => {
     }
   }, [status])
 
-  const signUp = async () => await handleSignUp(email, password, fname, lname, router)
+  const signUp = async () => await handleSignUp(email, password, fname, lname, router, store)
 
   return (
     <Form
@@ -112,16 +117,23 @@ const handleSignIn = async (
   password: string,
   router: {
     push: (url: string, navigateOptions?: any | undefined) => void
-  }
+  },
+  store: UserState
 ) => {
   const client = createClient()
-  const { error } = await client.auth.signInWithPassword({ email, password })
+  const { data: authRes, error } = await client.auth.signInWithPassword({ email, password })
   if (error) {
     console.error(error)
     alert('Ran into an issue signing in')
     throw error
+  } else {
+    store.setId(authRes.user?.id)
+    const { data } = await client.from('member').select('type').eq('id', authRes.user!.id).single()
+    if (data) {
+      store.setRole(data.type)
+    }
+    router.push('/')
   }
-  router.push('/')
 }
 
 const handleSignUp = async (
@@ -131,10 +143,11 @@ const handleSignUp = async (
   lname: string,
   router: {
     push: (url: string, navigateOptions?: any | undefined) => void
-  }
+  },
+  store: UserState
 ) => {
   const client = createClient()
-  const { error } = await client.auth.signUp({
+  const { data: authRes, error } = await client.auth.signUp({
     email,
     password,
     options: {
@@ -145,6 +158,12 @@ const handleSignUp = async (
     console.error(error)
     alert('Ran into an issue signing up')
     throw error
+  } else {
+    store.setId(authRes.user?.id)
+    const { data } = await client.from('member').select('type').eq('id', authRes.user!.id).single()
+    if (data) {
+      store.setRole(data.type)
+    }
+    router.push('/')
   }
-  router.push('/')
 }
