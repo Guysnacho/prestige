@@ -4,9 +4,9 @@ import { zustandStorage } from './zustandStorage'
 
 export interface UserState {
   id: string | undefined
-  role: string | undefined
+  role: 'DRIVER' | 'RIDER' | 'ADMIN' | undefined
   setId: (id: string | undefined) => void
-  setRole: (role: string | undefined) => void
+  setRole: (role: 'DRIVER' | 'RIDER' | 'ADMIN' | undefined) => void
 }
 
 /**
