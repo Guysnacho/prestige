@@ -1,22 +1,13 @@
-import {
-  Button,
-  Input,
-  Label,
-  Paragraph,
-  Spinner,
-  XStack,
-  YStack,
-  useToastController,
-} from '@my/ui'
-import { Car, ChevronLeft, User } from '@tamagui/lucide-icons'
+import { Button, Paragraph, Spinner, YStack, useToastController } from '@my/ui'
+import { Car, ChevronLeft } from '@tamagui/lucide-icons'
 import { useMutation } from '@tanstack/react-query'
-import { useEffect, useState } from 'react'
-import { LngLat } from 'maplibre-gl'
-import { useParams, useRouter } from 'solito/navigation'
-import { MapBox } from '../common/MapView'
-import { useRouter as useNextRouter } from 'next/router'
 import { useUserStore } from 'app/util/userStore'
+import { useRouter as useNextRouter } from 'next/router'
+import { useState } from 'react'
+import { LngLat } from 'react-map-gl'
+import { useRouter } from 'solito/navigation'
 import { useStore } from 'zustand'
+import { MapBox } from '../common/MapView'
 
 export function DriverHomeScreen() {
   const router = useRouter()

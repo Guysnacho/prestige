@@ -1,11 +1,11 @@
 import { H2, YStack } from '@my/ui'
 import { Pin } from '@tamagui/lucide-icons'
-import maplibregl, { LngLat } from 'maplibre-gl'
+import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import { Protocol } from 'pmtiles'
 import { default as layers } from 'protomaps-themes-base'
 import { Dispatch, SetStateAction, useEffect } from 'react'
-import { Map, Marker } from 'react-map-gl'
+import { Map, Marker, LngLat } from 'react-map-gl'
 
 export const MapBox = ({
   lngLat,
@@ -47,7 +47,16 @@ export const MapBox = ({
         }}
       >
         {lngLat ? (
-          <Marker draggable longitude={lngLat?.lng} latitude={lngLat?.lat} anchor="bottom">
+          <Marker
+            draggable
+            longitude={lngLat?.lng}
+            latitude={lngLat?.lat}
+            onDrag={({ lngLat }) => {
+              // @ts-expect-error lnglat conversion is weird
+              setLnglat(lngLat)
+            }}
+            anchor="bottom"
+          >
             <Pin color="white" />
           </Marker>
         ) : undefined}
