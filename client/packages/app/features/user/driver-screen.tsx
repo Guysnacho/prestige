@@ -15,6 +15,8 @@ import { LngLat } from 'react-map-gl'
 import { useParams, useRouter } from 'solito/navigation'
 import { MapBox } from '../common/MapView'
 import { useRouter as useNextRouter } from 'next/router'
+import { useUserStore } from 'app/util/userStore'
+import { useStore } from 'zustand'
 
 export function DriverHomeScreen() {
   const router = useRouter()
@@ -24,6 +26,8 @@ export function DriverHomeScreen() {
   const [method, setMethod] = useState<'POST' | 'DELETE'>('POST')
   const [isPolling, setIsPolling] = useState(false)
 
+  const store = useStore(useUserStore, (store) => store)
+
   const { mutate, isPending } = useMutation({
     mutationFn: async () =>
       fetch(`${process.env.NEXT_PUBLIC_SERVER_HOST}/driver/trip`, {
@@ -32,12 +36,12 @@ export function DriverHomeScreen() {
         body: JSON.stringify(
           method == 'POST'
             ? {
-                id: nRouter.query.id,
+                id: store.id,
                 coordinateX: lngLat?.lng.toPrecision(17),
                 coordinateY: lngLat?.lat.toPrecision(17),
               }
             : {
-                id: nRouter.query.id,
+                id: store.id,
               }
         ),
       }),
@@ -60,7 +64,7 @@ export function DriverHomeScreen() {
     <YStack f={1} jc="center" ai="center" gap="$4" bg="$background">
       <MapBox setLnglat={setLnglat} />
       <Paragraph ta="center" fow="700" col="$blue10">
-        {`Driver : ${nRouter.query.id ? nRouter.query.id : 'Who are you??'}`}
+        {`Driver : ${store.id ? store.id : 'Who are you??'}`}
       </Paragraph>
       <Paragraph>Location: {lngLat ? lngLat.lng + ' ' + lngLat.lat : 'unset'}</Paragraph>
       {/* <XStack alignItems="center" gap="$4">
@@ -76,8 +80,8 @@ export function DriverHomeScreen() {
       </XStack> */}
       <Button
         iconAfter={isPending && method === 'POST' ? Spinner : Car}
-        variant={nRouter.query.id === '' || isPending ? 'outlined' : undefined}
-        disabled={nRouter.query.id === '' || isPending}
+        variant={store.id === '' || isPending ? 'outlined' : undefined}
+        disabled={store.id === '' || isPending}
         onPress={() => {
           setMethod('POST')
           mutate()
@@ -87,8 +91,8 @@ export function DriverHomeScreen() {
       </Button>
       <Button
         iconAfter={isPending && method === 'DELETE' ? Spinner : Car}
-        variant={nRouter.query.id === '' || isPending ? 'outlined' : undefined}
-        disabled={nRouter.query.id === '' || isPending}
+        variant={store.id === '' || isPending ? 'outlined' : undefined}
+        disabled={store.id === '' || isPending}
         onPress={() => {
           setMethod('DELETE')
           mutate()
