@@ -1,15 +1,18 @@
 import { H2, YStack } from '@my/ui'
+import { Pin } from '@tamagui/lucide-icons'
 import maplibregl, { LngLat } from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import { Protocol } from 'pmtiles'
 import { default as layers } from 'protomaps-themes-base'
 import { Dispatch, SetStateAction, useEffect } from 'react'
-import { Map } from 'react-map-gl'
+import { Map, Marker } from 'react-map-gl'
 
 export const MapBox = ({
+  lngLat,
   setLnglat,
 }: {
   setLnglat: Dispatch<SetStateAction<LngLat | undefined>>
+  lngLat: LngLat | undefined
 }) => {
   useEffect(() => {
     let protocol = new Protocol()
@@ -42,7 +45,13 @@ export const MapBox = ({
         onClick={(e) => {
           setLnglat(e.lngLat)
         }}
-      />
+      >
+        {lngLat ? (
+          <Marker draggable longitude={lngLat?.lng} latitude={lngLat?.lat} anchor="bottom">
+            <Pin color="white" />
+          </Marker>
+        ) : undefined}
+      </Map>
     </YStack>
   )
 }

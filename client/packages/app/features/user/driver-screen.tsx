@@ -11,7 +11,7 @@ import {
 import { Car, ChevronLeft, User } from '@tamagui/lucide-icons'
 import { useMutation } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
-import { LngLat } from 'react-map-gl'
+import { LngLat } from 'maplibre-gl'
 import { useParams, useRouter } from 'solito/navigation'
 import { MapBox } from '../common/MapView'
 import { useRouter as useNextRouter } from 'next/router'
@@ -62,7 +62,7 @@ export function DriverHomeScreen() {
 
   return (
     <YStack f={1} jc="center" ai="center" gap="$4" bg="$background">
-      <MapBox setLnglat={setLnglat} />
+      <MapBox lngLat={lngLat} setLnglat={setLnglat} />
       <Paragraph ta="center" fow="700" col="$blue10">
         {`Driver : ${store.id ? store.id : 'Who are you??'}`}
       </Paragraph>
