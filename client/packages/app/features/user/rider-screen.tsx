@@ -21,7 +21,8 @@ export function RiderHomeScreen() {
   const toast = useToastController()
   const [user, setUser] = useState('')
   const [isPolling, setIsPolling] = useState(false)
-  const [lngLat, setLnglat] = useState<LngLat | undefined>()
+  const [pickUplngLat, setPickUpLnglat] = useState<LngLat | undefined>()
+  const [destLngLat, setDestLnglat] = useState<LngLat | undefined>()
 
   const store = useStore(useUserStore, (store) => store)
 
@@ -48,11 +49,17 @@ export function RiderHomeScreen() {
 
   return (
     <YStack f={1} jc="center" ai="center" gap="$4" bg="$background">
-      <MapBox lngLat={lngLat} setLnglat={setLnglat} />
+      <MapBox label="Pickup" height="$20" lngLat={pickUplngLat} setLnglat={setPickUpLnglat} />
+      <MapBox label="Drop Off" height="$20" lngLat={destLngLat} setLnglat={setDestLnglat} />
       <Paragraph ta="center" fow="700" col="$blue10">
         {`Rider : ${store?.id ? store.id : 'Who are you??'}`}
       </Paragraph>
-      <Paragraph>Location: {lngLat ? lngLat.lng + ' ' + lngLat.lat : 'unset'}</Paragraph>
+      <Paragraph>
+        Pick Up Location: {pickUplngLat ? pickUplngLat.lng + ' ' + pickUplngLat.lat : 'unset'}
+      </Paragraph>
+      <Paragraph>
+        Drop Off Location: {destLngLat ? destLngLat.lng + ' ' + destLngLat.lat : 'unset'}
+      </Paragraph>
       {/* <XStack alignItems="center" gap="$4">
         <Label width={90} htmlFor="name">
           Name

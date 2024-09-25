@@ -1,19 +1,19 @@
-import { H2, YStack } from '@my/ui'
+import { H2, YStack, YStackProps } from '@my/ui'
 import { Pin } from '@tamagui/lucide-icons'
 import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import { Protocol } from 'pmtiles'
 import { default as layers } from 'protomaps-themes-base'
 import { Dispatch, SetStateAction, useEffect } from 'react'
-import { Map, Marker, LngLat } from 'react-map-gl'
+import { LngLat, Map, Marker } from 'react-map-gl'
 
-export const MapBox = ({
-  lngLat,
-  setLnglat,
-}: {
-  setLnglat: Dispatch<SetStateAction<LngLat | undefined>>
-  lngLat: LngLat | undefined
-}) => {
+export const MapBox = (
+  props: {
+    setLnglat: Dispatch<SetStateAction<LngLat | undefined>>
+    lngLat: LngLat | undefined
+    label?: string
+  } & YStackProps
+) => {
   useEffect(() => {
     let protocol = new Protocol()
     maplibregl.addProtocol('pmtiles', protocol.tile)
@@ -23,8 +23,8 @@ export const MapBox = ({
     }
   })
   return (
-    <YStack>
-      <H2>Map Demo</H2>
+    <YStack {...props}>
+      <H2>{props?.label ? props?.label : 'Map Demo'}</H2>
       <Map
         style={{ width: 600, height: 400 }}
         mapStyle={{
@@ -43,17 +43,17 @@ export const MapBox = ({
         // @ts-expect-error Awkard typing BUT RENDERS
         mapLib={maplibregl}
         onClick={(e) => {
-          setLnglat(e.lngLat)
+          props?.setLnglat(e.lngLat)
         }}
       >
-        {lngLat ? (
+        {props?.lngLat ? (
           <Marker
             draggable
-            longitude={lngLat?.lng}
-            latitude={lngLat?.lat}
+            longitude={props?.lngLat?.lng}
+            latitude={props?.lngLat?.lat}
             onDrag={({ lngLat }) => {
               // @ts-expect-error lnglat conversion is weird
-              setLnglat(lngLat)
+              props?.setLnglat(lngLat)
             }}
             anchor="bottom"
           >
