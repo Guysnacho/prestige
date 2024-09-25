@@ -24,6 +24,7 @@ export function RiderHomeScreen() {
   const [isPolling, setIsPolling] = useState(false)
   const [pickUplngLat, setPickUpLnglat] = useState<LngLat | undefined>()
   const [destLngLat, setDestLnglat] = useState<LngLat | undefined>()
+  const [pickupTime, setPickupTime] = useState<Date | null>()
 
   const store = useStore(useUserStore, (store) => store)
 
@@ -82,7 +83,7 @@ export function RiderHomeScreen() {
           onChange={(e) => setUser(e.target.value)}
         />
       </XStack>
-      <ScheduleSelector />
+      <ScheduleSelector pickupTime={pickupTime} setPickupTime={setPickupTime} />
       <Button
         iconAfter={isPending ? Spinner : HandMetal}
         variant={user === '' || isPending ? 'outlined' : undefined}

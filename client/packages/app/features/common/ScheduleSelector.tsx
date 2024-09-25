@@ -1,16 +1,20 @@
 import { Button, Paragraph, YStack } from '@my/ui'
 import RNDateTimePicker, {
-  DateTimePickerAndroid,
   AndroidNativeProps,
+  DateTimePickerAndroid,
 } from '@react-native-community/datetimepicker'
-import { useEffect, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { Platform } from 'react-native'
 
 const ONE_HOUR = 1 * 1000 * 60 * 60
-const ONE_MINUTE = 1 * 1000 * 60
 
-export const ScheduleSelector = ({}) => {
-  const [pickupTime, setPickupTime] = useState<Date | null>()
+export const ScheduleSelector = ({
+  pickupTime,
+  setPickupTime,
+}: {
+  pickupTime: Date | null | undefined
+  setPickupTime: Dispatch<SetStateAction<Date | null | undefined>>
+}) => {
   const [minimumDate, setMinDate] = useState<Date>(new Date())
 
   const [mode, setMode] = useState<AndroidNativeProps['mode'] | undefined>('date')
