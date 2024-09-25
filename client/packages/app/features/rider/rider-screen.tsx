@@ -11,11 +11,13 @@ import {
 } from '@my/ui'
 import { ChevronLeft, HandMetal } from '@tamagui/lucide-icons'
 import { useMutation } from '@tanstack/react-query'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { LngLat } from 'react-map-gl'
 import { useRouter } from 'solito/navigation'
 import { MapBox } from '../common/MapView'
 import { ScheduleSelector } from '../common/ScheduleSelector'
+
+const ONE_HOUR = 1 * 1000 * 60 * 60
 
 export function RiderHomeScreen() {
   const router = useRouter()
@@ -24,11 +26,11 @@ export function RiderHomeScreen() {
   const [isPolling, setIsPolling] = useState(false)
   const [pickUplngLat, setPickUpLnglat] = useState<LngLat | undefined>()
   const [destLngLat, setDestLnglat] = useState<LngLat | undefined>()
-  const [pickupTime, setPickupTime] = useState<Date | null>()
+  const [pickupTime, setPickupTime] = useState<Date | null>(new Date())
 
   const store = useStore(useUserStore, (store) => store)
 
-  const { mutate, isPending } = useMutation({
+  const { mutate, isPending, isIdle } = useMutation({
     mutationFn: async () =>
       fetch(`${process.env.NEXT_PUBLIC_SERVER_HOST}/rider/trip`, {
         method: 'POST',
@@ -47,7 +49,13 @@ export function RiderHomeScreen() {
     },
   })
 
-  // const { id } = useParams()
+  const [minimumDate, setMinDate] = useState<Date>(new Date())
+  useEffect(() => {
+    const min = new Date()
+    min.setTime(min.getTime() + ONE_HOUR)
+    setMinDate(min)
+    setPickupTime(min)
+  }, [])
 
   return (
     <YStack f={1} jc="center" ai="center" gap="$4" bg="$background">
@@ -83,11 +91,19 @@ export function RiderHomeScreen() {
           onChange={(e) => setUser(e.target.value)}
         />
       </XStack>
-      <ScheduleSelector pickupTime={pickupTime} setPickupTime={setPickupTime} />
+      <ScheduleSelector
+        minimumDate={minimumDate}
+        pickupTime={pickupTime}
+        setPickupTime={setPickupTime}
+      />
       <Button
         iconAfter={isPending ? Spinner : HandMetal}
-        variant={user === '' || isPending ? 'outlined' : undefined}
-        disabled={user === '' || isPending}
+        variant={
+          !store?.id || isPending || minimumDate.toString() > pickupTime!.toString()
+            ? 'outlined'
+            : undefined
+        }
+        disabled={!store?.id || isPending || minimumDate.toString() > pickupTime!.toString()}
         onPress={() => mutate()}
       >
         Request Trip

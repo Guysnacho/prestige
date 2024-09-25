@@ -3,29 +3,20 @@ import RNDateTimePicker, {
   AndroidNativeProps,
   DateTimePickerAndroid,
 } from '@react-native-community/datetimepicker'
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 import { Platform } from 'react-native'
-
-const ONE_HOUR = 1 * 1000 * 60 * 60
 
 export const ScheduleSelector = ({
   pickupTime,
+  minimumDate,
   setPickupTime,
 }: {
   pickupTime: Date | null | undefined
+  minimumDate: Date
   setPickupTime: Dispatch<SetStateAction<Date | null | undefined>>
 }) => {
-  const [minimumDate, setMinDate] = useState<Date>(new Date())
-
   const [mode, setMode] = useState<AndroidNativeProps['mode'] | undefined>('date')
   const [show, setShow] = useState(false)
-
-  useEffect(() => {
-    const min = new Date()
-    min.setTime(min.getTime() + ONE_HOUR)
-    setMinDate(min)
-    setPickupTime(min)
-  }, [])
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate
@@ -60,12 +51,12 @@ export const ScheduleSelector = ({
     <YStack>
       <Button onPress={showDatepicker} title="Show date picker!" />
       <Button onPress={showTimepicker} title="Show time picker!" />
-      {show && Platform.OS !== 'android' && pickupTime && (
+      {show && Platform.OS !== 'android' && minimumDate && (
         <>
-          <Paragraph>selected: {pickupTime.toLocaleString()}</Paragraph>
+          <Paragraph>selected: {pickupTime?.toLocaleString()}</Paragraph>
           <RNDateTimePicker
             testID="dateTimePicker"
-            value={pickupTime}
+            value={pickupTime!}
             mode={mode}
             is24Hour={true}
             onChange={onChange}
