@@ -26,7 +26,18 @@ export function RiderHomeScreen() {
       fetch(`${process.env.NEXT_PUBLIC_SERVER_HOST}/rider/trip`, {
         method: 'POST',
         referrer: process.env.NEXT_PUBLIC_SERVER_HOST,
-        body: JSON.stringify({ name: 'Tunji' }),
+        body: JSON.stringify({
+          id: store?.id,
+          time: pickupTime,
+          pickup: {
+            lng: pickUplngLat?.lng.toPrecision(17),
+            lat: pickUplngLat?.lat.toPrecision(17),
+          },
+          destination: {
+            lng: destLngLat?.lng.toPrecision(17),
+            lat: destLngLat?.lat.toPrecision(17),
+          },
+        }),
       }),
     onError(err, v, c) {
       console.error(err)
@@ -34,8 +45,8 @@ export function RiderHomeScreen() {
     },
     async onSuccess(data, v, c) {
       var res = await data.json()
-      toast.show('Successfully requested your ride', {
-        message: `${res.message}\n${res.requestId}`,
+      toast.show(res.message, {
+        message: res.requestId,
       })
     },
   })
