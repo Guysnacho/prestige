@@ -7,15 +7,17 @@ import { LngLat } from 'react-map-gl'
 import { useRouter } from 'solito/navigation'
 import { MapBox } from '../common/MapView'
 import { ScheduleSelector } from '../common/ScheduleSelector'
+
+const ONE_HOUR = 1 * 1000 * 60 * 60
+
 export function RiderHomeScreen() {
   const router = useRouter()
   const toast = useToastController()
-  const [user, setUser] = useState('')
-  const [isPolling, setIsPolling] = useState(false)
   const [pickUplngLat, setPickUpLnglat] = useState<LngLat | undefined>()
   const [destLngLat, setDestLnglat] = useState<LngLat | undefined>()
   const [pickupTime, setPickupTime] = useState<Date | null>(new Date())
   const [minimumDate, setMinDate] = useState<Date>(new Date())
+  const [isPolling, setIsPolling] = useState(false)
 
   const store = useStore(useUserStore, (store) => store)
 

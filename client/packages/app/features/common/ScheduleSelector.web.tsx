@@ -3,8 +3,6 @@ import DatePicker from 'react-datepicker'
 
 import 'react-datepicker/dist/react-datepicker.css'
 
-const ONE_HOUR = 1 * 1000 * 60 * 60
-
 export const ScheduleSelector = ({
   pickupTime,
   minimumDate,
