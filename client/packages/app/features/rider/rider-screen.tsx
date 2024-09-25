@@ -82,15 +82,6 @@ export function RiderHomeScreen() {
         />
       </XStack> */}
 
-      <XStack alignItems="center" gap="$4">
-        <Label htmlFor="name">When is your trip?</Label>
-        <Input
-          flex={1}
-          id="name"
-          placeholder="Nate Wienert"
-          onChange={(e) => setUser(e.target.value)}
-        />
-      </XStack>
       <ScheduleSelector
         minimumDate={minimumDate}
         pickupTime={pickupTime}
@@ -99,11 +90,21 @@ export function RiderHomeScreen() {
       <Button
         iconAfter={isPending ? Spinner : HandMetal}
         variant={
-          !store?.id || isPending || minimumDate.toString() > pickupTime!.toString()
+          !store?.id ||
+          isPending ||
+          !pickUplngLat ||
+          !destLngLat ||
+          minimumDate.toString() > pickupTime!.toString()
             ? 'outlined'
             : undefined
         }
-        disabled={!store?.id || isPending || minimumDate.toString() > pickupTime!.toString()}
+        disabled={
+          !store?.id ||
+          isPending ||
+          !pickUplngLat ||
+          !destLngLat ||
+          minimumDate.toString() > pickupTime!.toString()
+        }
         onPress={() => mutate()}
       >
         Request Trip
