@@ -46,7 +46,7 @@ func DriverEndDrive(c *gin.Context) {
 	})
 }
 
-func RiderRequestTrip(c *gin.Context) {
+func RiderScheduleTrip(c *gin.Context) {
 	requestID := uuid.New()
 	var body workflows.Rider
 	if err := c.BindJSON(&body); err != nil {
