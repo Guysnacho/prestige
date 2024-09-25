@@ -1,3 +1,4 @@
+import { useStore, useUserStore } from '@my/app/util'
 import {
   Button,
   Input,
@@ -11,13 +12,18 @@ import {
 import { ChevronLeft, HandMetal } from '@tamagui/lucide-icons'
 import { useMutation } from '@tanstack/react-query'
 import { useState } from 'react'
+import { LngLat } from 'react-map-gl'
 import { useRouter } from 'solito/navigation'
+import { MapBox } from '../common/MapView'
 
 export function RiderHomeScreen() {
   const router = useRouter()
   const toast = useToastController()
   const [user, setUser] = useState('')
   const [isPolling, setIsPolling] = useState(false)
+  const [lngLat, setLnglat] = useState<LngLat | undefined>()
+
+  const store = useStore(useUserStore, (store) => store)
 
   const { mutate, isPending } = useMutation({
     mutationFn: async () =>
@@ -42,13 +48,25 @@ export function RiderHomeScreen() {
 
   return (
     <YStack f={1} jc="center" ai="center" gap="$4" bg="$background">
+      <MapBox lngLat={lngLat} setLnglat={setLnglat} />
       <Paragraph ta="center" fow="700" col="$blue10">
-        {`Rider : ${user ? user : 'Who are you??'}`}
+        {`Rider : ${store?.id ? store.id : 'Who are you??'}`}
       </Paragraph>
-      <XStack alignItems="center" gap="$4">
+      <Paragraph>Location: {lngLat ? lngLat.lng + ' ' + lngLat.lat : 'unset'}</Paragraph>
+      {/* <XStack alignItems="center" gap="$4">
         <Label width={90} htmlFor="name">
           Name
         </Label>
+        <Input
+          flex={1}
+          id="name"
+          placeholder="Nate Wienert"
+          onChange={(e) => setId(e.target.value)}
+        />
+      </XStack> */}
+
+      <XStack alignItems="center" gap="$4">
+        <Label htmlFor="name">When is your trip?</Label>
         <Input
           flex={1}
           id="name"

@@ -1,12 +1,11 @@
 import { Button, Paragraph, Spinner, YStack, useToastController } from '@my/ui'
 import { Car, ChevronLeft } from '@tamagui/lucide-icons'
 import { useMutation } from '@tanstack/react-query'
-import { useUserStore } from 'app/util/userStore'
+import { useStore, useUserStore } from 'app/util'
 import { useRouter as useNextRouter } from 'next/router'
 import { useState } from 'react'
 import { LngLat } from 'react-map-gl'
 import { useRouter } from 'solito/navigation'
-import { useStore } from 'zustand'
 import { MapBox } from '../common/MapView'
 
 export function DriverHomeScreen() {
@@ -27,12 +26,12 @@ export function DriverHomeScreen() {
         body: JSON.stringify(
           method == 'POST'
             ? {
-                id: store.id,
+                id: store?.id,
                 coordinateX: lngLat?.lng.toPrecision(17),
                 coordinateY: lngLat?.lat.toPrecision(17),
               }
             : {
-                id: store.id,
+                id: store?.id,
               }
         ),
       }),
@@ -55,7 +54,7 @@ export function DriverHomeScreen() {
     <YStack f={1} jc="center" ai="center" gap="$4" bg="$background">
       <MapBox lngLat={lngLat} setLnglat={setLnglat} />
       <Paragraph ta="center" fow="700" col="$blue10">
-        {`Driver : ${store.id ? store.id : 'Who are you??'}`}
+        {`Driver : ${store?.id ? store.id : 'Who are you??'}`}
       </Paragraph>
       <Paragraph>Location: {lngLat ? lngLat.lng + ' ' + lngLat.lat : 'unset'}</Paragraph>
       {/* <XStack alignItems="center" gap="$4">
@@ -71,8 +70,8 @@ export function DriverHomeScreen() {
       </XStack> */}
       <Button
         iconAfter={isPending && method === 'POST' ? Spinner : Car}
-        variant={store.id === '' || isPending ? 'outlined' : undefined}
-        disabled={store.id === '' || isPending}
+        variant={store?.id === '' || isPending ? 'outlined' : undefined}
+        disabled={store?.id === '' || isPending}
         onPress={() => {
           setMethod('POST')
           mutate()
@@ -82,8 +81,8 @@ export function DriverHomeScreen() {
       </Button>
       <Button
         iconAfter={isPending && method === 'DELETE' ? Spinner : Car}
-        variant={store.id === '' || isPending ? 'outlined' : undefined}
-        disabled={store.id === '' || isPending}
+        variant={store?.id === '' || isPending ? 'outlined' : undefined}
+        disabled={store?.id === '' || isPending}
         onPress={() => {
           setMethod('DELETE')
           mutate()
