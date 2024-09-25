@@ -1,4 +1,4 @@
-import { DriverHomeScreen } from 'app/features/user/driver-screen'
+import { DriverHomeScreen } from 'app/features/driver/driver-screen'
 import Head from 'next/head'
 
 export default function Page() {

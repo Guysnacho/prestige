@@ -1,4 +1,4 @@
-import { RiderHomeScreen } from 'app/features/user/rider-screen'
+import { RiderHomeScreen } from 'app/features/rider/rider-screen'
 import Head from 'next/head'
 
 export default function Page() {
