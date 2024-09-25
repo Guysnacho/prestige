@@ -28,10 +28,7 @@ func JoinPool(user Driver, c *gin.Context, requestID uuid.UUID) (int, string) {
 
 	_, count, err := client.From("driver").Select("id, active", "planned", true).Eq("id", user.Id).Execute()
 
-	if err != nil {
-		logger.Sugar().Warn("user not found")
-		c.AbortWithError(http.StatusNotFound, errors.New("user not found"))
-	} else if count < 1 {
+	if err != nil || count < 1 {
 		logger.Sugar().Warn("user not found")
 		c.AbortWithError(http.StatusNotFound, errors.New("user not found"))
 	}

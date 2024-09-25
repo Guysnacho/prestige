@@ -57,10 +57,10 @@ func RiderScheduleTrip(c *gin.Context) {
 		return
 	}
 
-	workflows.RequestTrip(body)
+	status, message := workflows.RequestTrip(body, c)
 
-	c.JSON(200, gin.H{
-		"message":   "ride requested",
+	c.JSON(status, gin.H{
+		"message":   message,
 		"requestId": requestID,
 	})
 }
