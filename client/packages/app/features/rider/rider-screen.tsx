@@ -15,6 +15,7 @@ import { useState } from 'react'
 import { LngLat } from 'react-map-gl'
 import { useRouter } from 'solito/navigation'
 import { MapBox } from '../common/MapView'
+import { ScheduleSelector } from '../common/ScheduleSelector'
 
 export function RiderHomeScreen() {
   const router = useRouter()
@@ -81,6 +82,7 @@ export function RiderHomeScreen() {
           onChange={(e) => setUser(e.target.value)}
         />
       </XStack>
+      <ScheduleSelector />
       <Button
         iconAfter={isPending ? Spinner : HandMetal}
         variant={user === '' || isPending ? 'outlined' : undefined}

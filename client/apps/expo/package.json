@@ -14,6 +14,7 @@
     "@expo/config-plugins": "~8.0.4",
     "@my/ui": "0.0.1",
     "@react-native-async-storage/async-storage": "1.23.1",
+    "@react-native-community/datetimepicker": "^8.2.0",
     "app": "*",
     "babel-plugin-module-resolver": "^5.0.2",
     "burnt": "^0.12.2",
