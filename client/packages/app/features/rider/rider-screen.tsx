@@ -1,14 +1,5 @@
 import { useStore, useUserStore } from '@my/app/util'
-import {
-  Button,
-  Input,
-  Label,
-  Paragraph,
-  Spinner,
-  XStack,
-  YStack,
-  useToastController,
-} from '@my/ui'
+import { Button, Paragraph, Spinner, YStack, useToastController } from '@my/ui'
 import { ChevronLeft, HandMetal } from '@tamagui/lucide-icons'
 import { useMutation } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
@@ -16,9 +7,6 @@ import { LngLat } from 'react-map-gl'
 import { useRouter } from 'solito/navigation'
 import { MapBox } from '../common/MapView'
 import { ScheduleSelector } from '../common/ScheduleSelector'
-
-const ONE_HOUR = 1 * 1000 * 60 * 60
-
 export function RiderHomeScreen() {
   const router = useRouter()
   const toast = useToastController()
@@ -27,6 +15,7 @@ export function RiderHomeScreen() {
   const [pickUplngLat, setPickUpLnglat] = useState<LngLat | undefined>()
   const [destLngLat, setDestLnglat] = useState<LngLat | undefined>()
   const [pickupTime, setPickupTime] = useState<Date | null>(new Date())
+  const [minimumDate, setMinDate] = useState<Date>(new Date())
 
   const store = useStore(useUserStore, (store) => store)
 
@@ -49,13 +38,19 @@ export function RiderHomeScreen() {
     },
   })
 
-  const [minimumDate, setMinDate] = useState<Date>(new Date())
   useEffect(() => {
     const min = new Date()
     min.setTime(min.getTime() + ONE_HOUR)
     setMinDate(min)
     setPickupTime(min)
   }, [])
+
+  const isInvalid =
+    !store?.id ||
+    isPending ||
+    !pickUplngLat ||
+    !destLngLat ||
+    minimumDate.toString() > pickupTime!.toString()
 
   return (
     <YStack f={1} jc="center" ai="center" gap="$4" bg="$background">
@@ -89,22 +84,8 @@ export function RiderHomeScreen() {
       />
       <Button
         iconAfter={isPending ? Spinner : HandMetal}
-        variant={
-          !store?.id ||
-          isPending ||
-          !pickUplngLat ||
-          !destLngLat ||
-          minimumDate.toString() > pickupTime!.toString()
-            ? 'outlined'
-            : undefined
-        }
-        disabled={
-          !store?.id ||
-          isPending ||
-          !pickUplngLat ||
-          !destLngLat ||
-          minimumDate.toString() > pickupTime!.toString()
-        }
+        variant={isInvalid ? 'outlined' : undefined}
+        disabled={isInvalid}
         onPress={() => mutate()}
       >
         Request Trip
