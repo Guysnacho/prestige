@@ -28,7 +28,7 @@ export function RiderHomeScreen() {
         referrer: process.env.NEXT_PUBLIC_SERVER_HOST,
         body: JSON.stringify({
           id: store?.id,
-          time: pickupTime,
+          time: pickupTime?.toISOString(),
           pickup: {
             lng: pickUplngLat?.lng.toPrecision(17),
             lat: pickUplngLat?.lat.toPrecision(17),

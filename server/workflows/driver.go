@@ -29,7 +29,9 @@ func JoinPool(user Driver, c *gin.Context, requestID uuid.UUID) (int, string) {
 
 	if err != nil || count < 1 {
 		logger.Sugar().Error("user not found")
-		logger.Sugar().Error(err.Error())
+		if err != nil {
+			logger.Sugar().Error(err.Error())
+		}
 		return http.StatusNotFound, "user not found"
 	}
 
@@ -59,7 +61,9 @@ func LeavePool(user LeavePoolRequest, c *gin.Context, requestID uuid.UUID) (int,
 
 	if err != nil || count < 1 {
 		logger.Sugar().Error("user not found")
-		logger.Sugar().Error(err.Error())
+		if err != nil {
+			logger.Sugar().Error(err.Error())
+		}
 		return http.StatusNotFound, "user not found"
 	}
 
