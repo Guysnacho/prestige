@@ -47,7 +47,7 @@ func RequestTrip(req Rider, c *gin.Context) (int, string) {
 		return http.StatusInternalServerError, "We had an issue starting your trip, please try again later"
 	}
 
-	var trip []map[string]int
+	var trip []map[string]string
 	err = json.Unmarshal([]byte(data), &trip)
 	fmt.Printf("Unmarshalled Row: %v\n", data)
 
@@ -57,7 +57,6 @@ func RequestTrip(req Rider, c *gin.Context) (int, string) {
 		return http.StatusInternalServerError, "We had an issue starting your trip, please try again later"
 	}
 	// https://yourbasic.org/golang/fmt-printf-reference-cheat-sheet/#string-or-byte-slice
-	res := fmt.Sprintf("Trip %d initiated", trip[0]["id"])
 	logger.Sugar().Info("Trip initiated | ID %d", trip[0]["id"])
-	return http.StatusOK, res
+	return http.StatusOK, trip[0]["id"]
 }

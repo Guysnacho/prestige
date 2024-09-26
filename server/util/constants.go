@@ -10,7 +10,7 @@ type Location struct {
 }
 
 type Trip struct {
-	Id          int     `json:"id" binding required`
+	Id          string  `json:"id" binding required`
 	Driver      *string `json:"driver"`
 	Rider       string  `json:"rider" binding required`
 	Status      string  `json:"status" binding required`
