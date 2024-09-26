@@ -1,7 +1,6 @@
 package workflows
 
 import (
-	"errors"
 	"net/http"
 	util "prestige/util"
 
@@ -28,12 +27,12 @@ func JoinPool(user Driver, c *gin.Context, requestID uuid.UUID) (int, string) {
 
 	_, count, err := client.From("driver").Select("id, active", "planned", true).Eq("id", user.Id).Execute()
 
-	if err != nil {
-		logger.Sugar().Warn("user not found")
-		c.AbortWithError(http.StatusNotFound, errors.New("user not found"))
-	} else if count < 1 {
-		logger.Sugar().Warn("user not found")
-		c.AbortWithError(http.StatusNotFound, errors.New("user not found"))
+	if err != nil || count < 1 {
+		logger.Sugar().Error("user not found")
+		if err != nil {
+			logger.Sugar().Error(err.Error())
+		}
+		return http.StatusNotFound, "user not found"
 	}
 
 	_, _, err = client.From("driver").Update(gin.H{
@@ -44,8 +43,9 @@ func JoinPool(user Driver, c *gin.Context, requestID uuid.UUID) (int, string) {
 	}, "*", "planned").Eq("id", user.Id).Single().Execute()
 
 	if err != nil {
-		logger.Sugar().Warn("Issue joining pool")
-		c.AbortWithError(http.StatusInternalServerError, errors.New("issue joining pool, please try again later"))
+		logger.Sugar().Warn("Issue starting trip")
+		logger.Sugar().Error(err.Error())
+		return http.StatusInternalServerError, "issue joining pool, please try again later"
 	}
 
 	logger.Sugar().Info("User added to driver pool")
@@ -59,11 +59,12 @@ func LeavePool(user LeavePoolRequest, c *gin.Context, requestID uuid.UUID) (int,
 
 	_, count, err := client.From("driver").Select("id, active", "planned", true).Eq("id", user.Id).Execute()
 
-	if err != nil {
-		c.AbortWithError(http.StatusNotFound, errors.New("user not found"))
-	} else if count < 1 {
-		logger.Sugar().Warn("user not found")
-		c.AbortWithError(http.StatusNotFound, errors.New("user not found"))
+	if err != nil || count < 1 {
+		logger.Sugar().Error("user not found")
+		if err != nil {
+			logger.Sugar().Error(err.Error())
+		}
+		return http.StatusNotFound, "user not found"
 	}
 
 	_, _, err = client.From("driver").Update(gin.H{
@@ -75,6 +76,7 @@ func LeavePool(user LeavePoolRequest, c *gin.Context, requestID uuid.UUID) (int,
 
 	if err != nil {
 		logger.Sugar().Warn("Issue leaving pool")
+		logger.Sugar().Error(err.Error())
 		return http.StatusInternalServerError, "issue leaving pool, please try again later"
 	}
 

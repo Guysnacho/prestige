@@ -46,21 +46,26 @@ func DriverEndDrive(c *gin.Context) {
 	})
 }
 
-func RiderRequestTrip(c *gin.Context) {
-	requestID := uuid.New()
+func RiderScheduleTrip(c *gin.Context) {
 	var body workflows.Rider
 	if err := c.BindJSON(&body); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"message":   "Invalid request",
-			"requestId": requestID,
+			"message": "Invalid request",
 		})
 		return
 	}
 
-	workflows.RequestTrip(body)
+	status, response := workflows.RequestTrip(body, c)
 
-	c.JSON(200, gin.H{
-		"message":   "ride requested",
-		"requestId": requestID,
-	})
+	if status == http.StatusCreated {
+		c.JSON(status, gin.H{
+			"message":   "Your trip has been scheduled",
+			"requestId": response,
+		})
+	} else {
+		c.JSON(status, gin.H{
+			"message": response,
+		})
+	}
+
 }

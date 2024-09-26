@@ -59,6 +59,63 @@ export type Database = {
         }
         Relationships: []
       }
+      trip: {
+        Row: {
+          created_at: string
+          dest_lat: number
+          dest_lng: number
+          driver: string | null
+          id: number
+          pickup_lat: number
+          pickup_lng: number
+          pickup_time: string
+          rider: string | null
+          status: Database['public']['Enums']['trip_status'] | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          dest_lat: number
+          dest_lng: number
+          driver?: string | null
+          id?: number
+          pickup_lat: number
+          pickup_lng: number
+          pickup_time: string
+          rider?: string | null
+          status?: Database['public']['Enums']['trip_status'] | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          dest_lat?: number
+          dest_lng?: number
+          driver?: string | null
+          id?: number
+          pickup_lat?: number
+          pickup_lng?: number
+          pickup_time?: string
+          rider?: string | null
+          status?: Database['public']['Enums']['trip_status'] | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'trip_driver_fkey'
+            columns: ['driver']
+            isOneToOne: false
+            referencedRelation: 'driver'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'trip_rider_fkey'
+            columns: ['rider']
+            isOneToOne: false
+            referencedRelation: 'member'
+            referencedColumns: ['id']
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -67,6 +124,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
+      trip_status: 'INITIATED' | 'ACTIVE' | 'COMPLETE' | 'CANCELLED'
       user_type: 'DRIVER' | 'RIDER' | 'ADMIN'
     }
     CompositeTypes: {

@@ -53,5 +53,5 @@ func (r routes) addDriverRoutes(rg *gin.RouterGroup) {
 }
 
 func (r routes) addRiderRoutes(rg *gin.RouterGroup) {
-	rg.POST("/trip", handlers.RiderRequestTrip)
+	rg.POST("/trip", handlers.RiderScheduleTrip)
 }
