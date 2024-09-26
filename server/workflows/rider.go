@@ -58,5 +58,5 @@ func RequestTrip(req Rider, c *gin.Context) (int, string) {
 	}
 	// https://yourbasic.org/golang/fmt-printf-reference-cheat-sheet/#string-or-byte-slice
 	logger.Sugar().Info("Trip initiated | ID %d", trip[0]["id"])
-	return http.StatusOK, trip[0]["id"]
+	return http.StatusCreated, trip[0]["id"]
 }
