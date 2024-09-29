@@ -3,6 +3,7 @@ package handlers
 import (
 	"net/http"
 	workflows "prestige/workflows"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -51,6 +52,25 @@ func RiderScheduleTrip(c *gin.Context) {
 	if err := c.BindJSON(&body); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "Invalid request",
+		})
+		return
+	}
+
+	scheduledTime, err := time.Parse("yyyy-mm-ddThh:mm:ss.nsec", body.Time)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Issue parsing time",
+		})
+		return
+	}
+
+	// fmt.Println(time.UTC().Add(time.Add))
+	min := time.Now().Add(time.Hour * 1)
+
+	if min.Compare(scheduledTime) > 0 {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Invalid trip time",
 		})
 		return
 	}

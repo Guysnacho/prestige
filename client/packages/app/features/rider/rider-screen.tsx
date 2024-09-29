@@ -7,6 +7,7 @@ import { LngLat } from 'react-map-gl'
 import { useRouter } from 'solito/navigation'
 import { MapBox } from '../common/MapView'
 import { ScheduleSelector } from '../common/ScheduleSelector'
+import { addHours } from 'date-fns'
 
 const ONE_HOUR = 1 * 1000 * 60 * 60
 
@@ -53,9 +54,8 @@ export function RiderHomeScreen() {
 
   useEffect(() => {
     const min = new Date()
-    min.setTime(min.getTime() + ONE_HOUR)
-    setMinDate(min)
-    setPickupTime(min)
+    setMinDate(addHours(min, 1))
+    setPickupTime(addHours(min, 1))
   }, [])
 
   const isInvalid =
@@ -63,7 +63,7 @@ export function RiderHomeScreen() {
     isPending ||
     !pickUplngLat ||
     !destLngLat ||
-    minimumDate.toString() > pickupTime!.toString()
+    minimumDate.toISOString() > pickupTime!.toISOString()
 
   return (
     <YStack f={1} jc="center" ai="center" gap="$4" bg="$background">
