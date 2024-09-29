@@ -1,6 +1,6 @@
 import { useStore, useUserStore } from '@my/app/util'
 import { createClient } from '@my/app/util/components'
-import { Avatar, Button, Card, H5, Paragraph, Separator, Spinner, XStack, YStack } from '@my/ui'
+import { Button, Card, H4, H5, Paragraph, Separator, Spinner, XStack, YStack } from '@my/ui'
 import { ChevronLeft } from '@tamagui/lucide-icons'
 import { useQuery } from '@tanstack/react-query'
 import { useParams, useRouter } from 'solito/navigation'
@@ -11,9 +11,13 @@ export function UserDetailScreen() {
   const router = useRouter()
   const { id } = useParams()
 
-  const { data, error, isLoading } = useQuery({
+  const {
+    data: userData,
+    error,
+    isLoading,
+  } = useQuery({
     queryFn: async () => {
-      const user = client.from('member').select('*').eq('id', id)
+      const user = client.from('member').select('*').eq('id', id).single()
       return await user
     },
     queryKey: ['user-details'],
@@ -40,8 +44,25 @@ export function UserDetailScreen() {
   })
 
   return (
-    <YStack f={1} jc="center" ai="center" gap="$4" bg="$background" width="90%" marginInline="auto">
-      <Paragraph ta="center" fow="700" col="$blue10">{`User ID: ${id}`}</Paragraph>
+    <YStack
+      f={1}
+      jc="center"
+      ai="center"
+      gap="$4"
+      mt="$10"
+      bg="$background"
+      width="90%"
+      marginInline="auto"
+    >
+      {userData && userData.data ? (
+        <H4
+          ta="center"
+          fow="700"
+          col="$blue10"
+        >{`User : ${userData?.data.fname} ${userData?.data.lname}`}</H4>
+      ) : (
+        <Paragraph>User not found</Paragraph>
+      )}
       {isLoading || adminLoading ? <Spinner /> : undefined}
       <Separator />
       {error ? (
@@ -72,7 +93,9 @@ export function UserDetailScreen() {
               </YStack>
             </Card.Header>
             <Card.Footer>
-              <Button mx="auto">Confirm Ride</Button>
+              <Button mx="auto" onPress={() => alert('Confirming Ride')}>
+                Confirm Ride
+              </Button>
             </Card.Footer>
           </Card>
         ))
