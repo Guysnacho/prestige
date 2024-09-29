@@ -1,3 +1,4 @@
+import { useStore, useUserStore } from '@my/app/util'
 import {
   Anchor,
   Button,
@@ -5,13 +6,13 @@ import {
   Paragraph,
   Separator,
   Sheet,
-  useToastController,
   SwitchThemeButton,
   XStack,
   YStack,
+  useToastController,
 } from '@my/ui'
 import { User } from '@supabase/supabase-js'
-import { ChevronDown, ChevronUp, X } from '@tamagui/lucide-icons'
+import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 import { useEffect, useState } from 'react'
 import { Platform } from 'react-native'
 import { useLink, useRouter } from 'solito/navigation'
@@ -21,11 +22,8 @@ export type HomeProps = {
 }
 
 export function HomeScreen({ user }: HomeProps) {
+  const store = useStore(useUserStore, (store) => store)
   const router = useRouter()
-  const linkTarget = '/user'
-  const linkProps = useLink({
-    href: `${linkTarget}/nate`,
-  })
 
   useEffect(() => {
     if (user == null) {
@@ -65,7 +63,20 @@ export function HomeScreen({ user }: HomeProps) {
         <Separator />
       </YStack>
 
-      <Button {...linkProps}>Link to user</Button>
+      <Button
+        {...useLink({
+          href: `/user/${store?.id}`,
+        })}
+      >
+        Link to user
+      </Button>
+      <Button
+        {...useLink({
+          href: `/admin`,
+        })}
+      >
+        Admin Page
+      </Button>
       <Button
         {...useLink({
           href: `/driver?id=${user?.id}`,

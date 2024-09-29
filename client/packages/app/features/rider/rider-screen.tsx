@@ -9,8 +9,6 @@ import { MapBox } from '../common/MapView'
 import { ScheduleSelector } from '../common/ScheduleSelector'
 import { addHours } from 'date-fns'
 
-const ONE_HOUR = 1 * 1000 * 60 * 60
-
 export function RiderHomeScreen() {
   const router = useRouter()
   const toast = useToastController()
