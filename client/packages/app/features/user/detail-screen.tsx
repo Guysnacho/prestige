@@ -25,7 +25,7 @@ export function UserDetailScreen() {
     isLoading: adminLoading,
   } = useQuery({
     queryFn: async () => {
-      const orders = client.from('trip').select('*')
+      const orders = client.from('trip').select('*').order('created_at', { ascending: false })
       const drivers = client.from('driver').select('*')
       return await Promise.all([orders, drivers])
     },
@@ -34,9 +34,9 @@ export function UserDetailScreen() {
   })
 
   return (
-    <YStack f={1} jc="center" ai="center" gap="$4" bg="$background">
+    <YStack f={1} jc="center" ai="center" gap="$4" bg="$background" width="90%" marginInline="auto">
       <Paragraph ta="center" fow="700" col="$blue10">{`User ID: ${id}`}</Paragraph>
-      {isLoading ? <Spinner /> : undefined}
+      {isLoading || adminLoading ? <Spinner /> : undefined}
       <Separator />
       {error ? (
         <Paragraph
