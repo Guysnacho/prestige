@@ -56,19 +56,15 @@ func RiderScheduleTrip(c *gin.Context) {
 		return
 	}
 
-	scheduledTime, err := time.Parse("yyyy-mm-ddThh:mm:ss.nsec", body.Time)
+	scheduledTime, err := time.Parse(time.RFC3339Nano, body.Time)
+	min := time.Now().Add(time.Hour * 1)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": "Issue parsing time",
+			"message": "Issue parsing time ",
 		})
 		return
-	}
-
-	// fmt.Println(time.UTC().Add(time.Add))
-	min := time.Now().Add(time.Hour * 1)
-
-	if min.Compare(scheduledTime) > 0 {
+	} else if min.Compare(scheduledTime) > 0 {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "Invalid trip time",
 		})
