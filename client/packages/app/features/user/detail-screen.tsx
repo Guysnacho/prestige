@@ -25,10 +25,14 @@ export function UserDetailScreen() {
     isLoading: adminLoading,
   } = useQuery({
     queryFn: async () => {
-      const orders = client.from('trip').select('*').order('created_at', { ascending: false })
-      const drivers = client.from('driver').select('*')
-      return await Promise.all([orders, drivers])
+      const { data: tripData, error: tripError } = await client
+        .from('trip')
+        .select('*')
+        .order('created_at', { ascending: false })
+      const { data: driverData, error: driverError } = await client.from('driver').select('*')
+      return { tripData, tripError, driverData, driverError }
     },
+
     queryKey: ['admin-details'],
     enabled: store?.role === 'ADMIN',
   })
@@ -46,9 +50,9 @@ export function UserDetailScreen() {
         >{`Ran into an issue fetching profile details: ${error.message}`}</Paragraph>
       ) : undefined}
 
-      {adminData && adminData[0] ? (
-        adminData[0].data?.map((item) => (
-          <XStack key={item.id} gap="$3">
+      {adminData && adminData.driverData ? (
+        adminData.tripData?.map((item) => (
+          <XStack key={item.id} gap="$3" flexWrap="wrap">
             <Paragraph>ID: {item.id}</Paragraph>
             <Paragraph>Status: {item.status}</Paragraph>
             <Paragraph>Rider: {item.rider}</Paragraph>
@@ -64,13 +68,13 @@ export function UserDetailScreen() {
             </YStack>
           </XStack>
         ))
-      ) : adminData && adminData[0].error ? (
-        <Paragraph>Error pulling trip info</Paragraph>
+      ) : adminData && adminData.tripError ? (
+        <Paragraph>Error pulling trip info {adminData.tripError}</Paragraph>
       ) : undefined}
-      {adminData && adminData[1] ? (
+      {adminData && adminData.driverData ? (
         <YStack>
           <H5>Drivers</H5>
-          {adminData[1].data?.map((item) => (
+          {adminData.driverData?.map((item) => (
             <XStack key={item.id} gap="$3">
               <Paragraph>ID: {item.id}</Paragraph>
               <Paragraph>Is Active: {item.active ? 'ACTIVE' : 'INACTIVE'}</Paragraph>
@@ -82,8 +86,8 @@ export function UserDetailScreen() {
             </XStack>
           ))}
         </YStack>
-      ) : adminData && adminData[1].error ? (
-        <Paragraph>Error pulling driver info</Paragraph>
+      ) : adminData && adminData.driverError ? (
+        <Paragraph>Error pulling driver info {adminData.driverError}</Paragraph>
       ) : undefined}
       <Button icon={ChevronLeft} onPress={() => router.back()}>
         Go Home
