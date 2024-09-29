@@ -23,26 +23,6 @@ export function UserDetailScreen() {
     queryKey: ['user-details'],
   })
 
-  const {
-    data: adminData,
-    error: adminErr,
-    isLoading: adminLoading,
-  } = useQuery({
-    queryFn: async () => {
-      const { data: tripData, error: tripError } = await client
-        .from('trip')
-        .select('*, member(*)')
-        .order('created_at', { ascending: false })
-      const { data: driverData, error: driverError } = await client
-        .from('driver')
-        .select('*, ...member(*)')
-      return { tripData, tripError, driverData, driverError }
-    },
-
-    queryKey: ['admin-details'],
-    enabled: store?.role === 'ADMIN',
-  })
-
   return (
     <YStack
       f={1}
@@ -63,7 +43,7 @@ export function UserDetailScreen() {
       ) : (
         <Paragraph>User not found</Paragraph>
       )}
-      {isLoading || adminLoading ? <Spinner /> : undefined}
+      {isLoading ? <Spinner /> : undefined}
       <Separator />
       {error ? (
         <Paragraph
@@ -73,53 +53,6 @@ export function UserDetailScreen() {
         >{`Ran into an issue fetching profile details: ${error.message}`}</Paragraph>
       ) : undefined}
 
-      {adminData && adminData.tripData ? (
-        adminData.tripData?.map((item) => (
-          <Card py="$3" w="35rem">
-            <Card.Header>
-              <YStack key={item.id} gap="$3" flexWrap="wrap">
-                <Paragraph>Rider: {`${item.member?.fname} ${item.member?.lname}`}</Paragraph>
-                <Paragraph>Status: {item.status}</Paragraph>
-                <YStack alignItems="flex-start">
-                  <Paragraph>Pickup</Paragraph>
-                  <Paragraph>lng: {item.pickup_lng}</Paragraph>
-                  <Paragraph>lat: {item.pickup_lat}</Paragraph>
-                </YStack>
-                <YStack alignItems="flex-start">
-                  <Paragraph>Destination</Paragraph>
-                  <Paragraph>lng: {item.dest_lng}</Paragraph>
-                  <Paragraph>lat: {item.dest_lat}</Paragraph>
-                </YStack>
-              </YStack>
-            </Card.Header>
-            <Card.Footer>
-              <Button mx="auto" onPress={() => alert('Confirming Ride')}>
-                Confirm Ride
-              </Button>
-            </Card.Footer>
-          </Card>
-        ))
-      ) : adminData && adminData.tripError ? (
-        <Paragraph>Error pulling trip info {adminData.tripError}</Paragraph>
-      ) : undefined}
-      {adminData && adminData.driverData ? (
-        <YStack>
-          <H5>Drivers</H5>
-          {adminData.driverData?.map((item) => (
-            <XStack key={item.id} gap="$3">
-              <Paragraph>Driver: {`${item.fname} ${item.lname}`}</Paragraph>
-              <Paragraph>Is Active: {item.active ? 'ACTIVE' : 'INACTIVE'}</Paragraph>
-              <YStack alignItems="flex-start">
-                <Paragraph>Pickup</Paragraph>
-                <Paragraph>lng: {item.coordinate_x}</Paragraph>
-                <Paragraph>lat: {item.coordinate_y}</Paragraph>
-              </YStack>
-            </XStack>
-          ))}
-        </YStack>
-      ) : adminData && adminData.driverError ? (
-        <Paragraph>Error pulling driver info {adminData.driverError}</Paragraph>
-      ) : undefined}
       <Button icon={ChevronLeft} onPress={() => router.back()}>
         Go Home
       </Button>

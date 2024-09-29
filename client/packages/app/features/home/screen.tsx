@@ -72,6 +72,13 @@ export function HomeScreen({ user }: HomeProps) {
       </Button>
       <Button
         {...useLink({
+          href: `/admin`,
+        })}
+      >
+        Admin Page
+      </Button>
+      <Button
+        {...useLink({
           href: `/driver?id=${user?.id}`,
         })}
       >
