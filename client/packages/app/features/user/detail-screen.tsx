@@ -1,6 +1,6 @@
 import { useStore, useUserStore } from '@my/app/util'
 import { createClient } from '@my/app/util/components'
-import { Button, H5, Paragraph, Separator, Spinner, XStack, YStack } from '@my/ui'
+import { Avatar, Button, Card, H5, Paragraph, Separator, Spinner, XStack, YStack } from '@my/ui'
 import { ChevronLeft } from '@tamagui/lucide-icons'
 import { useQuery } from '@tanstack/react-query'
 import { useParams, useRouter } from 'solito/navigation'
@@ -27,9 +27,11 @@ export function UserDetailScreen() {
     queryFn: async () => {
       const { data: tripData, error: tripError } = await client
         .from('trip')
-        .select('*')
+        .select('*, member(*)')
         .order('created_at', { ascending: false })
-      const { data: driverData, error: driverError } = await client.from('driver').select('*')
+      const { data: driverData, error: driverError } = await client
+        .from('driver')
+        .select('*, ...member(*)')
       return { tripData, tripError, driverData, driverError }
     },
 
@@ -50,23 +52,29 @@ export function UserDetailScreen() {
         >{`Ran into an issue fetching profile details: ${error.message}`}</Paragraph>
       ) : undefined}
 
-      {adminData && adminData.driverData ? (
+      {adminData && adminData.tripData ? (
         adminData.tripData?.map((item) => (
-          <XStack key={item.id} gap="$3" flexWrap="wrap">
-            <Paragraph>ID: {item.id}</Paragraph>
-            <Paragraph>Status: {item.status}</Paragraph>
-            <Paragraph>Rider: {item.rider}</Paragraph>
-            <YStack alignItems="flex-start">
-              <Paragraph>Pickup</Paragraph>
-              <Paragraph>lng: {item.pickup_lng}</Paragraph>
-              <Paragraph>lat: {item.pickup_lat}</Paragraph>
-            </YStack>
-            <YStack alignItems="flex-start">
-              <Paragraph>Destination</Paragraph>
-              <Paragraph>lng: {item.dest_lng}</Paragraph>
-              <Paragraph>lat: {item.dest_lat}</Paragraph>
-            </YStack>
-          </XStack>
+          <Card py="$3" w="35rem">
+            <Card.Header>
+              <YStack key={item.id} gap="$3" flexWrap="wrap">
+                <Paragraph>Rider: {`${item.member?.fname} ${item.member?.lname}`}</Paragraph>
+                <Paragraph>Status: {item.status}</Paragraph>
+                <YStack alignItems="flex-start">
+                  <Paragraph>Pickup</Paragraph>
+                  <Paragraph>lng: {item.pickup_lng}</Paragraph>
+                  <Paragraph>lat: {item.pickup_lat}</Paragraph>
+                </YStack>
+                <YStack alignItems="flex-start">
+                  <Paragraph>Destination</Paragraph>
+                  <Paragraph>lng: {item.dest_lng}</Paragraph>
+                  <Paragraph>lat: {item.dest_lat}</Paragraph>
+                </YStack>
+              </YStack>
+            </Card.Header>
+            <Card.Footer>
+              <Button mx="auto">Confirm Ride</Button>
+            </Card.Footer>
+          </Card>
         ))
       ) : adminData && adminData.tripError ? (
         <Paragraph>Error pulling trip info {adminData.tripError}</Paragraph>
@@ -76,7 +84,7 @@ export function UserDetailScreen() {
           <H5>Drivers</H5>
           {adminData.driverData?.map((item) => (
             <XStack key={item.id} gap="$3">
-              <Paragraph>ID: {item.id}</Paragraph>
+              <Paragraph>Driver: {`${item.fname} ${item.lname}`}</Paragraph>
               <Paragraph>Is Active: {item.active ? 'ACTIVE' : 'INACTIVE'}</Paragraph>
               <YStack alignItems="flex-start">
                 <Paragraph>Pickup</Paragraph>
