@@ -44,7 +44,7 @@ export function AdminDetailScreen() {
 
   return (
     <YStack
-      f={1}
+      // f={1}
       jc="center"
       ai="center"
       gap="$4"
@@ -76,31 +76,33 @@ export function AdminDetailScreen() {
       ) : undefined}
 
       {adminData && adminData.tripData ? (
-        adminData.tripData?.map((item) => (
-          <Card py="$3" w="35rem">
-            <Card.Header>
-              <YStack key={item.id} gap="$3" flexWrap="wrap">
-                <Paragraph>Rider: {`${item.member?.fname} ${item.member?.lname}`}</Paragraph>
-                <Paragraph>Status: {item.status}</Paragraph>
-                <YStack alignItems="flex-start">
-                  <Paragraph>Pickup</Paragraph>
-                  <Paragraph>lng: {item.pickup_lng}</Paragraph>
-                  <Paragraph>lat: {item.pickup_lat}</Paragraph>
+        <YStack gap="$4">
+          {adminData.tripData?.map((item) => (
+            <Card py="$3" w="35rem">
+              <Card.Header>
+                <YStack key={item.id} gap="$3" flexWrap="wrap">
+                  <Paragraph>Rider: {`${item.member?.fname} ${item.member?.lname}`}</Paragraph>
+                  <Paragraph>Status: {item.status}</Paragraph>
+                  <YStack alignItems="flex-start">
+                    <Paragraph>Pickup</Paragraph>
+                    <Paragraph>lng: {item.pickup_lng}</Paragraph>
+                    <Paragraph>lat: {item.pickup_lat}</Paragraph>
+                  </YStack>
+                  <YStack alignItems="flex-start">
+                    <Paragraph>Destination</Paragraph>
+                    <Paragraph>lng: {item.dest_lng}</Paragraph>
+                    <Paragraph>lat: {item.dest_lat}</Paragraph>
+                  </YStack>
                 </YStack>
-                <YStack alignItems="flex-start">
-                  <Paragraph>Destination</Paragraph>
-                  <Paragraph>lng: {item.dest_lng}</Paragraph>
-                  <Paragraph>lat: {item.dest_lat}</Paragraph>
-                </YStack>
-              </YStack>
-            </Card.Header>
-            <Card.Footer>
-              <Button mx="auto" onPress={() => alert('Confirming Ride')}>
-                Confirm Ride
-              </Button>
-            </Card.Footer>
-          </Card>
-        ))
+              </Card.Header>
+              <Card.Footer>
+                <Button mx="auto" onPress={() => alert('Confirming Ride')}>
+                  Confirm Ride
+                </Button>
+              </Card.Footer>
+            </Card>
+          ))}
+        </YStack>
       ) : adminData && adminData.tripError ? (
         <Paragraph>Error pulling trip info {adminData.tripError}</Paragraph>
       ) : undefined}
