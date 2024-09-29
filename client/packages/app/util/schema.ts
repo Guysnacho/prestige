@@ -65,7 +65,7 @@ export type Database = {
           dest_lat: number
           dest_lng: number
           driver: string | null
-          id: number
+          id: string
           pickup_lat: number
           pickup_lng: number
           pickup_time: string
@@ -78,7 +78,7 @@ export type Database = {
           dest_lat: number
           dest_lng: number
           driver?: string | null
-          id?: number
+          id?: string
           pickup_lat: number
           pickup_lng: number
           pickup_time: string
@@ -91,7 +91,7 @@ export type Database = {
           dest_lat?: number
           dest_lng?: number
           driver?: string | null
-          id?: number
+          id?: string
           pickup_lat?: number
           pickup_lng?: number
           pickup_time?: string
