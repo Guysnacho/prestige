@@ -57,7 +57,15 @@ export type Database = {
           lname?: string
           type?: Database['public']['Enums']['user_type']
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: 'member_id_fkey'
+            columns: ['id']
+            isOneToOne: true
+            referencedRelation: 'users'
+            referencedColumns: ['id']
+          },
+        ]
       }
       trip: {
         Row: {
