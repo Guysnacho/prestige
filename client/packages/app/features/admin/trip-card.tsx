@@ -1,10 +1,10 @@
 import { Database } from '@my/app/util/schema'
-import { Button, Card, Paragraph, YStack } from '@my/ui'
+import { Button, Card, H6, Paragraph, YStack } from '@my/ui'
 
 export const TripCard = (props: {
   trip: Database['public']['Tables']['trip']['Row']
   member: Database['public']['Tables']['member']['Row'] | null
-  router: {
+  router?: {
     push: (url: string, navigateOptions?: {}) => void
   }
 }) => {
@@ -27,9 +27,13 @@ export const TripCard = (props: {
         </YStack>
       </Card.Header>
       <Card.Footer>
-        <Button mx="auto" onPress={() => props.router.push(`/admin/${props.trip.id}`)}>
-          Confirm Ride
-        </Button>
+        {props.router !== undefined ? (
+          <Button mx="auto" onPress={() => props!.router!.push(`/admin/${props.trip.id}`)}>
+            Confirm Ride
+          </Button>
+        ) : (
+          <H6 mx="auto">Assign a Driver</H6>
+        )}
       </Card.Footer>
     </Card>
   )

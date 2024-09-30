@@ -1,14 +1,27 @@
 import { useStore, useUserStore } from '@my/app/util'
 import { createClient } from '@my/app/util/components'
-import { Button, Card, H5, H6, Paragraph, Separator, Spinner, XStack, YStack } from '@my/ui'
-import { ChevronLeft } from '@tamagui/lucide-icons'
-import { useQuery } from '@tanstack/react-query'
+import {
+  Button,
+  H5,
+  Paragraph,
+  Separator,
+  Spinner,
+  XStack,
+  YStack,
+  useToastController,
+} from '@my/ui'
+import { ChevronLeft, UsersRound } from '@tamagui/lucide-icons'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
+import { TripCard } from './trip-card'
 
 export function TripMatcherScreen() {
   const store = useStore(useUserStore, (store) => store)
   const client = createClient()
+  const toast = useToastController()
   const router = useRouter()
+  const [driver, setDriver] = useState<string | undefined>()
 
   const { data, error, isLoading } = useQuery({
     queryFn: async () => {
@@ -25,6 +38,22 @@ export function TripMatcherScreen() {
 
     queryKey: ['admin-details'],
     enabled: store?.role === 'ADMIN' && router.query.id !== undefined,
+  })
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: async () => {
+      return client.from('trip').update({ driver, status: 'ASSIGNED' }).eq('id', data!.tripData!.id)
+    },
+    onSettled(data, error, variables, context) {
+      if (data?.error) {
+        toast.show('Issue assigning driver', { message: data.error.message })
+      } else if (error) {
+        toast.show('Issue assigning driver', { message: error.message })
+      } else {
+        toast.show('Driver assigned!', { message: data?.statusText })
+        router.back()
+      }
+    },
   })
 
   return (
@@ -51,42 +80,38 @@ export function TripMatcherScreen() {
         >{`Ran into an issue fetching trip details: ${error.message}`}</Paragraph>
       ) : undefined}
 
-      {data && !data.tripError && data.tripData ? (
+      {isLoading ? (
+        <Spinner />
+      ) : data && !data.tripError && data.tripData ? (
         <YStack gap="$4">
-          <Card py="$3" w="35rem">
-            <Card.Header>
-              <YStack key={data.tripData.id} gap="$3" flexWrap="wrap">
-                <Paragraph>
-                  Rider: {`${data.tripData.member?.fname} ${data.tripData.member?.lname}`}
-                </Paragraph>
-                <Paragraph>Status: {data.tripData.status}</Paragraph>
-                <YStack alignItems="flex-start">
-                  <Paragraph>Pickup</Paragraph>
-                  <Paragraph>lng: {data.tripData.pickup_lng}</Paragraph>
-                  <Paragraph>lat: {data.tripData.pickup_lat}</Paragraph>
-                </YStack>
-                <YStack alignItems="flex-start">
-                  <Paragraph>Destination</Paragraph>
-                  <Paragraph>lng: {data.tripData.dest_lng}</Paragraph>
-                  <Paragraph>lat: {data.tripData.dest_lat}</Paragraph>
-                </YStack>
-              </YStack>
-            </Card.Header>
-            <Card.Footer>
-              <H6 mx="auto">Assign a Driver</H6>
-            </Card.Footer>
-          </Card>
+          <TripCard member={data.tripData.member} trip={data.tripData} />
         </YStack>
       ) : data && data.tripError ? (
         <Paragraph>Error pulling trip info {data.tripError}</Paragraph>
       ) : undefined}
-      {data && !data.driverError && data.driverData ? (
-        <YStack>
-          <H5>Drivers</H5>
+      {isLoading ? (
+        <Spinner />
+      ) : data && !data.driverError && data.driverData ? (
+        <YStack my="$4" gap="$2">
+          <H5 size="$7" mx="auto">
+            Drivers
+          </H5>
           {data.driverData?.map((item) => (
-            <XStack key={item.id} gap="$3">
-              <Paragraph>Driver: {`${item.fname} ${item.lname}`}</Paragraph>
-              <Paragraph>Is Active: {item.active ? 'ACTIVE' : 'INACTIVE'}</Paragraph>
+            <XStack key={item.id} alignItems="center" gap="$3">
+              <Button
+                icon={isPending ? <Spinner /> : <UsersRound />}
+                onPress={() => {
+                  setDriver(item.id)
+                  mutate()
+                }}
+              >
+                {isPending ? undefined : 'Assign'}
+              </Button>
+              <YStack alignItems="flex-start">
+                <Paragraph>ID: {item.id}</Paragraph>
+                <Paragraph>Driver: {`${item.fname} ${item.lname}`}</Paragraph>
+                <Paragraph>Is Active: {item.active ? 'ACTIVE' : 'INACTIVE'}</Paragraph>
+              </YStack>
               <YStack alignItems="flex-start">
                 <Paragraph>Pickup</Paragraph>
                 <Paragraph>lng: {item.coordinate_x}</Paragraph>

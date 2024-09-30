@@ -132,7 +132,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      trip_status: 'INITIATED' | 'ACTIVE' | 'COMPLETE' | 'CANCELLED'
+      trip_status: 'INITIATED' | 'ACTIVE' | 'COMPLETE' | 'CANCELLED' | 'ASSIGNED'
       user_type: 'DRIVER' | 'RIDER' | 'ADMIN'
     }
     CompositeTypes: {
