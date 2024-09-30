@@ -30,9 +30,10 @@ export function TripMatcherScreen() {
         .select('*, member(*)')
         .eq('id', router.query.id ?? '')
         .single()
-      const { data: driverData, error: driverError } = await client
-        .from('driver')
-        .select('*, ...member(*)')
+      const { data: driverData, error: driverError } = await client.rpc('get_closest_drivers', {
+        rider_x: tripData!.pickup_lng.toPrecision(17),
+        rider_y: tripData!.pickup_lat.toPrecision(17),
+      })
       return { tripData, tripError, driverData, driverError }
     },
 

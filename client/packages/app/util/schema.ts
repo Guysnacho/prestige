@@ -129,7 +129,19 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_closest_drivers: {
+        Args: {
+          rider_x: string
+          rider_y: string
+        }
+        Returns: {
+          driver_id: string
+          active: boolean
+          coordinate_x: number
+          coordinate_y: number
+          distance: number
+        }[]
+      }
     }
     Enums: {
       trip_status: 'INITIATED' | 'ACTIVE' | 'COMPLETE' | 'CANCELLED' | 'ASSIGNED'
