@@ -9,7 +9,6 @@ import { TripCard } from './trip-card'
 
 export function AdminDetailScreen() {
   const store = useStore(useUserStore, (store) => store)
-  const [selectedTrip, setSelectedTrip] = useState('')
   const client = createClient()
   const router = useRouter()
 
@@ -35,10 +34,7 @@ export function AdminDetailScreen() {
         .from('trip')
         .select('*, member(*)')
         .order('created_at', { ascending: false })
-      const { data: driverData, error: driverError } = await client
-        .from('driver')
-        .select('*, ...member(*)')
-      return { tripData, tripError, driverData, driverError }
+      return { tripData, tripError }
     },
 
     queryKey: ['admin-details'],
@@ -66,7 +62,7 @@ export function AdminDetailScreen() {
         <Paragraph>User not found</Paragraph>
       )}
       {isLoading || adminLoading ? <Spinner /> : undefined}
-      <Button icon={ChevronLeft} onPress={() => router.back()}>
+      <Button icon={ChevronLeft} onPress={() => router.push('/')}>
         Go Home
       </Button>
       <Separator />
@@ -81,29 +77,11 @@ export function AdminDetailScreen() {
       {adminData && adminData.tripData ? (
         <YStack gap="$4">
           {adminData.tripData?.map((item) => (
-            <TripCard member={item.member} trip={item} select={setSelectedTrip} />
+            <TripCard member={item.member} trip={item} router={router} />
           ))}
         </YStack>
       ) : adminData && adminData.tripError ? (
         <Paragraph>Error pulling trip info {adminData.tripError}</Paragraph>
-      ) : undefined}
-      {adminData && adminData.driverData ? (
-        <YStack>
-          <H5>Drivers</H5>
-          {adminData.driverData?.map((item) => (
-            <XStack key={item.id} gap="$3">
-              <Paragraph>Driver: {`${item.fname} ${item.lname}`}</Paragraph>
-              <Paragraph>Is Active: {item.active ? 'ACTIVE' : 'INACTIVE'}</Paragraph>
-              <YStack alignItems="flex-start">
-                <Paragraph>Pickup</Paragraph>
-                <Paragraph>lng: {item.coordinate_x}</Paragraph>
-                <Paragraph>lat: {item.coordinate_y}</Paragraph>
-              </YStack>
-            </XStack>
-          ))}
-        </YStack>
-      ) : adminData && adminData.driverError ? (
-        <Paragraph>Error pulling driver info {adminData.driverError}</Paragraph>
       ) : undefined}
     </YStack>
   )

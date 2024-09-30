@@ -1,6 +1,6 @@
 import { useStore, useUserStore } from '@my/app/util'
 import { createClient } from '@my/app/util/components'
-import { Button, Card, H4, H5, Paragraph, Separator, Spinner, XStack, YStack } from '@my/ui'
+import { Button, Card, H5, H6, Paragraph, Separator, Spinner, XStack, YStack } from '@my/ui'
 import { ChevronLeft } from '@tamagui/lucide-icons'
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
@@ -40,7 +40,7 @@ export function TripMatcherScreen() {
     >
       {isLoading ? <Spinner /> : undefined}
       <Button icon={ChevronLeft} onPress={() => router.back()}>
-        Go Home
+        Go Back
       </Button>
       <Separator />
       {error ? (
@@ -73,9 +73,7 @@ export function TripMatcherScreen() {
               </YStack>
             </Card.Header>
             <Card.Footer>
-              <Button mx="auto" onPress={() => alert('Confirming Ride')}>
-                Confirm Ride
-              </Button>
+              <H6 mx="auto">Assign a Driver</H6>
             </Card.Footer>
           </Card>
         </YStack>

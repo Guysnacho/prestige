@@ -1,12 +1,12 @@
 import { Database } from '@my/app/util/schema'
-import { Card, YStack, Paragraph } from '@my/ui'
-import { Dispatch, SetStateAction } from 'react'
-import { Button } from 'react-native'
+import { Button, Card, Paragraph, YStack } from '@my/ui'
 
 export const TripCard = (props: {
   trip: Database['public']['Tables']['trip']['Row']
   member: Database['public']['Tables']['member']['Row'] | null
-  select: Dispatch<SetStateAction<string>>
+  router: {
+    push: (url: string, navigateOptions?: {}) => void
+  }
 }) => {
   return (
     <Card py="$3" w="35rem">
@@ -27,7 +27,7 @@ export const TripCard = (props: {
         </YStack>
       </Card.Header>
       <Card.Footer>
-        <Button mx="auto" onPress={() => props.select(props.trip.id)}>
+        <Button mx="auto" onPress={() => props.router.push(`/admin/${props.trip.id}`)}>
           Confirm Ride
         </Button>
       </Card.Footer>
