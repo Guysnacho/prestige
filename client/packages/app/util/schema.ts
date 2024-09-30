@@ -57,7 +57,15 @@ export type Database = {
           lname?: string
           type?: Database['public']['Enums']['user_type']
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: 'member_id_fkey'
+            columns: ['id']
+            isOneToOne: true
+            referencedRelation: 'users'
+            referencedColumns: ['id']
+          },
+        ]
       }
       trip: {
         Row: {
@@ -121,10 +129,24 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_closest_drivers: {
+        Args: {
+          rider_x: string
+          rider_y: string
+        }
+        Returns: {
+          driver_id: string
+          active: boolean
+          coordinate_x: number
+          coordinate_y: number
+          distance: number
+          fname: string
+          lname: string
+        }[]
+      }
     }
     Enums: {
-      trip_status: 'INITIATED' | 'ACTIVE' | 'COMPLETE' | 'CANCELLED'
+      trip_status: 'INITIATED' | 'ACTIVE' | 'COMPLETE' | 'CANCELLED' | 'ASSIGNED'
       user_type: 'DRIVER' | 'RIDER' | 'ADMIN'
     }
     CompositeTypes: {
