@@ -140,6 +140,8 @@ export type Database = {
           coordinate_x: number
           coordinate_y: number
           distance: number
+          fname: string
+          lname: string
         }[]
       }
     }

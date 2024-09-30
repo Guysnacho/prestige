@@ -98,18 +98,18 @@ export function TripMatcherScreen() {
             Drivers
           </H5>
           {data.driverData?.map((item) => (
-            <XStack key={item.id} alignItems="center" gap="$3">
+            <XStack key={item.driver_id} alignItems="center" gap="$3">
               <Button
                 icon={isPending ? <Spinner /> : <UsersRound />}
                 onPress={() => {
-                  setDriver(item.id)
+                  setDriver(item.driver_id)
                   mutate()
                 }}
               >
                 {isPending ? undefined : 'Assign'}
               </Button>
               <YStack alignItems="flex-start">
-                <Paragraph>ID: {item.id}</Paragraph>
+                <Paragraph>ID: {item.driver_id}</Paragraph>
                 <Paragraph>Driver: {`${item.fname} ${item.lname}`}</Paragraph>
                 <Paragraph>Is Active: {item.active ? 'ACTIVE' : 'INACTIVE'}</Paragraph>
               </YStack>
