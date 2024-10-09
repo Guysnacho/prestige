@@ -3,6 +3,7 @@ import { Database } from './schema'
 import { createClient as supaClient } from '@supabase/supabase-js'
 import * as SecureStore from 'expo-secure-store'
 import { AppState } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const ExpoSecureStoreAdapter = {
   getItem: (key: string) => {
@@ -16,19 +17,33 @@ const ExpoSecureStoreAdapter = {
   },
 }
 
+const AsyncStorageAdapter = {
+  getItem: (key: string) => {
+    return AsyncStorage.getItem(key)
+  },
+  setItem: (key: string, value: string) => {
+    AsyncStorage.setItem(key, value)
+  },
+  removeItem: (key: string) => {
+    AsyncStorage.removeItem(key)
+  },
+}
+
+const supabase = supaClient<Database>(
+  process.env.EXPO_PUBLIC_SUPABASE_URL!,
+  process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY!,
+  {
+    auth: {
+      storage: ExpoSecureStoreAdapter,
+      autoRefreshToken: true,
+      persistSession: true,
+      detectSessionInUrl: false,
+    },
+  }
+)
+
 export const createClient = () => {
-  return supaClient<Database>(
-    process.env.EXPO_PUBLIC_SUPABASE_URL!,
-    process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      auth: {
-        storage: ExpoSecureStoreAdapter,
-        autoRefreshToken: true,
-        persistSession: true,
-        detectSessionInUrl: false,
-      },
-    }
-  )
+  return supabase
 }
 
 // Tells Supabase Auth to continuously refresh the session automatically

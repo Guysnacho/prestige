@@ -40,20 +40,9 @@ export const SignIn = ({ store }: AuthProps) => {
       <H4>Log In</H4>
       <YStack>
         <Label>Email</Label>
-        <Input
-          placeholder="test@gmail.com"
-          onChange={(e: { target: { value: SetStateAction<string> } }) => {
-            setEmail(e.target.value)
-          }}
-        />
+        <Input placeholder="test@gmail.com" onChangeText={setEmail} />
         <Label>Password</Label>
-        <Input
-          placeholder="dont_use_password123"
-          secureTextEntry
-          onChange={(e: { target: { value: SetStateAction<string> } }) =>
-            setPassword(e.target.value)
-          }
-        />
+        <Input placeholder="dont_use_password123" secureTextEntry onChangeText={setPassword} />
       </YStack>
 
       <Form.Trigger onPress={signIn} asChild disabled={status !== 'off'}>
@@ -97,16 +86,16 @@ export const SignUp = ({ store }: AuthProps) => {
       <H4>Sign Up</H4>
       <YStack>
         <Label>First Name</Label>
-        <Input placeholder="Warren" onChange={(e) => setFname(e.target.value)} />
+        <Input placeholder="Warren" onChangeText={setFname} />
         <Label>Last Name</Label>
-        <Input placeholder="Buffette" onChange={(e) => setLname(e.target.value)} />
+        <Input placeholder="Buffette" onChangeText={setLname} />
         <Label>Email</Label>
-        <Input placeholder="test@gmail.com" onChange={(e) => setEmail(e.target.value)} />
+        <Input placeholder="test@gmail.com" onChangeText={setEmail} />
         <Label>Password</Label>
         <Input
           placeholder="dont_use_password123"
           secureTextEntry
-          onChange={(e) => setPassword(e.target.value)}
+          onChangeText={(e) => setPassword(e)}
         />
       </YStack>
 
