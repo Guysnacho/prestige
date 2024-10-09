@@ -9514,6 +9514,8 @@ __metadata:
     "@my/ui": "npm:0.0.1"
     "@react-native-async-storage/async-storage": "npm:1.23.1"
     "@react-native-community/datetimepicker": "npm:^8.2.0"
+    "@supabase/ssr": "npm:^0.5.1"
+    "@supabase/supabase-js": "npm:^2.45.3"
     "@tamagui/babel-plugin": "npm:1.110.0"
     app: "npm:*"
     babel-plugin-module-resolver: "npm:^5.0.2"

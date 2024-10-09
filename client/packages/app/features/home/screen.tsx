@@ -18,7 +18,7 @@ import { Platform } from 'react-native'
 import { useLink, useRouter } from 'solito/navigation'
 
 export type HomeProps = {
-  user: User | null
+  user?: User | null
 }
 
 export function HomeScreen({ user }: HomeProps) {

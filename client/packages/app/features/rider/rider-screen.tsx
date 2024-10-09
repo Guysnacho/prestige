@@ -1,17 +1,19 @@
 import { useStore, useUserStore } from '@my/app/util'
+import getServerUrl from '@my/app/util/getServerUrl'
 import { Button, Paragraph, Spinner, YStack, useToastController } from '@my/ui'
 import { ChevronLeft, HandMetal } from '@tamagui/lucide-icons'
 import { useMutation } from '@tanstack/react-query'
+import { addHours } from 'date-fns'
 import { useEffect, useState } from 'react'
 import { LngLat } from 'react-map-gl'
 import { useRouter } from 'solito/navigation'
 import { MapBox } from '../common/MapView'
 import { ScheduleSelector } from '../common/ScheduleSelector'
-import { addHours } from 'date-fns'
 
 export function RiderHomeScreen() {
   const router = useRouter()
   const toast = useToastController()
+  const SERVER_URL = getServerUrl()
   const [pickUplngLat, setPickUpLnglat] = useState<LngLat | undefined>()
   const [destLngLat, setDestLnglat] = useState<LngLat | undefined>()
   const [pickupTime, setPickupTime] = useState<Date | null>(new Date())
@@ -22,9 +24,9 @@ export function RiderHomeScreen() {
 
   const { mutate, isPending, isIdle } = useMutation({
     mutationFn: async () =>
-      fetch(`${process.env.NEXT_PUBLIC_SERVER_HOST}/rider/trip`, {
+      fetch(`${SERVER_URL}/rider/trip`, {
         method: 'POST',
-        referrer: process.env.NEXT_PUBLIC_SERVER_HOST,
+        referrer: SERVER_URL,
         body: JSON.stringify({
           id: store?.id,
           time: pickupTime?.toISOString(),

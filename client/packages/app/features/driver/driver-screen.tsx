@@ -1,8 +1,8 @@
+import getServerUrl from '@my/app/util/getServerUrl'
 import { Button, Paragraph, Spinner, YStack, useToastController } from '@my/ui'
 import { Car, ChevronLeft } from '@tamagui/lucide-icons'
 import { useMutation } from '@tanstack/react-query'
 import { useStore, useUserStore } from 'app/util'
-import { useRouter as useNextRouter } from 'next/router'
 import { useState } from 'react'
 import { LngLat } from 'react-map-gl'
 import { useRouter } from 'solito/navigation'
@@ -10,7 +10,7 @@ import { MapBox } from '../common/MapView'
 
 export function DriverHomeScreen() {
   const router = useRouter()
-  const nRouter = useNextRouter()
+  const SERVER_URL = getServerUrl()
   const toast = useToastController()
   const [lngLat, setLnglat] = useState<LngLat | undefined>()
   const [method, setMethod] = useState<'POST' | 'DELETE'>('POST')
@@ -20,9 +20,9 @@ export function DriverHomeScreen() {
 
   const { mutate, isPending } = useMutation({
     mutationFn: async () =>
-      fetch(`${process.env.NEXT_PUBLIC_SERVER_HOST}/driver/trip`, {
+      fetch(`${SERVER_URL}/driver/trip`, {
         method,
-        referrer: process.env.NEXT_PUBLIC_SERVER_HOST,
+        referrer: SERVER_URL,
         body: JSON.stringify(
           method == 'POST'
             ? {
