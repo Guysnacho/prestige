@@ -7,6 +7,8 @@
   ],
   "scripts": {
     "native": "cd apps/expo && yarn start",
+    "android": "cd apps/expo && yarn android",
+    "ios": "cd apps/expo && yarn ios",
     "watch": "yarn workspaces foreach -pi run watch",
     "vercel:install": "yarn set version 3.5 && yarn install",
     "web": "yarn build && cd apps/next && yarn next",

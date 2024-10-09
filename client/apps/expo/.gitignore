@@ -23,6 +23,7 @@ DerivedData
 *.ipa
 *.xcuserstate
 project.xcworkspace
+ios/
 
 # Android/IntelliJ
 #
@@ -32,6 +33,7 @@ build/
 local.properties
 *.iml
 *.hprof
+android/
 
 # node.js
 #
