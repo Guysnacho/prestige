@@ -44,7 +44,6 @@ export const SignIn = ({ store }: AuthProps) => {
           placeholder="test@gmail.com"
           onChange={(e: { target: { value: SetStateAction<string> } }) => {
             setEmail(e.target.value)
-            console.debug(email)
           }}
         />
         <Label>Password</Label>

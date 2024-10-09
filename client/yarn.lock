@@ -6362,6 +6362,7 @@ __metadata:
     date-fns: "npm:^4.1.0"
     expo-constants: "npm:~16.0.2"
     expo-linking: "npm:~6.3.1"
+    expo-secure-store: "npm:~13.0.2"
     mapbox-gl: "npm:^3.6.0"
     maplibre-gl: "npm:^4.6.0"
     pmtiles: "npm:^3.0.7"
@@ -9527,6 +9528,7 @@ __metadata:
     expo-linear-gradient: "npm:~13.0.2"
     expo-linking: "npm:~6.3.1"
     expo-router: "npm:3.5.15"
+    expo-secure-store: "npm:~13.0.2"
     expo-splash-screen: "npm:0.27.4"
     expo-status-bar: "npm:~1.12.1"
     expo-updates: "npm:~0.25.15"
@@ -9748,6 +9750,15 @@ __metadata:
     react-native-reanimated:
       optional: true
   checksum: 10/00204946074600a9e5c36ceab85b69bcca4b50b04167438366434ae7ee007c47650c44afb58c0a2a997e79cfb58cbb423b411e9266487be63bcf496922623544
+  languageName: node
+  linkType: hard
+
+"expo-secure-store@npm:~13.0.2":
+  version: 13.0.2
+  resolution: "expo-secure-store@npm:13.0.2"
+  peerDependencies:
+    expo: "*"
+  checksum: 10/920a4ff94831bc327b08e0f429f3eecfc0fb896e6e865b8d3277c427ad58cec8506815cc094f6e0e8ceed97b33126e8b9d11c923839fcdac946d6eeb2c39cde1
   languageName: node
   linkType: hard
 
