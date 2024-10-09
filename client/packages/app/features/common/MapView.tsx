@@ -1,5 +1,3 @@
-'use dom'
-
 import { H2, YStack, YStackProps } from '@my/ui'
 import { Pin } from '@tamagui/lucide-icons'
 import maplibregl from 'maplibre-gl'
