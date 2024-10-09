@@ -14,7 +14,7 @@ export function AuthScreen({
   const store = useStore(useUserStore, (store) => store)
 
   return (
-    <YStack jc="center" ai="center" gap="$8" mb="$5" p="$4" bg="$background">
+    <YStack jc="center" ai="center" gap="$8" pb="$5" p="$4" bg="$background">
       <XStack w="100%" t="$6" gap="$6" jc="center" $sm={{ pos: 'relative', t: 0 }}>
         {Platform.OS === 'web' && (
           <>
