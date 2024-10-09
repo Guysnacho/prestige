@@ -6,7 +6,7 @@ import { useStore, useUserStore } from 'app/util'
 import { useState } from 'react'
 import { LngLat } from 'react-map-gl'
 import { useRouter } from 'solito/navigation'
-import { MapBox } from '../common/MapView'
+import { MapBox } from '../common/MapBox'
 
 export function DriverHomeScreen() {
   const router = useRouter()
