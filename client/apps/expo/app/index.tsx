@@ -1,4 +1,5 @@
 import { AuthScreen } from '@my/app/features/auth/auth-screen'
+import { useUserStore } from '@my/app/util'
 import { createClient } from '@my/app/util/components'
 import { ScrollView } from '@my/ui'
 import { User } from '@supabase/supabase-js'
@@ -9,6 +10,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 
 export default function Screen() {
   const client = createClient()
+  const store = useUserStore()
   const [user, setUser] = useState<User | null>()
   const [signUp, setSignUp] = useState(false)
 
@@ -24,7 +26,8 @@ export default function Screen() {
         console.error('Auth Error')
         console.error(err)
       })
-  }, [])
+  }, [store.id])
+
   return (
     <>
       <Stack.Screen
