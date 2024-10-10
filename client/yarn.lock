@@ -5432,7 +5432,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/geojson@npm:*, @types/geojson@npm:^7946.0.14":
+"@types/geojson@npm:*, @types/geojson@npm:^7946.0.13, @types/geojson@npm:^7946.0.14":
   version: 7946.0.14
   resolution: "@types/geojson@npm:7946.0.14"
   checksum: 10/ae511bee6488ae3bd5a3a3347aedb0371e997b14225b8983679284e22fa4ebd88627c6e3ff8b08bf4cc35068cb29310c89427311ffc9322c255615821a922e71
@@ -6379,6 +6379,7 @@ __metadata:
     protomaps-themes-base: "npm:^3.1.0"
     react-datepicker: "npm:^7.4.0"
     react-map-gl: "npm:^7.1.7"
+    react-native-maps: "npm:^1.18.0"
     react-native-safe-area-context: "npm:4.10.4"
     solito: "npm:^4.2.2"
     zustand: "npm:^5.0.0-rc.2"
@@ -9547,6 +9548,7 @@ __metadata:
     react-dom: "npm:^18.3.1"
     react-native: "npm:0.74.2"
     react-native-gesture-handler: "npm:~2.16.2"
+    react-native-maps: "npm:^1.18.0"
     react-native-safe-area-context: "npm:4.10.4"
     react-native-screens: "npm:~3.31.1"
     react-native-svg: "npm:15.3.0"
@@ -14885,6 +14887,22 @@ __metadata:
   peerDependencies:
     react: ^16.6.0 || ^17.0.0 || ^18.0.0
   checksum: 10/217bd0eaa61d426a512634369c70c44ce8b92127ec626dc40c65b72b1be1534ed3ed00ba2dd1a9ad77d1716ce8fd1e6db3f7209534303a652d9932a962d2c830
+  languageName: node
+  linkType: hard
+
+"react-native-maps@npm:^1.18.0":
+  version: 1.18.0
+  resolution: "react-native-maps@npm:1.18.0"
+  dependencies:
+    "@types/geojson": "npm:^7946.0.13"
+  peerDependencies:
+    react: ">= 17.0.1"
+    react-native: ">= 0.64.3"
+    react-native-web: ">= 0.11"
+  peerDependenciesMeta:
+    react-native-web:
+      optional: true
+  checksum: 10/90db39bbdc5e09d6e5b90a5c9fafae733dc92e073ef46cf0244a20695b6c0db192f839b8e3edfc6ec6a7af837655f866731ded107ddb3dc4091127a9cde2cd9e
   languageName: node
   linkType: hard
 
