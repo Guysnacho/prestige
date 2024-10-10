@@ -21,7 +21,9 @@
     "upgrade:tamagui": "yarn up '*tamagui*'@latest '@tamagui/*'@latest react-native-web-lite@latest",
     "upgrade:tamagui:canary": "yarn up '*tamagui*'@canary '@tamagui/*'@canary react-native-web-lite@canary",
     "check-deps": "check-dependency-version-consistency .",
-    "generate": "npx supabase gen types --lang=typescript --project-id eqvtheiwijkltxlbnxtl --schema public > ./packages/app/util/schema.ts"
+    "generate": "npx supabase gen types --lang=typescript --project-id eqvtheiwijkltxlbnxtl --schema public > ./packages/app/util/schema.ts",
+    "clean": "cd apps/expo && yarn prebuild",
+    "clean:gradle": "cd apps/expo/android && ./gradlew --status && ./gradlew --stop && ./gradlew clean"
   },
   "resolutions": {
     "react": "^18.3.1",

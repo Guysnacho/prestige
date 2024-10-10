@@ -7,7 +7,8 @@
     "start": "npx expo start -c",
     "android": "npx expo run:android",
     "ios": "npx expo run:ios",
-    "eject": "npx expo eject"
+    "eject": "npx expo eject",
+    "prebuild": "npx expo prebuild --clean"
   },
   "dependencies": {
     "@babel/runtime": "^7.24.6",

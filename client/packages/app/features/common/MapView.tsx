@@ -25,7 +25,7 @@ export const MapBox = (
   return (
     <YStack {...props}>
       <H2>{props?.label ? props?.label : 'Map Demo'}</H2>
-      <Map
+      {/* <Map
         style={{ width: 600, height: 400 }}
         mapStyle={{
           version: 8,
@@ -34,7 +34,7 @@ export const MapBox = (
             protomaps: {
               attribution: `<a href="https://github.com/protomaps/basemaps">Protomaps</a> C <a href="https://openstreetmap.org">OpenStreetMap</a>`,
               type: 'vector',
-              url: `pmtiles://${process.env.EXPO_PUBLIC_SUPABASE_URL || process.env.EXPO_PUBLIC_SUPABASE_URL}/storage/v1/object/public/map/my_area.pmtiles`,
+              url: `pmtiles://${process.env.EXPO_PUBLIC_SUPABASE_URL}/storage/v1/object/public/map/my_area.pmtiles`,
             },
           },
           // @ts-expect-error Awkard typing on protomap use
@@ -60,7 +60,7 @@ export const MapBox = (
             <Pin color="white" />
           </Marker>
         ) : undefined}
-      </Map>
+      </Map> */}
     </YStack>
   )
 }
