@@ -41,7 +41,7 @@ export const MapBox = (
           styleURL={`${process.env.EXPO_PUBLIC_SUPABASE_URL}/storage/v1/object/public/map/styles.json`}
           surfaceView
         >
-          <MapLibreGL.VectorSource
+          {/* <MapLibreGL.VectorSource
             id="protomaps"
             onPress={(e) =>
               props.setLnglat({
@@ -51,7 +51,7 @@ export const MapBox = (
             }
             attribution='<a href="https://github.com/protomaps/basemaps">Protomaps</a> C <a href="https://openstreetmap.org">OpenStreetMap</a>'
             url={`${process.env.EXPO_PUBLIC_SUPABASE_URL}/storage/v1/object/public/static/styles.json`}
-          />
+          /> */}
           {/* <MapLibreGL.Style
             json={`${process.env.EXPO_PUBLIC_SUPABASE_URL}/storage/v1/object/public/static/styles.json`}
           /> */}
