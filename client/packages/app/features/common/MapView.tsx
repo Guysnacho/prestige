@@ -38,14 +38,15 @@ export const MapBox = (
             flex: 1,
             alignSelf: 'stretch',
           }}
-          styleURL={`${process.env.EXPO_PUBLIC_SUPABASE_URL}/storage/v1/object/public/static/styles.json`}
+          styleURL={`${process.env.EXPO_PUBLIC_SUPABASE_URL}/storage/v1/object/public/map/styles.json`}
+          surfaceView
         >
           {/* <MapLibreGL.VectorSource
             id="protomaps"
             attribution='<a href="https://github.com/protomaps/basemaps">Protomaps</a> C <a href="https://openstreetmap.org">OpenStreetMap</a>'
             url={`${process.env.EXPO_PUBLIC_SUPABASE_URL}/storage/v1/object/public/static/styles.json`}
-          />
-          <MapLibreGL.Style
+          /> */}
+          {/* <MapLibreGL.Style
             json={`${process.env.EXPO_PUBLIC_SUPABASE_URL}/storage/v1/object/public/static/styles.json`}
           /> */}
           {/* <MapLibreGL.MarkerView allowOverlap anchor={} /> */}
