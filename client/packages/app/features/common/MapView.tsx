@@ -1,11 +1,9 @@
+import MapLibreGL from '@maplibre/maplibre-react-native'
 import { H2, YStack, YStackProps } from '@my/ui'
-import { Pin } from '@tamagui/lucide-icons'
-import maplibregl from 'maplibre-gl'
-import 'maplibre-gl/dist/maplibre-gl.css'
-import { Protocol } from 'pmtiles'
-import { default as layers } from 'protomaps-themes-base'
-import { Dispatch, SetStateAction, useEffect } from 'react'
-import { LngLat, Map, Marker } from 'react-map-gl'
+import { MapPin } from '@tamagui/lucide-icons'
+import { PMTiles, Protocol } from 'pmtiles'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { LngLat } from 'react-map-gl'
 
 export const MapBox = (
   props: {
@@ -14,17 +12,48 @@ export const MapBox = (
     label?: string
   } & YStackProps
 ) => {
+  const [style, setStyle] = useState<any>({})
+  const [mounted, setMounted] = useState(false)
+  let protocol = new Protocol()
+  let pmtiles = new PMTiles(
+    `${process.env.EXPO_PUBLIC_SUPABASE_URL}/storage/v1/object/public/map/my_area.pmtiles`
+  )
   useEffect(() => {
-    let protocol = new Protocol()
-    maplibregl.addProtocol('pmtiles', protocol.tile)
-
-    return () => {
-      maplibregl.removeProtocol('pmtiles')
-    }
-  })
+    MapLibreGL.setAccessToken(null)
+    setMounted(true)
+  }, [])
+  // useEffect(() => {
+  //   console.log(layers('protomaps', 'dark'))
+  //   // maplibregl.addProtocol('pmtiles', protocol.tile)
+  //   return () => {
+  //     // maplibregl.removeProtocol('pmtiles')
+  //   }
+  // })
   return (
     <YStack {...props}>
       <H2>{props?.label ? props?.label : 'Map Demo'}</H2>
+      {mounted && (
+        <MapLibreGL.MapView
+          style={{
+            flex: 1,
+            alignSelf: 'stretch',
+          }}
+          styleURL={`${process.env.EXPO_PUBLIC_SUPABASE_URL}/storage/v1/object/public/static/styles.json`}
+        >
+          {/* <MapLibreGL.VectorSource
+            id="protomaps"
+            attribution='<a href="https://github.com/protomaps/basemaps">Protomaps</a> C <a href="https://openstreetmap.org">OpenStreetMap</a>'
+            url={`${process.env.EXPO_PUBLIC_SUPABASE_URL}/storage/v1/object/public/static/styles.json`}
+          />
+          <MapLibreGL.Style
+            json={`${process.env.EXPO_PUBLIC_SUPABASE_URL}/storage/v1/object/public/static/styles.json`}
+          /> */}
+          {/* <MapLibreGL.MarkerView allowOverlap anchor={} /> */}
+          <MapLibreGL.PointAnnotation coordinate={[0, 0]} id="PickUp-Pin">
+            <MapPin />
+          </MapLibreGL.PointAnnotation>
+        </MapLibreGL.MapView>
+      )}
       {/* <Map
         style={{ width: 600, height: 400 }}
         mapStyle={{

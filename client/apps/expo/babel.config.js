@@ -12,7 +12,7 @@ module.exports = function (api) {
             app: '../../packages/app',
             '@my/ui': '../../packages/ui',
           },
-          extensions: ['.js', '.jsx', '.tsx', '.ios.js', '.android.js'],
+          extensions: ['.js', '.jsx', '.tsx', '.ios.js', '.android.js', '.json'],
         },
       ],
       // if you want reanimated support

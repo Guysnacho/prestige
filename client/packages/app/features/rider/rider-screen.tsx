@@ -9,6 +9,7 @@ import { LngLat } from 'react-map-gl'
 import { useRouter } from 'solito/navigation'
 import { MapBox } from '../common/MapView'
 import { ScheduleSelector } from '../common/ScheduleSelector'
+import { Platform } from 'react-native'
 
 export function RiderHomeScreen() {
   const router = useRouter()
@@ -66,9 +67,22 @@ export function RiderHomeScreen() {
     minimumDate.toISOString() > pickupTime!.toISOString()
 
   return (
-    <YStack f={1} jc="center" ai="center" gap="$4" bg="$background">
-      <MapBox label="Pickup" height="$20" lngLat={pickUplngLat} setLnglat={setPickUpLnglat} />
-      <MapBox label="Drop Off" height="$20" lngLat={destLngLat} setLnglat={setDestLnglat} />
+    <YStack
+      f={Platform.OS === 'web' ? 1 : 0}
+      jc="center"
+      ai="center"
+      gap="$4"
+      bg="$background"
+      height="100%"
+    >
+      <MapBox
+        label="Pickup"
+        height={150}
+        width="90%"
+        lngLat={pickUplngLat}
+        setLnglat={setPickUpLnglat}
+      />
+      {/* <MapBox label="Drop Off" height="$20" lngLat={destLngLat} setLnglat={setDestLnglat} /> */}
       <Paragraph ta="center" fow="700" col="$blue10">
         {`Rider : ${store?.id ? store.id : 'Who are you??'}`}
       </Paragraph>
