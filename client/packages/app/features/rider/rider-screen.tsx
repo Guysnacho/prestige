@@ -1,15 +1,15 @@
 import { useStore, useUserStore } from '@my/app/util'
 import getServerUrl from '@my/app/util/getServerUrl'
-import { Button, H6, Paragraph, Spinner, YStack, useToastController } from '@my/ui'
+import { Button, H6, Paragraph, Separator, Spinner, YStack, useToastController } from '@my/ui'
 import { ChevronLeft, HandMetal } from '@tamagui/lucide-icons'
 import { useMutation } from '@tanstack/react-query'
 import { addHours } from 'date-fns'
 import { useEffect, useState } from 'react'
 import { LngLat } from 'react-map-gl'
+import { Platform } from 'react-native'
 import { useRouter } from 'solito/navigation'
 import { MapBox } from '../common/MapView'
 import { ScheduleSelector } from '../common/ScheduleSelector'
-import { Platform } from 'react-native'
 
 export function RiderHomeScreen() {
   const router = useRouter()
@@ -105,14 +105,16 @@ export function RiderHomeScreen() {
           onChange={(e) => setId(e.target.value)}
         />
       </XStack> */}
-
-      <H6>{`${pickupTime?.toLocaleString()}`}</H6>
+      <Separator />
+      <H6>Pickup Time</H6>
+      <Paragraph>{`${pickupTime?.toLocaleString()}`}</Paragraph>
 
       <ScheduleSelector
         minimumDate={minimumDate}
         pickupTime={pickupTime}
         setPickupTime={setPickupTime}
       />
+      <Separator />
       <Button
         iconAfter={isPending ? Spinner : HandMetal}
         variant={isInvalid ? 'outlined' : undefined}
