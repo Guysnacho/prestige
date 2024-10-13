@@ -1,6 +1,6 @@
 import { useStore, useUserStore } from '@my/app/util'
 import getServerUrl from '@my/app/util/getServerUrl'
-import { Button, Paragraph, Spinner, YStack, useToastController } from '@my/ui'
+import { Button, H6, Paragraph, Spinner, YStack, useToastController } from '@my/ui'
 import { ChevronLeft, HandMetal } from '@tamagui/lucide-icons'
 import { useMutation } from '@tanstack/react-query'
 import { addHours } from 'date-fns'
@@ -69,6 +69,7 @@ export function RiderHomeScreen() {
   return (
     <YStack
       f={Platform.OS === 'web' ? 1 : 0}
+      mx={Platform.OS === 'web' ? 'auto' : undefined}
       jc="center"
       ai="center"
       gap="$4"
@@ -85,7 +86,7 @@ export function RiderHomeScreen() {
         setDestLnglat={setDestLnglat}
       />
       <Paragraph ta="center" fow="700" col="$blue10">
-        {`Rider : ${store?.id ? store.id : 'Who are you??'}`}
+        {`Rider : ${store?.name ? store.name : 'Who are you??'}`}
       </Paragraph>
       <Paragraph>
         Pick Up Location: {pickUplngLat ? pickUplngLat.lng + ' ' + pickUplngLat.lat : 'unset'}
@@ -104,6 +105,8 @@ export function RiderHomeScreen() {
           onChange={(e) => setId(e.target.value)}
         />
       </XStack> */}
+
+      <H6>{`${pickupTime?.toLocaleString()}`}</H6>
 
       <ScheduleSelector
         minimumDate={minimumDate}
