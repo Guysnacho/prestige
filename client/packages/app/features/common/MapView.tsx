@@ -41,7 +41,7 @@ export const MapBox = (
           styleURL={`${process.env.EXPO_PUBLIC_SUPABASE_URL}/storage/v1/object/public/map/styles.json`}
           surfaceView
         >
-          {/* <MapLibreGL.VectorSource
+          <MapLibreGL.VectorSource
             id="protomaps"
             onPress={(e) =>
               props.setLnglat({
@@ -49,9 +49,8 @@ export const MapBox = (
                 lat: e.coordinates.latitude,
               } as LngLat)
             }
-            attribution='<a href="https://github.com/protomaps/basemaps">Protomaps</a> C <a href="https://openstreetmap.org">OpenStreetMap</a>'
-            url={`${process.env.EXPO_PUBLIC_SUPABASE_URL}/storage/v1/object/public/static/styles.json`}
-          /> */}
+            tileUrlTemplates={['https://d1umd3779acasn.cloudfront.net/my_area/{z}/{x}/{y}.pbf']}
+          />
           {/* <MapLibreGL.Style
             json={`${process.env.EXPO_PUBLIC_SUPABASE_URL}/storage/v1/object/public/static/styles.json`}
           /> */}
