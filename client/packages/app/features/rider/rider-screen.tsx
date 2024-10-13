@@ -79,8 +79,10 @@ export function RiderHomeScreen() {
         label="Pickup"
         height={150}
         width="90%"
-        lngLat={pickUplngLat}
-        setLnglat={setPickUpLnglat}
+        pickUplngLat={pickUplngLat}
+        setPickUpLnglat={setPickUpLnglat}
+        destLngLat={destLngLat}
+        setDestLnglat={setDestLnglat}
       />
       {/* <MapBox label="Drop Off" height="$20" lngLat={destLngLat} setLnglat={setDestLnglat} /> */}
       <Paragraph ta="center" fow="700" col="$blue10">
