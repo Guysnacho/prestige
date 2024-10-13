@@ -84,7 +84,6 @@ export function RiderHomeScreen() {
         destLngLat={destLngLat}
         setDestLnglat={setDestLnglat}
       />
-      {/* <MapBox label="Drop Off" height="$20" lngLat={destLngLat} setLnglat={setDestLnglat} /> */}
       <Paragraph ta="center" fow="700" col="$blue10">
         {`Rider : ${store?.id ? store.id : 'Who are you??'}`}
       </Paragraph>
