@@ -2,7 +2,6 @@ package workflows
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	util "prestige/util"
 
@@ -49,7 +48,6 @@ func RequestTrip(req Rider, c *gin.Context) (int, string) {
 
 	var trip []map[string]string
 	err = json.Unmarshal([]byte(data), &trip)
-	fmt.Printf("Unmarshalled Row: %v\n", data)
 
 	if len(trip) < 1 && err != nil {
 		logger.Sugar().Warn("Issue starting trip")

@@ -87,7 +87,6 @@ func RiderScheduleTrip(c *gin.Context) {
 			"message": response,
 		})
 	}
-
 }
 
 // Fetch map
@@ -128,5 +127,4 @@ func FetchMap(c *gin.Context) {
 			"message": response,
 		})
 	}
-
 }
