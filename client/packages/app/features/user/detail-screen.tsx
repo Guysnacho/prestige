@@ -3,6 +3,7 @@ import { createClient } from '@my/app/util/components'
 import { Button, Card, H4, H5, Paragraph, Separator, Spinner, XStack, YStack } from '@my/ui'
 import { ChevronLeft } from '@tamagui/lucide-icons'
 import { useQuery } from '@tanstack/react-query'
+import { useEffect } from 'react'
 import { useParams, useRouter } from 'solito/navigation'
 
 export function UserDetailScreen() {
@@ -22,6 +23,13 @@ export function UserDetailScreen() {
     },
     queryKey: ['user-details'],
   })
+
+  // TODO - we need to not do this here
+  useEffect(() => {
+    if (userData && userData.data && userData.data.id === store?.id) {
+      store?.setName(userData.data.fname + ' ' + userData.data.lname)
+    }
+  }, [userData])
 
   return (
     <YStack
