@@ -55,6 +55,6 @@ func RequestTrip(req Rider, c *gin.Context) (int, string) {
 		return http.StatusInternalServerError, "We had an issue starting your trip, please try again later"
 	}
 	// https://yourbasic.org/golang/fmt-printf-reference-cheat-sheet/#string-or-byte-slice
-	logger.Sugar().Info("Trip initiated | ID %d", trip[0]["id"])
+	logger.Sugar().Info("Trip initiated | ID ", trip[0]["id"])
 	return http.StatusCreated, trip[0]["id"]
 }

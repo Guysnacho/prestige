@@ -2,8 +2,11 @@ import MapLibreGL from '@maplibre/maplibre-react-native'
 import OnPressEvent from '@maplibre/maplibre-react-native/javascript/types/OnPressEvent'
 import { H2, YStack, YStackProps } from '@my/ui'
 import { MapPin } from '@tamagui/lucide-icons'
+import layers from 'protomaps-themes-base'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { LngLat } from 'react-map-gl'
+
+const StyleJSON = require('./styles.json')
 
 export const MapBox = (
   props: {
@@ -53,12 +56,12 @@ export const MapBox = (
       <H2>{props?.label ? props?.label : 'Map Demo'}</H2>
       {mounted && (
         <MapLibreGL.MapView
+          // styleURL="https://d1umd3779acasn.cloudfront.net/my_area.json"
+          // styleJSON={`${process.env.EXPO_PUBLIC_SUPABASE_URL}/storage/v1/object/public/map/styles.json`}
           style={{
             flex: 1,
             alignSelf: 'stretch',
           }}
-          // styleURL="https://d1umd3779acasn.cloudfront.net/my_area/{z}/{x}/{y}.pbf"
-          // styleJSON={`${process.env.EXPO_PUBLIC_SUPABASE_URL}/storage/v1/object/public/map/styles.json`}
           surfaceView
           pitchEnabled={false}
           rotateEnabled={false}
@@ -66,20 +69,30 @@ export const MapBox = (
           <MapLibreGL.VectorSource
             id="protomaps"
             onPress={(e) => selectLocation(e)}
-            tileUrlTemplates={['https://d1umd3779acasn.cloudfront.net/my_area/{z}/{x}/{y}.pbf']}
+            tileUrlTemplates={['https://d1umd3779acasn.cloudfront.net/my_area/{z}/{x}/{y}.mvt']}
           />
-          {props.lngLat && (
+          {props.pickUplngLat && (
             <MapLibreGL.PointAnnotation
-              coordinate={[props.lngLat.lng, props.lngLat.lat]}
               id="PickUp-Pin"
+              coordinate={[props.pickUplngLat.lng, props.pickUplngLat.lat]}
             >
               <MapPin color="whitesmoke" outlineColor="white" />
+            </MapLibreGL.PointAnnotation>
+          )}
+          {props.destLngLat && (
+            <MapLibreGL.PointAnnotation
+              id="Destination-Pin"
+              coordinate={[props.destLngLat.lng, props.destLngLat.lat]}
+            >
+              <MapPin />
             </MapLibreGL.PointAnnotation>
           )}
           {/* <MapLibreGL.Camera
             zoomLevel={10}
             centerCoordinate={[props.lngLat?.lng, props.lngLat?.lat]}
           /> */}
+          {/* // TODO - Fix dark map
+          <MapLibreGL.Style json={{ ...StyleJSON, layers: layers('protomaps', 'dark') }} /> */}
         </MapLibreGL.MapView>
       )}
     </YStack>
