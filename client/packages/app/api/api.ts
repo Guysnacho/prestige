@@ -17,3 +17,19 @@ export const useApi = () => {
     httpAgent: Platform.OS + ' ' + Platform.Version,
   })
 }
+
+// export const useApi = () => {
+//   const auth = useContext(AuthContext)
+
+//   return {
+//     fetch: (path: string, method: 'POST', body?: BodyInit) =>
+//       fetch(`${getServerUrl()}${path}`, {
+//         method,
+//         body,
+//         referrerPolicy: 'origin',
+//         headers: {
+//           Authorization: auth!.session!.access_token,
+//         },
+//       }),
+//   }
+// }
