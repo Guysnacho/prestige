@@ -1,17 +1,20 @@
-import { useStore, useUserStore } from '@my/app/util'
+import { AuthContext } from '@my/app/provider/AuthProvider'
+import { TOAST_DURATION, useStore, useUserStore } from '@my/app/util'
 import getServerUrl from '@my/app/util/getServerUrl'
-import { Button, Paragraph, Spinner, YStack, useToastController } from '@my/ui'
+import { Button, H6, Paragraph, Separator, Spinner, YStack, useToastController } from '@my/ui'
 import { ChevronLeft, HandMetal } from '@tamagui/lucide-icons'
 import { useMutation } from '@tanstack/react-query'
 import { addHours } from 'date-fns'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { LngLat } from 'react-map-gl'
+import { Platform } from 'react-native'
 import { useRouter } from 'solito/navigation'
 import { MapBox } from '../common/MapView'
 import { ScheduleSelector } from '../common/ScheduleSelector'
-import { Platform } from 'react-native'
 
 export function RiderHomeScreen() {
+  const auth = useContext(AuthContext)
+
   const router = useRouter()
   const toast = useToastController()
   const SERVER_URL = getServerUrl()
@@ -40,15 +43,22 @@ export function RiderHomeScreen() {
             lat: destLngLat?.lat.toPrecision(17),
           },
         }),
+        headers: {
+          Authorization: auth!.session!.access_token,
+        },
       }),
     onError(err, v, c) {
       console.error(err)
-      toast.show('Issue while requesting your ride', { message: err?.message })
+      toast.show('Issue while requesting your ride', {
+        message: err?.message,
+        duration: TOAST_DURATION,
+      })
     },
     async onSuccess(data, v, c) {
       var res = await data.json()
       toast.show(res.message, {
         message: res.requestId,
+        duration: TOAST_DURATION,
       })
     },
   })
@@ -69,6 +79,7 @@ export function RiderHomeScreen() {
   return (
     <YStack
       f={Platform.OS === 'web' ? 1 : 0}
+      mx={Platform.OS === 'web' ? 'auto' : undefined}
       jc="center"
       ai="center"
       gap="$4"
@@ -76,15 +87,16 @@ export function RiderHomeScreen() {
       height="100%"
     >
       <MapBox
-        label="Pickup"
+        label="Let's handle logistics"
         height={150}
         width="90%"
-        lngLat={pickUplngLat}
-        setLnglat={setPickUpLnglat}
+        pickUplngLat={pickUplngLat}
+        setPickUpLnglat={setPickUpLnglat}
+        destLngLat={destLngLat}
+        setDestLnglat={setDestLnglat}
       />
-      {/* <MapBox label="Drop Off" height="$20" lngLat={destLngLat} setLnglat={setDestLnglat} /> */}
       <Paragraph ta="center" fow="700" col="$blue10">
-        {`Rider : ${store?.id ? store.id : 'Who are you??'}`}
+        {`Rider : ${store?.name ? store.name : 'Who are you??'}`}
       </Paragraph>
       <Paragraph>
         Pick Up Location: {pickUplngLat ? pickUplngLat.lng + ' ' + pickUplngLat.lat : 'unset'}
@@ -103,12 +115,16 @@ export function RiderHomeScreen() {
           onChange={(e) => setId(e.target.value)}
         />
       </XStack> */}
+      <Separator />
+      <H6>Pickup Time</H6>
+      <Paragraph>{`${pickupTime?.toLocaleString()}`}</Paragraph>
 
       <ScheduleSelector
         minimumDate={minimumDate}
         pickupTime={pickupTime}
         setPickupTime={setPickupTime}
       />
+      <Separator />
       <Button
         iconAfter={isPending ? Spinner : HandMetal}
         variant={isInvalid ? 'outlined' : undefined}

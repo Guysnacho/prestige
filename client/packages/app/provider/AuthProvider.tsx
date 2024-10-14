@@ -1,8 +1,9 @@
-import { Session, User } from '@supabase/supabase-js'
+import { Session, SupabaseClient, User } from '@supabase/supabase-js'
 import { Dispatch, SetStateAction, createContext, useEffect, useMemo, useState } from 'react'
 import { createClient } from '../util/components'
 import useStore from '../util/useStore'
 import { UserState, useUserStore } from '../util/userStore'
+import { Database } from '../util/schema'
 
 interface IAuthContext {
   session: Session | null
@@ -36,7 +37,7 @@ export const AuthContextProvider = ({ children }: React.PropsWithChildren) => {
       setSession(session)
       if (session === null) {
         clearAuth(setUser, store)
-      }
+      } else hydrateUser(supabase, session, store)
     })
   }, [])
 
@@ -57,4 +58,26 @@ const clearAuth = (
   setUser(null)
   store?.setId(undefined)
   store?.setRole(undefined)
+}
+
+function hydrateUser(
+  supabase: SupabaseClient<Database>,
+  session: Session,
+  store: UserState | undefined
+) {
+  supabase
+    .from('member')
+    .select('id, fname, lname, type')
+    .eq('id', session.user.id)
+    .single()
+    .then(({ data, error, statusText }) => {
+      if (error) {
+        console.debug('Issue fetching user')
+        console.debug(statusText)
+      } else {
+        store?.setId(session.user.id)
+        store?.setName(data.fname + ' ' + data.lname)
+        store?.setRole(data.type)
+      }
+    })
 }
