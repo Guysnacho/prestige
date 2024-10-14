@@ -1,4 +1,5 @@
-import { useStore, useUserStore } from '@my/app/util'
+import { AuthContext } from '@my/app/provider/AuthProvider'
+import { TOAST_DURATION, useStore, useUserStore } from '@my/app/util'
 import getServerUrl from '@my/app/util/getServerUrl'
 import { Button, H6, Paragraph, Separator, Spinner, YStack, useToastController } from '@my/ui'
 import { ChevronLeft, HandMetal } from '@tamagui/lucide-icons'
@@ -10,7 +11,6 @@ import { Platform } from 'react-native'
 import { useRouter } from 'solito/navigation'
 import { MapBox } from '../common/MapView'
 import { ScheduleSelector } from '../common/ScheduleSelector'
-import { AuthContext } from '@my/app/provider/AuthProvider'
 
 export function RiderHomeScreen() {
   const auth = useContext(AuthContext)
@@ -49,12 +49,16 @@ export function RiderHomeScreen() {
       }),
     onError(err, v, c) {
       console.error(err)
-      toast.show('Issue while requesting your ride', { message: err?.message })
+      toast.show('Issue while requesting your ride', {
+        message: err?.message,
+        duration: TOAST_DURATION,
+      })
     },
     async onSuccess(data, v, c) {
       var res = await data.json()
       toast.show(res.message, {
         message: res.requestId,
+        duration: TOAST_DURATION,
       })
     },
   })
