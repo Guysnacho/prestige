@@ -1,22 +1,23 @@
-import { useApi } from '@my/app/api'
 import { useStore, useUserStore } from '@my/app/util'
 import getServerUrl from '@my/app/util/getServerUrl'
 import { Button, H6, Paragraph, Separator, Spinner, YStack, useToastController } from '@my/ui'
 import { ChevronLeft, HandMetal } from '@tamagui/lucide-icons'
 import { useMutation } from '@tanstack/react-query'
 import { addHours } from 'date-fns'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { LngLat } from 'react-map-gl'
 import { Platform } from 'react-native'
 import { useRouter } from 'solito/navigation'
 import { MapBox } from '../common/MapView'
 import { ScheduleSelector } from '../common/ScheduleSelector'
+import { AuthContext } from '@my/app/provider/AuthProvider'
 
 export function RiderHomeScreen() {
+  const auth = useContext(AuthContext)
+
   const router = useRouter()
   const toast = useToastController()
   const SERVER_URL = getServerUrl()
-  const api = useApi()
   const [pickUplngLat, setPickUpLnglat] = useState<LngLat | undefined>()
   const [destLngLat, setDestLnglat] = useState<LngLat | undefined>()
   const [pickupTime, setPickupTime] = useState<Date | null>(new Date())
@@ -27,16 +28,23 @@ export function RiderHomeScreen() {
 
   const { mutate, isPending, isIdle } = useMutation({
     mutationFn: async () =>
-      api.post<{ message: string }, { message: string; requestId: string }>(`/rider/trip`, {
-        id: store?.id,
-        time: pickupTime?.toISOString(),
-        pickup: {
-          lng: pickUplngLat?.lng.toPrecision(17),
-          lat: pickUplngLat?.lat.toPrecision(17),
-        },
-        destination: {
-          lng: destLngLat?.lng.toPrecision(17),
-          lat: destLngLat?.lat.toPrecision(17),
+      fetch(`${SERVER_URL}/rider/trip`, {
+        method: 'POST',
+        referrer: SERVER_URL,
+        body: JSON.stringify({
+          id: store?.id,
+          time: pickupTime?.toISOString(),
+          pickup: {
+            lng: pickUplngLat?.lng.toPrecision(17),
+            lat: pickUplngLat?.lat.toPrecision(17),
+          },
+          destination: {
+            lng: destLngLat?.lng.toPrecision(17),
+            lat: destLngLat?.lat.toPrecision(17),
+          },
+        }),
+        headers: {
+          Authorization: auth!.session!.access_token,
         },
       }),
     onError(err, v, c) {
@@ -44,12 +52,10 @@ export function RiderHomeScreen() {
       toast.show('Issue while requesting your ride', { message: err?.message })
     },
     async onSuccess(data, v, c) {
-      if (data.data) {
-        var res = data.data
-        toast.show(res.message, {
-          message: res.requestId,
-        })
-      }
+      var res = await data.json()
+      toast.show(res.message, {
+        message: res.requestId,
+      })
     },
   })
 
