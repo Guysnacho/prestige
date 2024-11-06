@@ -17,6 +17,7 @@
     "@my/ui": "0.0.1",
     "@react-native-async-storage/async-storage": "1.23.1",
     "@react-native-community/datetimepicker": "^8.2.0",
+    "@rnmapbox/maps": "^10.1.33",
     "@supabase/ssr": "^0.5.1",
     "@supabase/supabase-js": "^2.45.3",
     "app": "*",

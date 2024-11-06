@@ -3696,6 +3696,34 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@rnmapbox/maps@npm:^10.1.33":
+  version: 10.1.33
+  resolution: "@rnmapbox/maps@npm:10.1.33"
+  dependencies:
+    "@turf/along": "npm:6.5.0"
+    "@turf/distance": "npm:6.5.0"
+    "@turf/helpers": "npm:6.5.0"
+    "@turf/length": "npm:6.5.0"
+    "@turf/nearest-point-on-line": "npm:6.5.0"
+    "@types/geojson": "npm:^7946.0.7"
+    debounce: "npm:^1.2.0"
+  peerDependencies:
+    expo: ">=47.0.0"
+    mapbox-gl: ^2.9.0
+    react: ">=16.6.1"
+    react-dom: ">= 17.0.0"
+    react-native: ">=0.59.9"
+  peerDependenciesMeta:
+    expo:
+      optional: true
+    mapbox-gl:
+      optional: true
+    react-dom:
+      optional: true
+  checksum: 10/75b2200e03b6c80c92582d0152027dca14f62268d9c9f0db1e2d5759bb9d780820907c00a24dc3da6a513a72127cb07182b851e8e24213d2da51a1d13845aef3
+  languageName: node
+  linkType: hard
+
 "@rnx-kit/chromium-edge-launcher@npm:^1.0.0":
   version: 1.0.0
   resolution: "@rnx-kit/chromium-edge-launcher@npm:1.0.0"
@@ -6058,7 +6086,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/geojson@npm:*, @types/geojson@npm:^7946.0.10, @types/geojson@npm:^7946.0.14":
+"@types/geojson@npm:*, @types/geojson@npm:^7946.0.10, @types/geojson@npm:^7946.0.14, @types/geojson@npm:^7946.0.7":
   version: 7946.0.14
   resolution: "@types/geojson@npm:7946.0.14"
   checksum: 10/ae511bee6488ae3bd5a3a3347aedb0371e997b14225b8983679284e22fa4ebd88627c6e3ff8b08bf4cc35068cb29310c89427311ffc9322c255615821a922e71
@@ -7043,6 +7071,7 @@ __metadata:
     "@react-native-async-storage/async-storage": "npm:1.23.1"
     "@react-native-community/datetimepicker": "npm:^8.2.0"
     "@react-navigation/native": "npm:^6.1.17"
+    "@rnmapbox/maps": "npm:^10.1.33"
     "@supabase/auth-helpers-react": "npm:^0.5.0"
     "@supabase/ssr": "npm:^0.5.1"
     "@supabase/supabase-js": "npm:^2.45.3"
@@ -8720,6 +8749,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"debounce@npm:^1.2.0":
+  version: 1.2.1
+  resolution: "debounce@npm:1.2.1"
+  checksum: 10/0b95b2a9d80ed69117d890f8dab8c0f2d6066f8d20edd1d810ae51f8f366a6d4c8b1d56e97dcb9304e93d57de4d5db440d34a03def7dad50403fc3f22bf16808
+  languageName: node
+  linkType: hard
+
 "debounce@npm:^2.0.0":
   version: 2.1.1
   resolution: "debounce@npm:2.1.1"
@@ -10278,6 +10314,7 @@ __metadata:
     "@my/ui": "npm:0.0.1"
     "@react-native-async-storage/async-storage": "npm:1.23.1"
     "@react-native-community/datetimepicker": "npm:^8.2.0"
+    "@rnmapbox/maps": "npm:^10.1.33"
     "@supabase/ssr": "npm:^0.5.1"
     "@supabase/supabase-js": "npm:^2.45.3"
     "@tamagui/babel-plugin": "npm:1.110.0"
