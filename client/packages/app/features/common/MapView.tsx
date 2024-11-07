@@ -5,51 +5,66 @@ import { MapPin } from '@tamagui/lucide-icons'
 import layers from 'protomaps-themes-base'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { LngLat } from 'react-map-gl'
+import { usePathname } from 'solito/navigation'
 
 const StyleJSON = require('./styles.json')
 
 export const MapBox = (
   props: {
-    setPickUpLnglat: Dispatch<SetStateAction<LngLat | undefined>>
-    pickUplngLat: LngLat | undefined
-    setDestLnglat: Dispatch<SetStateAction<LngLat | undefined>>
-    destLngLat: LngLat | undefined
+    setPickUpLnglat: Dispatch<SetStateAction<LngLat>>
+    pickUplngLat: LngLat
+    setDestLnglat?: Dispatch<SetStateAction<LngLat>>
+    destLngLat?: LngLat
     label?: string
   } & YStackProps
 ) => {
   const [mounted, setMounted] = useState(false)
   const [locSelect, setLocSelect] = useState<'pickup' | 'destination'>('pickup')
+  const path = usePathname()
+  const [isDriver, setIsDriver] = useState(false)
 
   useEffect(() => {
     MapLibreGL.setAccessToken(null)
     setMounted(true)
   }, [])
 
-  const selectLocation = (e: OnPressEvent): void => {
-    switch (locSelect) {
-      case 'destination':
-        {
-          setLocSelect('pickup')
-          props.setDestLnglat({
-            lng: e.coordinates.longitude,
-            lat: e.coordinates.latitude,
-          } as LngLat)
-        }
-        break
-      case 'pickup':
-        {
-          setLocSelect('destination')
-          props.setPickUpLnglat({
-            lng: e.coordinates.longitude,
-            lat: e.coordinates.latitude,
-          } as LngLat)
-        }
-        break
+  useEffect(() => (path?.includes('/driver') ? setIsDriver(true) : setIsDriver(false)), [path])
 
-      default:
-        break
+  const selectLocation = (e: OnPressEvent): void => {
+    console.log('loc set. isDriver: ', isDriver)
+    if (isDriver) {
+      props?.setPickUpLnglat({
+        lng: e.coordinates.longitude,
+        lat: e.coordinates.latitude,
+      } as LngLat)
+    } else {
+      switch (locSelect) {
+        case 'destination':
+          {
+            setLocSelect('pickup')
+            props?.setDestLnglat({
+              lng: e.coordinates.longitude,
+              lat: e.coordinates.latitude,
+            } as LngLat)
+          }
+          break
+        case 'pickup':
+          {
+            setLocSelect('destination')
+            props?.setPickUpLnglat({
+              lng: e.coordinates.longitude,
+              lat: e.coordinates.latitude,
+            } as LngLat)
+          }
+          break
+
+        default:
+          break
+      }
     }
   }
+
+  const selectDriverLocation = (e: OnPressEvent): void => {}
 
   return (
     <YStack {...props}>
@@ -71,25 +86,25 @@ export const MapBox = (
             onPress={(e) => selectLocation(e)}
             tileUrlTemplates={['https://d1umd3779acasn.cloudfront.net/my_area/{z}/{x}/{y}.mvt']}
           />
-          {props.pickUplngLat && (
+          {props?.pickUplngLat && (
             <MapLibreGL.PointAnnotation
               id="PickUp-Pin"
-              coordinate={[props.pickUplngLat.lng, props.pickUplngLat.lat]}
+              coordinate={[props?.pickUplngLat.lng, props?.pickUplngLat.lat]}
             >
               <MapPin color="whitesmoke" outlineColor="white" />
             </MapLibreGL.PointAnnotation>
           )}
-          {props.destLngLat && (
+          {props?.destLngLat && (
             <MapLibreGL.PointAnnotation
               id="Destination-Pin"
-              coordinate={[props.destLngLat.lng, props.destLngLat.lat]}
+              coordinate={[props?.destLngLat.lng, props?.destLngLat.lat]}
             >
               <MapPin />
             </MapLibreGL.PointAnnotation>
           )}
           {/* <MapLibreGL.Camera
             zoomLevel={10}
-            centerCoordinate={[props.lngLat?.lng, props.lngLat?.lat]}
+            centerCoordinate={[props?.lngLat?.lng, props?.lngLat?.lat]}
           /> */}
           {/* // TODO - Fix dark map
           <MapLibreGL.Style json={{ ...StyleJSON, layers: layers('protomaps', 'dark') }} /> */}
