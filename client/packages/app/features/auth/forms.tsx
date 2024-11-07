@@ -1,6 +1,6 @@
 import { UserState } from '@my/app/util'
 import { createClient } from '@my/app/util/components'
-import { Button, Form, H4, Input, Label, Spinner } from '@my/ui'
+import { Button, Form, H4, Input, Label, Spinner, YStack } from '@my/ui'
 import { SetStateAction, useEffect, useState } from 'react'
 import { useRouter } from 'solito/navigation'
 
@@ -38,20 +38,12 @@ export const SignIn = ({ store }: AuthProps) => {
       padding="$8"
     >
       <H4>Log In</H4>
-      <Label>Email</Label>
-      <Input
-        placeholder="test@gmail.com"
-        onChange={(e: { target: { value: SetStateAction<string> } }) => {
-          setEmail(e.target.value)
-          console.debug(email)
-        }}
-      />
-      <Label>Password</Label>
-      <Input
-        placeholder="dont_use_password123"
-        secureTextEntry
-        onChange={(e: { target: { value: SetStateAction<string> } }) => setPassword(e.target.value)}
-      />
+      <YStack>
+        <Label>Email</Label>
+        <Input placeholder="test@gmail.com" onChangeText={setEmail} />
+        <Label>Password</Label>
+        <Input placeholder="dont_use_password123" secureTextEntry onChangeText={setPassword} />
+      </YStack>
 
       <Form.Trigger onPress={signIn} asChild disabled={status !== 'off'}>
         <Button icon={status === 'submitting' ? () => <Spinner /> : undefined}>Submit</Button>
@@ -92,18 +84,20 @@ export const SignUp = ({ store }: AuthProps) => {
       padding="$8"
     >
       <H4>Sign Up</H4>
-      <Label>First Name</Label>
-      <Input placeholder="Warren" onChange={(e) => setFname(e.target.value)} />
-      <Label>Last Name</Label>
-      <Input placeholder="Buffette" onChange={(e) => setLname(e.target.value)} />
-      <Label>Email</Label>
-      <Input placeholder="test@gmail.com" onChange={(e) => setEmail(e.target.value)} />
-      <Label>Password</Label>
-      <Input
-        placeholder="dont_use_password123"
-        secureTextEntry
-        onChange={(e) => setPassword(e.target.value)}
-      />
+      <YStack>
+        <Label>First Name</Label>
+        <Input placeholder="Warren" onChangeText={setFname} />
+        <Label>Last Name</Label>
+        <Input placeholder="Buffette" onChangeText={setLname} />
+        <Label>Email</Label>
+        <Input placeholder="test@gmail.com" onChangeText={setEmail} />
+        <Label>Password</Label>
+        <Input
+          placeholder="dont_use_password123"
+          secureTextEntry
+          onChangeText={(e) => setPassword(e)}
+        />
+      </YStack>
 
       <Form.Trigger onPress={signUp} asChild disabled={status !== 'off'}>
         <Button icon={status === 'submitting' ? () => <Spinner /> : undefined}>Submit</Button>

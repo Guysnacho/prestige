@@ -5,6 +5,7 @@ import { useMutation } from '@tanstack/react-query'
 import { useStore, useUserStore } from 'app/util'
 import { useState } from 'react'
 import { LngLat } from 'react-map-gl'
+import { Platform } from 'react-native'
 import { useRouter } from 'solito/navigation'
 import { MapBox } from '../common/MapView'
 
@@ -15,6 +16,7 @@ export function DriverHomeScreen() {
   const [lngLat, setLnglat] = useState<LngLat | undefined>()
   const [method, setMethod] = useState<'POST' | 'DELETE'>('POST')
   const [isPolling, setIsPolling] = useState(false)
+  const isWeb = Platform.OS === 'web'
 
   const store = useStore(useUserStore, (store) => store)
 
@@ -39,10 +41,12 @@ export function DriverHomeScreen() {
       console.error(err)
       toast.show('Issue while joining the driver pool', { message: err?.message })
     },
-    onSuccess(data, v, c) {
-      data
+    async onSuccess(data, v, c) {
+      await data
         .json()
-        .then((res) => toast.show(`${res.message}\n${res.requestId}`))
+        .then((res) => {
+          toast.show(`${res.message}\n${res.requestId}`)
+        })
         .catch((err) => {
           toast.show('Issue speaking with the server')
           console.error(err)
@@ -51,23 +55,29 @@ export function DriverHomeScreen() {
   })
 
   return (
-    <YStack f={1} jc="center" ai="center" gap="$4" bg="$background">
-      <MapBox lngLat={lngLat} setLnglat={setLnglat} />
+    <YStack f={isWeb ? 1 : undefined} jc="center" ai="center" gap="$4">
+      {isWeb ? (
+        <MapBox
+          label="Let's handle logistics"
+          height="$20"
+          setPickUpLnglat={setLnglat}
+          pickUplngLat={lngLat!}
+        />
+      ) : (
+        <MapBox
+          label="Let's handle logistics"
+          mt="$10"
+          height={300}
+          width="100%"
+          setPickUpLnglat={setLnglat}
+          pickUplngLat={lngLat!}
+        />
+      )}
       <Paragraph ta="center" fow="700" col="$blue10">
         {`Driver : ${store?.id ? store.id : 'Who are you??'}`}
       </Paragraph>
       <Paragraph>Location: {lngLat ? lngLat.lng + ' ' + lngLat.lat : 'unset'}</Paragraph>
-      {/* <XStack alignItems="center" gap="$4">
-        <Label width={90} htmlFor="name">
-          Name
-        </Label>
-        <Input
-          flex={1}
-          id="name"
-          placeholder="Nate Wienert"
-          onChange={(e) => setId(e.target.value)}
-        />
-      </XStack> */}
+
       <Button
         iconAfter={isPending && method === 'POST' ? Spinner : Car}
         variant={store?.id === '' || isPending ? 'outlined' : undefined}
@@ -90,7 +100,7 @@ export function DriverHomeScreen() {
       >
         End Drive
       </Button>
-      <Button icon={ChevronLeft} onPress={() => router.back()}>
+      <Button icon={ChevronLeft} onPress={() => router.replace('/')}>
         Go Home
       </Button>
     </YStack>

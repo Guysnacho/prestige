@@ -1,9 +1,9 @@
 import { Session, SupabaseClient, User } from '@supabase/supabase-js'
 import { Dispatch, SetStateAction, createContext, useEffect, useMemo, useState } from 'react'
 import { createClient } from '../util/components'
+import { Database } from '../util/schema'
 import useStore from '../util/useStore'
 import { UserState, useUserStore } from '../util/userStore'
-import { Database } from '../util/schema'
 
 interface IAuthContext {
   session: Session | null

@@ -30,8 +30,9 @@ func initRoutes() routes {
 	}
 
 	r.router.Use(cors.New(cors.Config{
-		AllowOrigins: []string{"https://deptransp.com", "http://localhost:3000"},
-		AllowMethods: []string{"POST", "DELETE", "GET"},
+		AllowOrigins:     []string{"*"},
+		AllowMethods:     []string{"POST", "DELETE", "GET"},
+		AllowCredentials: true,
 	}))
 
 	driver := r.router.Group("/driver")

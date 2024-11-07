@@ -8,6 +8,9 @@
 		},
 		{
 			"path": "supabase"
+		},
+		{
+			"path": "terraform"
 		}
 	],
 	"settings": {

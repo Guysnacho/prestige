@@ -4,6 +4,7 @@ import {
   Button,
   H5,
   Paragraph,
+  ScrollView,
   Separator,
   Spinner,
   XStack,
@@ -12,8 +13,8 @@ import {
 } from '@my/ui'
 import { ChevronLeft, UsersRound } from '@tamagui/lucide-icons'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { useRouter } from 'next/router'
 import { useState } from 'react'
+import { usePathname, useRouter } from 'solito/navigation'
 import { TripCard } from './trip-card'
 
 export function TripMatcherScreen() {
@@ -21,14 +22,17 @@ export function TripMatcherScreen() {
   const client = createClient()
   const toast = useToastController()
   const router = useRouter()
+  const path = usePathname()
   const [driver, setDriver] = useState<string | undefined>()
+
+  const TRIP_ID = path?.substring(path?.lastIndexOf('/') + 1)
 
   const { data, error, isLoading } = useQuery({
     queryFn: async () => {
       const { data: tripData, error: tripError } = await client
         .from('trip')
         .select('*, member(*)')
-        .eq('id', router.query.id ?? '')
+        .eq('id', TRIP_ID ?? '')
         .single()
       const { data: driverData, error: driverError } = await client.rpc('get_closest_drivers', {
         rider_x: tripData!.pickup_lng.toPrecision(17),
@@ -38,7 +42,7 @@ export function TripMatcherScreen() {
     },
 
     queryKey: ['admin-details'],
-    enabled: store?.role === 'ADMIN' && router.query.id !== undefined,
+    enabled: store?.role === 'ADMIN' && TRIP_ID !== undefined,
   })
 
   const { mutate, isPending } = useMutation({
@@ -52,7 +56,7 @@ export function TripMatcherScreen() {
         toast.show('Issue assigning driver', { message: error.message })
       } else {
         toast.show('Driver assigned!', { message: data?.statusText })
-        router.back()
+        router.push('/admin')
       }
     },
   })
@@ -69,7 +73,14 @@ export function TripMatcherScreen() {
       marginInline="auto"
     >
       {isLoading ? <Spinner /> : undefined}
-      <Button icon={ChevronLeft} onPress={() => router.back()}>
+      <Button
+        icon={ChevronLeft}
+        onPress={() =>
+          router.replace('/admin', {
+            experimental: { isNestedNavigator: true, nativeBehavior: 'stack-replace' },
+          })
+        }
+      >
         Go Back
       </Button>
       <Separator />
@@ -97,29 +108,25 @@ export function TripMatcherScreen() {
           <H5 size="$7" mx="auto">
             Drivers
           </H5>
-          {data.driverData?.map((item) => (
-            <XStack key={item.driver_id} alignItems="center" gap="$3">
-              <Button
-                icon={isPending ? <Spinner /> : <UsersRound />}
-                onPress={() => {
-                  setDriver(item.driver_id)
-                  mutate()
-                }}
-              >
-                {isPending ? undefined : 'Assign'}
-              </Button>
-              <YStack alignItems="flex-start">
-                <Paragraph>ID: {item.driver_id}</Paragraph>
-                <Paragraph>Driver: {`${item.fname} ${item.lname}`}</Paragraph>
-                <Paragraph>Is Active: {item.active ? 'ACTIVE' : 'INACTIVE'}</Paragraph>
-              </YStack>
-              <YStack alignItems="flex-start">
-                <Paragraph>Pickup</Paragraph>
-                <Paragraph>lng: {item.coordinate_x}</Paragraph>
-                <Paragraph>lat: {item.coordinate_y}</Paragraph>
-              </YStack>
-            </XStack>
-          ))}
+          <ScrollView maxHeight={175}>
+            {data.driverData?.map((item) => (
+              <XStack key={item.driver_id} alignItems="center" gap="$3">
+                <Button
+                  icon={isPending ? <Spinner /> : <UsersRound />}
+                  onPress={() => {
+                    setDriver(item.driver_id)
+                    mutate()
+                  }}
+                >
+                  {isPending ? undefined : 'Assign'}
+                </Button>
+                <YStack alignItems="flex-start">
+                  <Paragraph>Driver: {`${item.fname} ${item.lname}`}</Paragraph>
+                  <Paragraph>Is Active: {item.active ? 'ACTIVE' : 'INACTIVE'}</Paragraph>
+                </YStack>
+              </XStack>
+            ))}
+          </ScrollView>
         </YStack>
       ) : data && data.driverError ? (
         <Paragraph>Error pulling driver info {data.driverError}</Paragraph>

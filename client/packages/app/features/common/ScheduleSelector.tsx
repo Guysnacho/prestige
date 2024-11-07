@@ -48,9 +48,9 @@ export const ScheduleSelector = ({
   }
 
   return (
-    <YStack>
-      <Button onPress={showDatepicker} title="Show date picker!" />
-      <Button onPress={showTimepicker} title="Show time picker!" />
+    <YStack gap={10}>
+      <Button onPress={showDatepicker}>Select Date</Button>
+      <Button onPress={showTimepicker}>Select Time</Button>
       {show && Platform.OS !== 'android' && minimumDate && (
         <>
           <Paragraph>selected: {pickupTime?.toLocaleString()}</Paragraph>
