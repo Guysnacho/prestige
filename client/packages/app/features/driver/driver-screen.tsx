@@ -1,15 +1,18 @@
+import { AuthContext } from '@my/app/provider/AuthProvider'
 import getServerUrl from '@my/app/util/getServerUrl'
 import { Button, Paragraph, Spinner, YStack, useToastController } from '@my/ui'
 import { Car, ChevronLeft } from '@tamagui/lucide-icons'
 import { useMutation } from '@tanstack/react-query'
 import { useStore, useUserStore } from 'app/util'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { LngLat } from 'react-map-gl'
 import { Platform } from 'react-native'
 import { useRouter } from 'solito/navigation'
 import { MapBox } from '../common/MapView'
 
 export function DriverHomeScreen() {
+  const auth = useContext(AuthContext)
+
   const router = useRouter()
   const SERVER_URL = getServerUrl()
   const toast = useToastController()
@@ -36,6 +39,9 @@ export function DriverHomeScreen() {
                 id: store?.id,
               }
         ),
+        headers: {
+          Authorization: auth!.session!.access_token,
+        },
       }),
     onError(err, v, c) {
       console.error(err)

@@ -33,6 +33,7 @@ func initRoutes() routes {
 		AllowOrigins:     []string{"*"},
 		AllowMethods:     []string{"POST", "DELETE", "GET"},
 		AllowCredentials: true,
+		AllowHeaders:     []string{"Authorization"},
 	}))
 
 	driver := r.router.Group("/driver")
