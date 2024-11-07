@@ -2,7 +2,6 @@ import MapLibreGL from '@maplibre/maplibre-react-native'
 import OnPressEvent from '@maplibre/maplibre-react-native/javascript/types/OnPressEvent'
 import { H2, YStack, YStackProps } from '@my/ui'
 import { MapPin } from '@tamagui/lucide-icons'
-import layers from 'protomaps-themes-base'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { LngLat } from 'react-map-gl'
 

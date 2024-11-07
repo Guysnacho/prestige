@@ -7,12 +7,11 @@
     "*.css"
   ],
   "dependencies": {
-    "@maplibre/maplibre-react-native": "^10.0.0-alpha.17",
+    "@maplibre/maplibre-react-native": "^10.0.0-alpha.23",
     "@my/ui": "0.0.1",
     "@react-native-async-storage/async-storage": "1.23.1",
     "@react-native-community/datetimepicker": "^8.2.0",
     "@react-navigation/native": "^6.1.17",
-    "@rnmapbox/maps": "^10.1.33",
     "@supabase/auth-helpers-react": "^0.5.0",
     "@supabase/ssr": "^0.5.1",
     "@supabase/supabase-js": "^2.45.3",

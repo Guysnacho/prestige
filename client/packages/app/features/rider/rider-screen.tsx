@@ -88,7 +88,7 @@ export function RiderHomeScreen() {
     >
       <MapBox
         label="Let's handle logistics"
-        height={150}
+        height="$20"
         width="90%"
         pickUplngLat={pickUplngLat}
         setPickUpLnglat={setPickUpLnglat}
