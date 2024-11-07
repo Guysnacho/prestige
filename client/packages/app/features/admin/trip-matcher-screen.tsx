@@ -70,7 +70,14 @@ export function TripMatcherScreen() {
       marginInline="auto"
     >
       {isLoading ? <Spinner /> : undefined}
-      <Button icon={ChevronLeft} onPress={() => router.replace('/admin')}>
+      <Button
+        icon={ChevronLeft}
+        onPress={() =>
+          router.replace('/admin', {
+            experimental: { isNestedNavigator: true, nativeBehavior: 'stack-replace' },
+          })
+        }
+      >
         Go Back
       </Button>
       <Separator />
