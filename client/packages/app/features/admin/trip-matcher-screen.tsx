@@ -12,7 +12,7 @@ import {
 } from '@my/ui'
 import { ChevronLeft, UsersRound } from '@tamagui/lucide-icons'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { useRouter } from 'next/router'
+import { useRouter, useSearchParams } from 'solito/navigation'
 import { useState } from 'react'
 import { TripCard } from './trip-card'
 
@@ -21,6 +21,7 @@ export function TripMatcherScreen() {
   const client = createClient()
   const toast = useToastController()
   const router = useRouter()
+  const params = useSearchParams()
   const [driver, setDriver] = useState<string | undefined>()
 
   const { data, error, isLoading } = useQuery({
@@ -28,7 +29,7 @@ export function TripMatcherScreen() {
       const { data: tripData, error: tripError } = await client
         .from('trip')
         .select('*, member(*)')
-        .eq('id', router.query.id ?? '')
+        .eq('id', params?.get('id') ?? '')
         .single()
       const { data: driverData, error: driverError } = await client.rpc('get_closest_drivers', {
         rider_x: tripData!.pickup_lng.toPrecision(17),
@@ -38,7 +39,7 @@ export function TripMatcherScreen() {
     },
 
     queryKey: ['admin-details'],
-    enabled: store?.role === 'ADMIN' && router.query.id !== undefined,
+    enabled: store?.role === 'ADMIN' && params?.get('id') !== undefined,
   })
 
   const { mutate, isPending } = useMutation({
@@ -52,7 +53,7 @@ export function TripMatcherScreen() {
         toast.show('Issue assigning driver', { message: error.message })
       } else {
         toast.show('Driver assigned!', { message: data?.statusText })
-        router.back()
+        router.replace('/admin')
       }
     },
   })
@@ -69,7 +70,7 @@ export function TripMatcherScreen() {
       marginInline="auto"
     >
       {isLoading ? <Spinner /> : undefined}
-      <Button icon={ChevronLeft} onPress={() => router.back()}>
+      <Button icon={ChevronLeft} onPress={() => router.replace('/admin')}>
         Go Back
       </Button>
       <Separator />
