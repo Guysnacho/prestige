@@ -4,6 +4,7 @@ import {
   Button,
   H5,
   Paragraph,
+  ScrollView,
   Separator,
   Spinner,
   XStack,
@@ -55,7 +56,7 @@ export function TripMatcherScreen() {
         toast.show('Issue assigning driver', { message: error.message })
       } else {
         toast.show('Driver assigned!', { message: data?.statusText })
-        router.replace('/admin')
+        router.push('/admin')
       }
     },
   })
@@ -107,29 +108,25 @@ export function TripMatcherScreen() {
           <H5 size="$7" mx="auto">
             Drivers
           </H5>
-          {data.driverData?.map((item) => (
-            <XStack key={item.driver_id} alignItems="center" gap="$3">
-              <Button
-                icon={isPending ? <Spinner /> : <UsersRound />}
-                onPress={() => {
-                  setDriver(item.driver_id)
-                  mutate()
-                }}
-              >
-                {isPending ? undefined : 'Assign'}
-              </Button>
-              <YStack alignItems="flex-start">
-                <Paragraph>ID: {item.driver_id}</Paragraph>
-                <Paragraph>Driver: {`${item.fname} ${item.lname}`}</Paragraph>
-                <Paragraph>Is Active: {item.active ? 'ACTIVE' : 'INACTIVE'}</Paragraph>
-              </YStack>
-              <YStack alignItems="flex-start">
-                <Paragraph>Pickup</Paragraph>
-                <Paragraph>lng: {item.coordinate_x}</Paragraph>
-                <Paragraph>lat: {item.coordinate_y}</Paragraph>
-              </YStack>
-            </XStack>
-          ))}
+          <ScrollView maxHeight={175}>
+            {data.driverData?.map((item) => (
+              <XStack key={item.driver_id} alignItems="center" gap="$3">
+                <Button
+                  icon={isPending ? <Spinner /> : <UsersRound />}
+                  onPress={() => {
+                    setDriver(item.driver_id)
+                    mutate()
+                  }}
+                >
+                  {isPending ? undefined : 'Assign'}
+                </Button>
+                <YStack alignItems="flex-start">
+                  <Paragraph>Driver: {`${item.fname} ${item.lname}`}</Paragraph>
+                  <Paragraph>Is Active: {item.active ? 'ACTIVE' : 'INACTIVE'}</Paragraph>
+                </YStack>
+              </XStack>
+            ))}
+          </ScrollView>
         </YStack>
       ) : data && data.driverError ? (
         <Paragraph>Error pulling driver info {data.driverError}</Paragraph>
