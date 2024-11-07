@@ -6,6 +6,7 @@ import { Protocol } from 'pmtiles'
 import { default as layers } from 'protomaps-themes-base'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { LngLat, Map, Marker } from 'react-map-gl'
+import { usePathname } from 'solito/navigation'
 
 export const MapBox = (
   props: {
@@ -17,6 +18,8 @@ export const MapBox = (
   } & YStackProps
 ) => {
   const [locSelect, setLocSelect] = useState<'pickup' | 'destination'>('pickup')
+  const path = usePathname()
+  const [isDriver, setIsDriver] = useState(false)
 
   useEffect(() => {
     let protocol = new Protocol()
@@ -27,29 +30,38 @@ export const MapBox = (
     }
   })
 
-  const selectLocation = (e: MapMouseEvent) => {
-    switch (locSelect) {
-      case 'destination':
-        {
-          setLocSelect('pickup')
-          props.setDestLnglat({
-            lng: e.lngLat.lng,
-            lat: e.lngLat.lat,
-          } as LngLat)
-        }
-        break
-      case 'pickup':
-        {
-          setLocSelect('destination')
-          props.setPickUpLnglat({
-            lng: e.lngLat.lng,
-            lat: e.lngLat.lat,
-          } as LngLat)
-        }
-        break
+  useEffect(() => (path?.includes('/driver') ? setIsDriver(true) : setIsDriver(false)), [path])
 
-      default:
-        break
+  const selectLocation = (e: MapMouseEvent) => {
+    if (isDriver) {
+      props.setPickUpLnglat({
+        lng: e.lngLat.lng,
+        lat: e.lngLat.lat,
+      } as LngLat)
+    } else {
+      switch (locSelect) {
+        case 'destination':
+          {
+            setLocSelect('pickup')
+            props.setDestLnglat({
+              lng: e.lngLat.lng,
+              lat: e.lngLat.lat,
+            } as LngLat)
+          }
+          break
+        case 'pickup':
+          {
+            setLocSelect('destination')
+            props.setPickUpLnglat({
+              lng: e.lngLat.lng,
+              lat: e.lngLat.lat,
+            } as LngLat)
+          }
+          break
+
+        default:
+          break
+      }
     }
   }
 

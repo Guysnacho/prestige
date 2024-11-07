@@ -31,7 +31,6 @@ export const MapBox = (
   useEffect(() => (path?.includes('/driver') ? setIsDriver(true) : setIsDriver(false)), [path])
 
   const selectLocation = (e: OnPressEvent): void => {
-    console.log('loc set. isDriver: ', isDriver)
     if (isDriver) {
       props?.setPickUpLnglat({
         lng: e.coordinates.longitude,
@@ -42,7 +41,7 @@ export const MapBox = (
         case 'destination':
           {
             setLocSelect('pickup')
-            props?.setDestLnglat({
+            props!.setDestLnglat!({
               lng: e.coordinates.longitude,
               lat: e.coordinates.latitude,
             } as LngLat)

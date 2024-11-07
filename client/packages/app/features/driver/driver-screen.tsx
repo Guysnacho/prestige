@@ -61,7 +61,7 @@ export function DriverHomeScreen() {
           label="Let's handle logistics"
           height="$20"
           setPickUpLnglat={setLnglat}
-          pickUplngLat={lngLat}
+          pickUplngLat={lngLat!}
         />
       ) : (
         <MapBox
@@ -70,7 +70,7 @@ export function DriverHomeScreen() {
           height={300}
           width="100%"
           setPickUpLnglat={setLnglat}
-          pickUplngLat={lngLat}
+          pickUplngLat={lngLat!}
         />
       )}
       <Paragraph ta="center" fow="700" col="$blue10">
