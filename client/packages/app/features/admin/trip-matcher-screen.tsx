@@ -12,8 +12,8 @@ import {
 } from '@my/ui'
 import { ChevronLeft, UsersRound } from '@tamagui/lucide-icons'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { useRouter, useSearchParams } from 'solito/navigation'
 import { useState } from 'react'
+import { usePathname, useRouter } from 'solito/navigation'
 import { TripCard } from './trip-card'
 
 export function TripMatcherScreen() {
@@ -21,15 +21,17 @@ export function TripMatcherScreen() {
   const client = createClient()
   const toast = useToastController()
   const router = useRouter()
-  const params = useSearchParams()
+  const path = usePathname()
   const [driver, setDriver] = useState<string | undefined>()
+
+  const TRIP_ID = path?.substring(path?.lastIndexOf('/') + 1)
 
   const { data, error, isLoading } = useQuery({
     queryFn: async () => {
       const { data: tripData, error: tripError } = await client
         .from('trip')
         .select('*, member(*)')
-        .eq('id', params?.get('id') ?? '')
+        .eq('id', TRIP_ID ?? '')
         .single()
       const { data: driverData, error: driverError } = await client.rpc('get_closest_drivers', {
         rider_x: tripData!.pickup_lng.toPrecision(17),
@@ -39,7 +41,7 @@ export function TripMatcherScreen() {
     },
 
     queryKey: ['admin-details'],
-    enabled: store?.role === 'ADMIN' && params?.get('id') !== undefined,
+    enabled: store?.role === 'ADMIN' && TRIP_ID !== undefined,
   })
 
   const { mutate, isPending } = useMutation({

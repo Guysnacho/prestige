@@ -62,7 +62,7 @@ export function AdminDetailScreen() {
         <Paragraph>User not found</Paragraph>
       )}
       {isLoading || adminLoading ? <Spinner /> : undefined}
-      <Button icon={ChevronLeft} onPress={() => router.back()}>
+      <Button icon={ChevronLeft} onPress={() => router.replace('/')}>
         Go Home
       </Button>
       <Separator />
