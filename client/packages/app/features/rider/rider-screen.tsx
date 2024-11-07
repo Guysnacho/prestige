@@ -133,7 +133,7 @@ export function RiderHomeScreen() {
       >
         Request Trip
       </Button>
-      <Button icon={ChevronLeft} onPress={() => router.back()}>
+      <Button icon={ChevronLeft} onPress={() => router.replace('/')}>
         Go Home
       </Button>
     </YStack>
