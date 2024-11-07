@@ -6,7 +6,7 @@ import { useStore, useUserStore } from 'app/util'
 import { useState } from 'react'
 import { LngLat } from 'react-map-gl'
 import { useRouter } from 'solito/navigation'
-import { MapBox } from '../common/MapBox'
+import { MapBox } from '../common/MapView'
 
 export function DriverHomeScreen() {
   const router = useRouter()
@@ -90,7 +90,7 @@ export function DriverHomeScreen() {
       >
         End Drive
       </Button>
-      <Button icon={ChevronLeft} onPress={() => router.back()}>
+      <Button icon={ChevronLeft} onPress={() => router.replace('/')}>
         Go Home
       </Button>
     </YStack>

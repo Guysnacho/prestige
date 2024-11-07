@@ -88,7 +88,7 @@ export function RiderHomeScreen() {
     >
       <MapBox
         label="Let's handle logistics"
-        height={150}
+        height="$20"
         width="90%"
         pickUplngLat={pickUplngLat}
         setPickUpLnglat={setPickUpLnglat}
@@ -133,7 +133,7 @@ export function RiderHomeScreen() {
       >
         Request Trip
       </Button>
-      <Button icon={ChevronLeft} onPress={() => router.back()}>
+      <Button icon={ChevronLeft} onPress={() => router.replace('/')}>
         Go Home
       </Button>
     </YStack>

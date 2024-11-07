@@ -1,9 +1,8 @@
 import { useStore, useUserStore } from '@my/app/util'
 import { createClient } from '@my/app/util/components'
-import { Button, H4, H5, Paragraph, Separator, Spinner, XStack, YStack } from '@my/ui'
+import { Button, H4, H5, Paragraph, ScrollView, Separator, Spinner, XStack, YStack } from '@my/ui'
 import { ChevronLeft } from '@tamagui/lucide-icons'
 import { useQuery } from '@tanstack/react-query'
-import { useState } from 'react'
 import { useRouter } from 'solito/navigation'
 import { TripCard } from './trip-card'
 
@@ -50,7 +49,8 @@ export function AdminDetailScreen() {
       my="$7"
       bg="$background"
       width="90%"
-      marginInline="auto"
+      height="100%"
+      mx="auto"
     >
       {userData && userData.data ? (
         <H4
@@ -62,7 +62,7 @@ export function AdminDetailScreen() {
         <Paragraph>User not found</Paragraph>
       )}
       {isLoading || adminLoading ? <Spinner /> : undefined}
-      <Button icon={ChevronLeft} onPress={() => router.push('/')}>
+      <Button icon={ChevronLeft} onPress={() => router.replace('/')}>
         Go Home
       </Button>
       <Separator />
@@ -74,12 +74,12 @@ export function AdminDetailScreen() {
         >{`Ran into an issue fetching profile details: ${error.message}`}</Paragraph>
       ) : undefined}
 
-      {adminData && adminData.tripData ? (
-        <YStack gap="$4">
+      {adminData && adminData.tripData && adminData.tripData.length ? (
+        <ScrollView>
           {adminData.tripData?.map((item) => (
-            <TripCard member={item.member} trip={item} router={router} />
+            <TripCard key={item.id} member={item.member} trip={item} router={router} />
           ))}
-        </YStack>
+        </ScrollView>
       ) : adminData && adminData.tripError ? (
         <Paragraph>Error pulling trip info {adminData.tripError}</Paragraph>
       ) : undefined}

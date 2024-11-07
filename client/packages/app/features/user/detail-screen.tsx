@@ -61,7 +61,7 @@ export function UserDetailScreen() {
         >{`Ran into an issue fetching profile details: ${error.message}`}</Paragraph>
       ) : undefined}
 
-      <Button icon={ChevronLeft} onPress={() => router.back()}>
+      <Button icon={ChevronLeft} onPress={() => router.replace('/')}>
         Go Home
       </Button>
     </YStack>

@@ -9,7 +9,7 @@ export const TripCard = (props: {
   }
 }) => {
   return (
-    <Card py="$3" w="35rem">
+    <Card py="$3" w="35rem" my="$5">
       <Card.Header>
         <YStack key={props.trip.id} gap="$3" flexWrap="wrap">
           <Paragraph>Rider: {`${props.member?.fname} ${props.member?.lname}`}</Paragraph>
