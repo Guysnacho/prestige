@@ -71,9 +71,8 @@ export function DriverHomeScreen() {
             pickUplngLat={lngLat!}
             dom={{
               allowFileAccess: true,
-              renderToHardwareTextureAndroid: true,
-              style: { height: 300, width: '100%' },
-              webviewDebuggingEnabled: true,
+              allowFileAccessFromFileURLs: true,
+              allowingReadAccessToURL: process.env.EXPO_BASE_URL,
               useExpoDOMWebView: true,
             }}
           />
@@ -86,12 +85,9 @@ export function DriverHomeScreen() {
             setPickUpLnglat={setLnglat}
             pickUplngLat={lngLat!}
             dom={{
-              matchContents: true,
               allowFileAccess: true,
-              automaticallyAdjustContentInsets: true,
-              renderToHardwareTextureAndroid: true,
-              style: { height: 300, width: '100%' },
-              webviewDebuggingEnabled: true,
+              allowFileAccessFromFileURLs: true,
+              allowingReadAccessToURL: process.env.EXPO_BASE_URL,
               useExpoDOMWebView: true,
             }}
           />

@@ -31,7 +31,7 @@ export default function MapBox(
     return () => {
       maplibregl.removeProtocol('pmtiles')
     }
-  })
+  }, [])
 
   useEffect(() => (path?.includes('/driver') ? setIsDriver(true) : setIsDriver(false)), [path])
 
