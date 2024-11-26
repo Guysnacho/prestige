@@ -1,3 +1,6 @@
+'use dom'
+
+import 'text-encoding-polyfill'
 import { H2, YStack, YStackProps } from '@my/ui'
 import { Pin } from '@tamagui/lucide-icons'
 import maplibregl, { MapMouseEvent } from 'maplibre-gl'
@@ -8,15 +11,15 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { LngLat, Map, Marker } from 'react-map-gl'
 import { usePathname } from 'solito/navigation'
 
-export const MapBox = (
+export default function MapBox(
   props: {
     setPickUpLnglat: Dispatch<SetStateAction<LngLat | undefined>>
     pickUplngLat: LngLat | undefined
     setDestLnglat: Dispatch<SetStateAction<LngLat | undefined>>
     destLngLat: LngLat | undefined
     label?: string
-  } & YStackProps
-) => {
+  } & YStackProps & { dom: import('expo/dom').DOMProps }
+) {
   const [locSelect, setLocSelect] = useState<'pickup' | 'destination'>('pickup')
   const path = usePathname()
   const [isDriver, setIsDriver] = useState(false)
@@ -77,7 +80,7 @@ export const MapBox = (
             protomaps: {
               attribution: `<a href="https://github.com/protomaps/basemaps">Protomaps</a> C <a href="https://openstreetmap.org">OpenStreetMap</a>`,
               type: 'vector',
-              url: `pmtiles://${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/map/my_area.pmtiles`,
+              url: `pmtiles://${process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.EXPO_PUBLIC_SUPABASE_URL}/storage/v1/object/public/map/my_area.pmtiles`,
             },
           },
           // @ts-expect-error Awkard typing on protomap use

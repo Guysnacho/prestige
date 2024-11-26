@@ -1862,6 +1862,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@expo/dom-webview@npm:^0.0.1":
+  version: 0.0.1
+  resolution: "@expo/dom-webview@npm:0.0.1"
+  peerDependencies:
+    expo: "*"
+    react: "*"
+    react-native: "*"
+  checksum: 10/26435ef73de5f17b18e071facd7edceac3937dc57242f055a8a25dc84b2672970326013ec9cb0a3b15fa73f1ca16054bcea66ccc83a7c038f8a2fdd51415dc82
+  languageName: node
+  linkType: hard
+
 "@expo/env@npm:~0.4.0":
   version: 0.4.0
   resolution: "@expo/env@npm:0.4.0"
@@ -1961,7 +1972,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@expo/metro-runtime@npm:4.0.0":
+"@expo/metro-runtime@npm:4.0.0, @expo/metro-runtime@npm:~4.0.0":
   version: 4.0.0
   resolution: "@expo/metro-runtime@npm:4.0.0"
   peerDependencies:
@@ -6606,6 +6617,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "app@workspace:packages/app"
   dependencies:
+    "@expo/dom-webview": "npm:^0.0.1"
     "@maplibre/maplibre-react-native": "npm:^10.0.0-alpha.26"
     "@my/ui": "npm:0.0.1"
     "@react-native-async-storage/async-storage": "npm:1.23.1"
@@ -6637,7 +6649,9 @@ __metadata:
     react-datepicker: "npm:^7.4.0"
     react-map-gl: "npm:^7.1.7"
     react-native-safe-area-context: "npm:4.12.0"
+    react-native-webview: "npm:13.12.2"
     solito: "npm:^4.2.2"
+    text-encoding-polyfill: "npm:^0.6.7"
     zustand: "npm:^5.0.0-rc.2"
   languageName: unknown
   linkType: soft
@@ -9825,7 +9839,9 @@ __metadata:
     "@babel/core": "npm:^7.25.2"
     "@babel/runtime": "npm:^7.24.6"
     "@expo/config-plugins": "npm:~8.0.4"
+    "@expo/dom-webview": "npm:^0.0.1"
     "@expo/metro-config": "npm:~0.19.0"
+    "@expo/metro-runtime": "npm:~4.0.0"
     "@maplibre/maplibre-react-native": "npm:^10.0.0-alpha.26"
     "@my/ui": "npm:0.0.1"
     "@react-native-async-storage/async-storage": "npm:1.23.1"
@@ -9838,7 +9854,7 @@ __metadata:
     app: "npm:*"
     babel-plugin-module-resolver: "npm:^5.0.2"
     burnt: "npm:^0.12.2"
-    expo: "npm:~52.0.3"
+    expo: "npm:^52.0.0"
     expo-constants: "npm:~17.0.2"
     expo-dev-client: "npm:~5.0.4"
     expo-font: "npm:~13.0.1"
@@ -9862,6 +9878,7 @@ __metadata:
     react-native-url-polyfill: "npm:^2.0.0"
     react-native-web: "npm:~0.19.13"
     react-native-webview: "npm:13.12.2"
+    text-encoding-polyfill: "npm:^0.6.7"
     typescript: "npm:^5.4.5"
   languageName: unknown
   linkType: soft
@@ -10179,7 +10196,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo@npm:~52.0.3":
+"expo@npm:^52.0.0":
   version: 52.0.11
   resolution: "expo@npm:52.0.11"
   dependencies:
@@ -17135,6 +17152,13 @@ __metadata:
     glob: "npm:^7.1.4"
     minimatch: "npm:^3.0.4"
   checksum: 10/8fccb2cb6c8fcb6bb4115394feb833f8b6cf4b9503ec2485c2c90febf435cac62abe882a0c5c51a37b9bbe70640cdd05acf5f45e486ac4583389f4b0855f69e5
+  languageName: node
+  linkType: hard
+
+"text-encoding-polyfill@npm:^0.6.7":
+  version: 0.6.7
+  resolution: "text-encoding-polyfill@npm:0.6.7"
+  checksum: 10/75f84dd1d2844180dad08c45fce75b54e978b01e446f31709fd791dc70594c60b03f0a2b55ba915d61f7f86fbab11bec8ee25535c96e688cfc9867df00a1a29d
   languageName: node
   linkType: hard
 
