@@ -21,7 +21,7 @@ export type HomeProps = {
   user?: User | null
 }
 
-export function HomeScreen({ user }: HomeProps) {
+export default function HomeScreen({ user }: HomeProps) {
   const store = useStore(useUserStore, (store) => store)
   const router = useRouter()
 

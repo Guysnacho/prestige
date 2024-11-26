@@ -8,7 +8,8 @@
     "android": "npx expo run:android",
     "ios": "npx expo run:ios",
     "eject": "npx expo eject",
-    "prebuild": "npx expo prebuild --clean"
+    "prebuild": "npx expo prebuild --clean",
+    "fix-xcode-env": "node scripts/fix-xcode-env.mjs"
   },
   "dependencies": {
     "@babel/runtime": "^7.24.6",
