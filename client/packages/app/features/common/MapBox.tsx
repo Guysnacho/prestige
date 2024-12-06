@@ -1,63 +1,58 @@
-'use dom'
-
-import 'text-encoding-polyfill'
+import MapLibreGL from '@maplibre/maplibre-react-native'
+import OnPressEvent from '@maplibre/maplibre-react-native/javascript/types/OnPressEvent'
 import { H2, YStack, YStackProps } from '@my/ui'
-import { Pin } from '@tamagui/lucide-icons'
-import maplibregl, { MapMouseEvent } from 'maplibre-gl'
-import 'maplibre-gl/dist/maplibre-gl.css'
-import { Protocol } from 'pmtiles'
-import { default as layers } from 'protomaps-themes-base'
+import { MapPin } from '@tamagui/lucide-icons'
+import layers from 'protomaps-themes-base'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
-import { LngLat, Map, Marker } from 'react-map-gl'
+import { LngLat } from 'react-map-gl'
 import { usePathname } from 'solito/navigation'
 
-export default function MapBox(
+const StyleJSON = require('./styles.json')
+
+export const MapBox = (
   props: {
-    setPickUpLnglat: Dispatch<SetStateAction<LngLat | undefined>>
-    pickUplngLat: LngLat | undefined
-    setDestLnglat: Dispatch<SetStateAction<LngLat | undefined>>
-    destLngLat: LngLat | undefined
+    setPickUpLnglat: Dispatch<SetStateAction<LngLat>>
+    pickUplngLat: LngLat
+    setDestLnglat?: Dispatch<SetStateAction<LngLat>>
+    destLngLat?: LngLat
     label?: string
-  } & YStackProps & { dom: import('expo/dom').DOMProps }
-) {
+  } & YStackProps
+) => {
+  const [mounted, setMounted] = useState(false)
   const [locSelect, setLocSelect] = useState<'pickup' | 'destination'>('pickup')
   const path = usePathname()
   const [isDriver, setIsDriver] = useState(false)
 
   useEffect(() => {
-    let protocol = new Protocol()
-    maplibregl.addProtocol('pmtiles', protocol.tile)
-
-    return () => {
-      maplibregl.removeProtocol('pmtiles')
-    }
+    MapLibreGL.setAccessToken(null)
+    setMounted(true)
   }, [])
 
   useEffect(() => (path?.includes('/driver') ? setIsDriver(true) : setIsDriver(false)), [path])
 
-  const selectLocation = (e: MapMouseEvent) => {
+  const selectLocation = (e: OnPressEvent): void => {
     if (isDriver) {
-      props.setPickUpLnglat({
-        lng: e.lngLat.lng,
-        lat: e.lngLat.lat,
+      props?.setPickUpLnglat({
+        lng: e.coordinates.longitude,
+        lat: e.coordinates.latitude,
       } as LngLat)
     } else {
       switch (locSelect) {
         case 'destination':
           {
             setLocSelect('pickup')
-            props.setDestLnglat({
-              lng: e.lngLat.lng,
-              lat: e.lngLat.lat,
+            props!.setDestLnglat!({
+              lng: e.coordinates.longitude,
+              lat: e.coordinates.latitude,
             } as LngLat)
           }
           break
         case 'pickup':
           {
             setLocSelect('destination')
-            props.setPickUpLnglat({
-              lng: e.lngLat.lng,
-              lat: e.lngLat.lat,
+            props?.setPickUpLnglat({
+              lng: e.coordinates.longitude,
+              lat: e.coordinates.latitude,
             } as LngLat)
           }
           break
@@ -68,58 +63,52 @@ export default function MapBox(
     }
   }
 
+  const selectDriverLocation = (e: OnPressEvent): void => {}
+
   return (
     <YStack {...props}>
       <H2>{props?.label ? props?.label : 'Map Demo'}</H2>
-      <Map
-        style={{ width: 600, height: 400 }}
-        mapStyle={{
-          version: 8,
-          glyphs: 'https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf',
-          sources: {
-            protomaps: {
-              attribution: `<a href="https://github.com/protomaps/basemaps">Protomaps</a> C <a href="https://openstreetmap.org">OpenStreetMap</a>`,
-              type: 'vector',
-              url: `pmtiles://${process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.EXPO_PUBLIC_SUPABASE_URL}/storage/v1/object/public/map/my_area.pmtiles`,
-            },
-          },
-          // @ts-expect-error Awkard typing on protomap use
-          layers: layers('protomaps', 'dark'),
-        }}
-        // @ts-expect-error Awkard typing on protomap use
-        mapLib={maplibregl}
-        // @ts-expect-error Awkard typing on Map Mouse event
-        onClick={selectLocation}
-      >
-        {props?.pickUplngLat && (
-          <Marker
-            draggable
-            longitude={props.pickUplngLat.lng}
-            latitude={props.pickUplngLat.lat}
-            onDrag={({ lngLat }) => {
-              // @ts-expect-error lnglat conversion is weird
-              props.setPickUpLnglat(lngLat)
-            }}
-            anchor="bottom"
-          >
-            <Pin color="white" />
-          </Marker>
-        )}
-        {props?.destLngLat && (
-          <Marker
-            draggable
-            longitude={props.destLngLat.lng}
-            latitude={props.destLngLat.lat}
-            onDrag={({ lngLat }) => {
-              // @ts-expect-error lnglat conversion is weird
-              props.setDestLnglat(lngLat)
-            }}
-            anchor="bottom"
-          >
-            <Pin color="white" />
-          </Marker>
-        )}
-      </Map>
+      {mounted && (
+        <MapLibreGL.MapView
+          // styleURL="https://d1umd3779acasn.cloudfront.net/my_area.json"
+          // styleJSON={`${process.env.EXPO_PUBLIC_SUPABASE_URL}/storage/v1/object/public/map/styles.json`}
+          style={{
+            flex: 1,
+            alignSelf: 'stretch',
+          }}
+          surfaceView
+          pitchEnabled={false}
+          rotateEnabled={false}
+        >
+          <MapLibreGL.VectorSource
+            id="protomaps"
+            onPress={(e) => selectLocation(e)}
+            tileUrlTemplates={['https://d1umd3779acasn.cloudfront.net/my_area/{z}/{x}/{y}.mvt']}
+          />
+          {props?.pickUplngLat && (
+            <MapLibreGL.PointAnnotation
+              id="PickUp-Pin"
+              coordinate={[props?.pickUplngLat.lng, props?.pickUplngLat.lat]}
+            >
+              <MapPin color="whitesmoke" outlineColor="white" />
+            </MapLibreGL.PointAnnotation>
+          )}
+          {props?.destLngLat && (
+            <MapLibreGL.PointAnnotation
+              id="Destination-Pin"
+              coordinate={[props?.destLngLat.lng, props?.destLngLat.lat]}
+            >
+              <MapPin />
+            </MapLibreGL.PointAnnotation>
+          )}
+          {/* <MapLibreGL.Camera
+            zoomLevel={10}
+            centerCoordinate={[props?.lngLat?.lng, props?.lngLat?.lat]}
+          /> */}
+          {/* // TODO - Fix dark map
+          <MapLibreGL.Style json={{ ...StyleJSON, layers: layers('protomaps', 'dark') }} /> */}
+        </MapLibreGL.MapView>
+      )}
     </YStack>
   )
 }

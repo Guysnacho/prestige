@@ -8,7 +8,7 @@ import { useContext, useState } from 'react'
 import { LngLat } from 'react-map-gl'
 import { Platform } from 'react-native'
 import { useRouter } from 'solito/navigation'
-import MapBox from '../common/MapBox'
+import { MapBox } from '../common/MapBox'
 
 export function DriverHomeScreen() {
   const auth = useContext(AuthContext)
@@ -69,12 +69,6 @@ export function DriverHomeScreen() {
             height="$20"
             setPickUpLnglat={setLnglat}
             pickUplngLat={lngLat!}
-            dom={{
-              allowFileAccess: true,
-              allowFileAccessFromFileURLs: true,
-              allowingReadAccessToURL: process.env.EXPO_BASE_URL,
-              useExpoDOMWebView: true,
-            }}
           />
         ) : (
           <MapBox
@@ -84,12 +78,6 @@ export function DriverHomeScreen() {
             width="100%"
             setPickUpLnglat={setLnglat}
             pickUplngLat={lngLat!}
-            dom={{
-              allowFileAccess: true,
-              allowFileAccessFromFileURLs: true,
-              allowingReadAccessToURL: process.env.EXPO_BASE_URL,
-              useExpoDOMWebView: true,
-            }}
           />
         )}
       </View>

@@ -9,7 +9,7 @@ import { useContext, useEffect, useState } from 'react'
 import { LngLat } from 'react-map-gl'
 import { Platform } from 'react-native'
 import { useRouter } from 'solito/navigation'
-import MapBox from '../common/MapBox'
+import { MapBox } from '../common/MapBox'
 import { ScheduleSelector } from '../common/ScheduleSelector'
 
 export function RiderHomeScreen() {
