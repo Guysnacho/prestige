@@ -7,7 +7,6 @@
     "*.css"
   ],
   "dependencies": {
-    "@expo/dom-webview": "^0.0.1",
     "@maplibre/maplibre-react-native": "^10.0.0-alpha.26",
     "@my/ui": "0.0.1",
     "@react-native-async-storage/async-storage": "1.23.1",
