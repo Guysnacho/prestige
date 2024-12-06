@@ -4,7 +4,7 @@ import { Dispatch, SetStateAction } from 'react'
 import { Platform } from 'react-native'
 import { SignIn, SignUp } from './forms'
 
-export function AuthScreen({
+export default function AuthScreen({
   signUp,
   setSignUp,
 }: {

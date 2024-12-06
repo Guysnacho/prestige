@@ -1,6 +1,6 @@
 import { AuthContext } from '@my/app/provider/AuthProvider'
 import getServerUrl from '@my/app/util/getServerUrl'
-import { Button, Paragraph, Spinner, YStack, useToastController } from '@my/ui'
+import { Button, Paragraph, Spinner, View, XStack, YStack, useToastController } from '@my/ui'
 import { Car, ChevronLeft } from '@tamagui/lucide-icons'
 import { useMutation } from '@tanstack/react-query'
 import { useStore, useUserStore } from 'app/util'
@@ -8,7 +8,7 @@ import { useContext, useState } from 'react'
 import { LngLat } from 'react-map-gl'
 import { Platform } from 'react-native'
 import { useRouter } from 'solito/navigation'
-import { MapBox } from '../common/MapView'
+import { MapBox } from '../common/MapBox'
 
 export function DriverHomeScreen() {
   const auth = useContext(AuthContext)
@@ -62,23 +62,25 @@ export function DriverHomeScreen() {
 
   return (
     <YStack f={isWeb ? 1 : undefined} jc="center" ai="center" gap="$4">
-      {isWeb ? (
-        <MapBox
-          label="Let's handle logistics"
-          height="$20"
-          setPickUpLnglat={setLnglat}
-          pickUplngLat={lngLat!}
-        />
-      ) : (
-        <MapBox
-          label="Let's handle logistics"
-          mt="$10"
-          height={300}
-          width="100%"
-          setPickUpLnglat={setLnglat}
-          pickUplngLat={lngLat!}
-        />
-      )}
+      <XStack h="$20" w="100%">
+        {isWeb ? (
+          <MapBox
+            label="Let's handle logistics"
+            height="$20"
+            setPickUpLnglat={setLnglat}
+            pickUplngLat={lngLat!}
+          />
+        ) : (
+          <MapBox
+            label="Let's handle logistics"
+            mt="$10"
+            height="$16"
+            width="100%"
+            setPickUpLnglat={setLnglat}
+            pickUplngLat={lngLat!}
+          />
+        )}
+      </XStack>
       <Paragraph ta="center" fow="700" col="$blue10">
         {`Driver : ${store?.id ? store.id : 'Who are you??'}`}
       </Paragraph>

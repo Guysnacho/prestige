@@ -1,7 +1,7 @@
 import { UserState } from '@my/app/util'
 import { createClient } from '@my/app/util/components'
 import { Button, Form, H4, Input, Label, Spinner, YStack } from '@my/ui'
-import { SetStateAction, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'solito/navigation'
 
 type AuthProps = {
@@ -27,7 +27,6 @@ export const SignIn = ({ store }: AuthProps) => {
 
   return (
     <Form
-      alignItems="center"
       minWidth={300}
       gap="$2"
       onSubmit={() => setStatus('submitting')}
