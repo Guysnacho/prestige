@@ -84,6 +84,7 @@ export const MapBox = (
             id="protomaps"
             onPress={(e) => selectLocation(e)}
             tileUrlTemplates={['https://d1umd3779acasn.cloudfront.net/my_area/{z}/{x}/{y}.mvt']}
+            url={'https://d1umd3779acasn.cloudfront.net/my_area.json'}
           />
           {props?.pickUplngLat && (
             <MapLibreGL.PointAnnotation

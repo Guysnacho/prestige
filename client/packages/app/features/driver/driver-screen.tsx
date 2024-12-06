@@ -1,6 +1,6 @@
 import { AuthContext } from '@my/app/provider/AuthProvider'
 import getServerUrl from '@my/app/util/getServerUrl'
-import { Button, Paragraph, Spinner, View, YStack, useToastController } from '@my/ui'
+import { Button, Paragraph, Spinner, View, XStack, YStack, useToastController } from '@my/ui'
 import { Car, ChevronLeft } from '@tamagui/lucide-icons'
 import { useMutation } from '@tanstack/react-query'
 import { useStore, useUserStore } from 'app/util'
@@ -62,7 +62,7 @@ export function DriverHomeScreen() {
 
   return (
     <YStack f={isWeb ? 1 : undefined} jc="center" ai="center" gap="$4">
-      <View h="$20" w="100%">
+      <XStack h="$20" w="100%">
         {isWeb ? (
           <MapBox
             label="Let's handle logistics"
@@ -74,13 +74,13 @@ export function DriverHomeScreen() {
           <MapBox
             label="Let's handle logistics"
             mt="$10"
-            height={300}
+            height="$16"
             width="100%"
             setPickUpLnglat={setLnglat}
             pickUplngLat={lngLat!}
           />
         )}
-      </View>
+      </XStack>
       <Paragraph ta="center" fow="700" col="$blue10">
         {`Driver : ${store?.id ? store.id : 'Who are you??'}`}
       </Paragraph>
