@@ -1,4 +1,4 @@
-import { UserState } from '@my/app/util'
+import { UserState } from '@my/app/store'
 import { createClient } from '@my/app/util/components'
 import { Button, Form, H4, Input, Label, Spinner, YStack } from '@my/ui'
 import { useEffect, useState } from 'react'

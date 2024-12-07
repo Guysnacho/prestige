@@ -1,4 +1,4 @@
-import { useStore, useUserStore } from '@my/app/util'
+import { useStore, useUserStore } from '@my/app/store'
 import { createClient } from '@my/app/util/components'
 import {
   Button,

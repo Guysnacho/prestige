@@ -1,6 +1,6 @@
-import { useStore, useUserStore } from '@my/app/util'
+import { useStore, useUserStore } from '@my/app/store'
 import { createClient } from '@my/app/util/components'
-import { Button, H4, H5, Paragraph, ScrollView, Separator, Spinner, XStack, YStack } from '@my/ui'
+import { Button, H4, Paragraph, ScrollView, Separator, Spinner, YStack } from '@my/ui'
 import { ChevronLeft } from '@tamagui/lucide-icons'
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'solito/navigation'

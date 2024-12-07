@@ -1,5 +1,6 @@
 import { AuthContext } from '@my/app/provider/AuthProvider'
-import { TOAST_DURATION, useStore, useUserStore } from '@my/app/util'
+import { useStore, useUserStore } from '@my/app/store'
+import { TOAST_DURATION } from '@my/app/util'
 import getServerUrl from '@my/app/util/getServerUrl'
 import { Button, H6, Paragraph, Separator, Spinner, YStack, useToastController } from '@my/ui'
 import { ChevronLeft, HandMetal } from '@tamagui/lucide-icons'
