@@ -17,12 +17,12 @@ import {
   useDebounceValue,
   useToastController,
 } from '@my/ui'
-import { ChevronLeft, HandMetal, Star } from '@tamagui/lucide-icons'
+import { ChevronLeft, HandMetal, House } from '@tamagui/lucide-icons'
 import { useMutation } from '@tanstack/react-query'
 import { addHours } from 'date-fns'
 import { useContext, useEffect, useState } from 'react'
 import { LngLat } from 'react-map-gl'
-import { Platform } from 'react-native'
+import Radar, { RadarAddress } from 'react-native-radar'
 import { useRouter } from 'solito/navigation'
 import { MapBox } from '../common/MapBox'
 import { ScheduleSelector } from '../common/ScheduleSelector'
@@ -40,11 +40,12 @@ export function RiderHomeScreen() {
   const [pickupTime, setPickupTime] = useState<Date | null>(new Date())
   const [minimumDate, setMinDate] = useState<Date>(new Date())
   const [isPickupSet, setIsPickupSet] = useState(false)
+  const [pickupList, setPickupList] = useState<RadarAddress[] | undefined>(undefined)
 
   const store = useStore(useUserStore, (store) => store)
 
-  const memoedPickup = useDebounceValue(pickUp, 500)
-  const memoedDest = useDebounceValue(dest, 500)
+  const memoedPickup = useDebounceValue(pickUp, 350)
+  const memoedDest = useDebounceValue(dest, 350)
 
   const { mutate, isPending, isIdle } = useMutation({
     mutationFn: async () =>
@@ -89,6 +90,29 @@ export function RiderHomeScreen() {
     setPickupTime(addHours(min, 1))
   }, [])
 
+  useEffect(() => {
+    // Search pickup address
+    if (pickUp) {
+      Radar.autocomplete({
+        query: pickUp,
+        limit: 5,
+      }).then((res) => {
+        if (!res.addresses) {
+          toast.show('Address search failed, try again later', {
+            message: res.status,
+          })
+          setPickupList([])
+        } else {
+          setPickupList(res.addresses)
+        }
+      })
+    }
+  }, [memoedPickup])
+
+  useEffect(() => {
+    // Search destination address
+  }, [memoedDest])
+
   const isInvalid =
     !store?.id ||
     isPending ||
@@ -98,8 +122,7 @@ export function RiderHomeScreen() {
 
   return (
     <YStack
-      f={Platform.OS === 'web' ? 1 : 0}
-      mx={Platform.OS === 'web' ? 'auto' : undefined}
+      $platform-web={{ f: 1, mx: 'auto' }}
       px="$5"
       jc="center"
       ai="center"
@@ -157,11 +180,19 @@ export function RiderHomeScreen() {
         Drop Off Location: {destLngLat ? destLngLat.lng + ' ' + destLngLat.lat : 'unset'}
       </Paragraph>
 
-      <YGroup alignSelf="center" bordered size="$2">
-        <YGroup.Item>
-          <ListItem hoverTheme icon={Star} title="Star" subTitle="Twinkles" />
-        </YGroup.Item>
-      </YGroup>
+      {!isPickupSet && pickupList && (
+        <YStack w="100%" h="$10">
+          <YGroup alignSelf="center" bordered size="$2">
+            {pickupList.map((addy) => (
+              <YGroup.Item key={addy.latitude}>
+                <ListItem hoverTheme icon={House} subTitle={addy.formattedAddress}>
+                  {addy.city}
+                </ListItem>
+              </YGroup.Item>
+            ))}
+          </YGroup>
+        </YStack>
+      )}
 
       <Separator />
       {/* Pickup Time */}
