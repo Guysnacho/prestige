@@ -14,6 +14,7 @@ import {
   XStack,
   YGroup,
   YStack,
+  useDebounceValue,
   useToastController,
 } from '@my/ui'
 import { ChevronLeft, HandMetal, Star } from '@tamagui/lucide-icons'
@@ -41,6 +42,9 @@ export function RiderHomeScreen() {
   const [isPickupSet, setIsPickupSet] = useState(false)
 
   const store = useStore(useUserStore, (store) => store)
+
+  const memoedPickup = useDebounceValue(pickUp, 500)
+  const memoedDest = useDebounceValue(dest, 500)
 
   const { mutate, isPending, isIdle } = useMutation({
     mutationFn: async () =>
@@ -96,6 +100,7 @@ export function RiderHomeScreen() {
     <YStack
       f={Platform.OS === 'web' ? 1 : 0}
       mx={Platform.OS === 'web' ? 'auto' : undefined}
+      px="$5"
       jc="center"
       ai="center"
       gap="$4"
@@ -129,7 +134,7 @@ export function RiderHomeScreen() {
           id="pickup"
           disabled={isPickupSet}
           placeholder="1600 Pennsylvania Avenue NW"
-          onChange={(e) => setPickUp(e.target.value)}
+          onChangeText={setPickUp}
         />
       </XStack>
       <XStack alignItems="center" gap="$4">
@@ -141,7 +146,7 @@ export function RiderHomeScreen() {
           id="destination"
           disabled={!isPickupSet}
           placeholder="1600 Pennsylvania Avenue NW"
-          onChange={(e) => setDest(e.target.value)}
+          onChangeText={setDest}
         />
       </XStack>
 
@@ -159,11 +164,9 @@ export function RiderHomeScreen() {
       </YGroup>
 
       <Separator />
-
       {/* Pickup Time */}
       <H6>Pickup Time</H6>
       <Paragraph>{`${pickupTime?.toLocaleString()}`}</Paragraph>
-
       <ScheduleSelector
         minimumDate={minimumDate}
         pickupTime={pickupTime}
