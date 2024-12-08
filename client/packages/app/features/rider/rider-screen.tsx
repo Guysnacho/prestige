@@ -2,8 +2,21 @@ import { AuthContext } from '@my/app/provider/AuthProvider'
 import { useStore, useUserStore } from '@my/app/store'
 import { TOAST_DURATION } from '@my/app/util'
 import getServerUrl from '@my/app/util/getServerUrl'
-import { Button, H6, Paragraph, Separator, Spinner, YStack, useToastController } from '@my/ui'
-import { ChevronLeft, HandMetal } from '@tamagui/lucide-icons'
+import {
+  Button,
+  H6,
+  Input,
+  Label,
+  ListItem,
+  Paragraph,
+  Separator,
+  Spinner,
+  XStack,
+  YGroup,
+  YStack,
+  useToastController,
+} from '@my/ui'
+import { ChevronLeft, HandMetal, Star } from '@tamagui/lucide-icons'
 import { useMutation } from '@tanstack/react-query'
 import { addHours } from 'date-fns'
 import { useContext, useEffect, useState } from 'react'
@@ -21,9 +34,11 @@ export function RiderHomeScreen() {
   const SERVER_URL = getServerUrl()
   const [pickUplngLat, setPickUpLnglat] = useState<LngLat | undefined>()
   const [destLngLat, setDestLnglat] = useState<LngLat | undefined>()
+  const [pickUp, setPickUp] = useState<string | undefined>()
+  const [dest, setDest] = useState<string | undefined>()
   const [pickupTime, setPickupTime] = useState<Date | null>(new Date())
   const [minimumDate, setMinDate] = useState<Date>(new Date())
-  const [isPolling, setIsPolling] = useState(false)
+  const [isPickupSet, setIsPickupSet] = useState(false)
 
   const store = useStore(useUserStore, (store) => store)
 
@@ -105,18 +120,47 @@ export function RiderHomeScreen() {
       <Paragraph>
         Drop Off Location: {destLngLat ? destLngLat.lng + ' ' + destLngLat.lat : 'unset'}
       </Paragraph>
-      {/* <XStack alignItems="center" gap="$4">
-        <Label width={90} htmlFor="name">
-          Name
+      <XStack alignItems="center" gap="$4">
+        <Label width={90} htmlFor="pickup">
+          Pickup
         </Label>
         <Input
           flex={1}
-          id="name"
-          placeholder="Nate Wienert"
-          onChange={(e) => setId(e.target.value)}
+          id="pickup"
+          disabled={isPickupSet}
+          placeholder="1600 Pennsylvania Avenue NW"
+          onChange={(e) => setPickUp(e.target.value)}
         />
-      </XStack> */}
+      </XStack>
+      <XStack alignItems="center" gap="$4">
+        <Label width={90} htmlFor="destination">
+          Drop Off
+        </Label>
+        <Input
+          flex={1}
+          id="destination"
+          disabled={!isPickupSet}
+          placeholder="1600 Pennsylvania Avenue NW"
+          onChange={(e) => setDest(e.target.value)}
+        />
+      </XStack>
+
       <Separator />
+
+      {/* Search Results */}
+      <Paragraph>
+        Drop Off Location: {destLngLat ? destLngLat.lng + ' ' + destLngLat.lat : 'unset'}
+      </Paragraph>
+
+      <YGroup alignSelf="center" bordered size="$2">
+        <YGroup.Item>
+          <ListItem hoverTheme icon={Star} title="Star" subTitle="Twinkles" />
+        </YGroup.Item>
+      </YGroup>
+
+      <Separator />
+
+      {/* Pickup Time */}
       <H6>Pickup Time</H6>
       <Paragraph>{`${pickupTime?.toLocaleString()}`}</Paragraph>
 
