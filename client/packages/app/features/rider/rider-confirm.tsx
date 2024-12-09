@@ -2,15 +2,17 @@ import { AuthContext } from '@my/app/provider/AuthProvider'
 import { useRouterStore, useStore, useUserStore } from '@my/app/store'
 import { TOAST_DURATION } from '@my/app/util'
 import getServerUrl from '@my/app/util/getServerUrl'
-import { Button, Paragraph, Spinner, YStack, useToastController } from '@my/ui'
+import { Button, Heading, Paragraph, Spinner, YStack, useToastController } from '@my/ui'
 import { HandMetal } from '@tamagui/lucide-icons'
 import { useMutation } from '@tanstack/react-query'
-import { Dispatch, SetStateAction, useContext } from 'react'
+import { Dispatch, SetStateAction, useContext, useState } from 'react'
 
 export function RiderConfirm({ setPage }: { setPage: Dispatch<SetStateAction<number>> }) {
   const auth = useContext(AuthContext)
   const toast = useToastController()
   const SERVER_URL = getServerUrl()
+
+  const [requested, setRequested] = useState(false)
 
   const store = useStore(useRouterStore, (store) => store)
   const user = useStore(useUserStore, (store) => store)
@@ -44,6 +46,7 @@ export function RiderConfirm({ setPage }: { setPage: Dispatch<SetStateAction<num
       })
     },
     async onSuccess(data, v, c) {
+      setRequested(true)
       var res = await data.json()
       toast.show(res.message, {
         message: res.requestId,
@@ -56,15 +59,26 @@ export function RiderConfirm({ setPage }: { setPage: Dispatch<SetStateAction<num
 
   return (
     <YStack $gtMd={{ w: '50%' }} w="75%" gap="$4" mt="$5">
-      <Paragraph>Please confirm the above details for your trip</Paragraph>
-      <Button
-        iconAfter={isPending ? Spinner : HandMetal}
-        variant={isInvalid ? 'outlined' : undefined}
-        disabled={isInvalid}
-        onPress={() => mutate()}
-      >
-        Request Trip
-      </Button>
+      {requested ? (
+        <>
+          <Heading textAlign="center">Your trip request has been recieved!</Heading>
+          <Paragraph>
+            Your trip request has been recieved. Please check your email for a confirmation.
+          </Paragraph>
+        </>
+      ) : (
+        <>
+          <Paragraph>Please confirm the above details for your trip</Paragraph>
+          <Button
+            iconAfter={isPending ? Spinner : HandMetal}
+            variant={isInvalid ? 'outlined' : undefined}
+            disabled={isInvalid}
+            onPress={() => mutate()}
+          >
+            Request Trip
+          </Button>
+        </>
+      )}
     </YStack>
   )
 }
