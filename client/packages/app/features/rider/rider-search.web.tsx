@@ -17,8 +17,6 @@ import Radar from 'radar-sdk-js'
 import { RadarAddress } from 'radar-sdk-js/dist/types'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 
-Radar.initialize(process.env.NEXT_PUBLIC_RADAR_ANON_KEY!)
-
 export function RiderSearch({ setPage }: { setPage: Dispatch<SetStateAction<number>> }) {
   const toast = useToastController()
   const [pickUp, setPickUp] = useState<string | undefined>()
@@ -31,6 +29,8 @@ export function RiderSearch({ setPage }: { setPage: Dispatch<SetStateAction<numb
 
   const memoedPickup = useDebounceValue(pickUp, 350)
   const memoedDest = useDebounceValue(dest, 350)
+
+  useEffect(() => Radar.initialize(process.env.NEXT_PUBLIC_RADAR_ANON_KEY!), [])
 
   useEffect(() => {
     // Search pickup address
