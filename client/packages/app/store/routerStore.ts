@@ -7,7 +7,8 @@ export interface RouteState {
   pickupTime: Date | null
   setPickup: (addy: RadarAddress) => void
   setDestination: (addy: RadarAddress) => void
-  setPickupTime: (pickupTime: Date) => void
+  setPickupTime: (pickupTime: Date | undefined) => void
+  clear: () => void
 }
 
 /**
