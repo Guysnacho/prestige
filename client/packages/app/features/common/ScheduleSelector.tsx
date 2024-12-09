@@ -1,4 +1,4 @@
-import { Button, Paragraph, YStack } from '@my/ui'
+import { Button, H6, Paragraph, YStack } from '@my/ui'
 import RNDateTimePicker, {
   AndroidNativeProps,
   DateTimePickerAndroid,
@@ -7,10 +7,12 @@ import { Dispatch, SetStateAction, useState } from 'react'
 import { Platform } from 'react-native'
 
 export const ScheduleSelector = ({
+  setPage,
   pickupTime,
   minimumDate,
   setPickupTime,
 }: {
+  setPage: Dispatch<SetStateAction<number>>
   pickupTime: Date | null | undefined
   minimumDate: Date
   setPickupTime: Dispatch<SetStateAction<Date | null | undefined>>
@@ -48,7 +50,9 @@ export const ScheduleSelector = ({
   }
 
   return (
-    <YStack gap={10}>
+    <YStack gap="$5">
+      <H6 textAlign="center">Pickup Date</H6>
+      <Paragraph>{`${pickupTime?.toLocaleString()}`}</Paragraph>
       <Button onPress={showDatepicker}>Select Date</Button>
       <Button onPress={showTimepicker}>Select Time</Button>
       {show && Platform.OS !== 'android' && minimumDate && (
@@ -58,12 +62,17 @@ export const ScheduleSelector = ({
             testID="dateTimePicker"
             value={pickupTime!}
             mode={mode}
-            is24Hour={true}
+            is24Hour={false}
+            minuteInterval={15}
             onChange={onChange}
             minimumDate={minimumDate}
           />
         </>
       )}
+
+      <Button disabled={!pickupTime} onPress={() => setPage(2)}>
+        Confirm
+      </Button>
     </YStack>
   )
 }

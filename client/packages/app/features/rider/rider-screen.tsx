@@ -26,6 +26,7 @@ import Radar, { RadarAddress } from 'react-native-radar'
 import { useRouter } from 'solito/navigation'
 import { MapBox } from '../common/MapBox'
 import { ScheduleSelector } from '../common/ScheduleSelector'
+import { RiderSearch } from './rider-search'
 
 export function RiderHomeScreen() {
   const auth = useContext(AuthContext)
@@ -35,17 +36,11 @@ export function RiderHomeScreen() {
   const SERVER_URL = getServerUrl()
   const [pickUplngLat, setPickUpLnglat] = useState<LngLat | undefined>()
   const [destLngLat, setDestLnglat] = useState<LngLat | undefined>()
-  const [pickUp, setPickUp] = useState<string | undefined>()
-  const [dest, setDest] = useState<string | undefined>()
   const [pickupTime, setPickupTime] = useState<Date | null>(new Date())
   const [minimumDate, setMinDate] = useState<Date>(new Date())
-  const [isPickupSet, setIsPickupSet] = useState(false)
-  const [pickupList, setPickupList] = useState<RadarAddress[] | undefined>(undefined)
+  const [page, setPage] = useState(1)
 
   const store = useStore(useUserStore, (store) => store)
-
-  const memoedPickup = useDebounceValue(pickUp, 350)
-  const memoedDest = useDebounceValue(dest, 350)
 
   const { mutate, isPending, isIdle } = useMutation({
     mutationFn: async () =>
@@ -90,29 +85,6 @@ export function RiderHomeScreen() {
     setPickupTime(addHours(min, 1))
   }, [])
 
-  useEffect(() => {
-    // Search pickup address
-    if (pickUp) {
-      Radar.autocomplete({
-        query: pickUp,
-        limit: 5,
-      }).then((res) => {
-        if (!res.addresses) {
-          toast.show('Address search failed, try again later', {
-            message: res.status,
-          })
-          setPickupList([])
-        } else {
-          setPickupList(res.addresses)
-        }
-      })
-    }
-  }, [memoedPickup])
-
-  useEffect(() => {
-    // Search destination address
-  }, [memoedDest])
-
   const isInvalid =
     !store?.id ||
     isPending ||
@@ -132,7 +104,7 @@ export function RiderHomeScreen() {
     >
       <MapBox
         label="Let's handle logistics"
-        height="$20"
+        height="$12"
         width="90%"
         pickUplngLat={pickUplngLat}
         setPickUpLnglat={setPickUpLnglat}
@@ -148,61 +120,19 @@ export function RiderHomeScreen() {
       <Paragraph>
         Drop Off Location: {destLngLat ? destLngLat.lng + ' ' + destLngLat.lat : 'unset'}
       </Paragraph>
-      <XStack alignItems="center" gap="$4">
-        <Label width={90} htmlFor="pickup">
-          Pickup
-        </Label>
-        <Input
-          flex={1}
-          id="pickup"
-          disabled={isPickupSet}
-          placeholder="1600 Pennsylvania Avenue NW"
-          onChangeText={setPickUp}
+
+      {page === 0 && <RiderSearch setPage={setPage} />}
+      {page === 1 && (
+        <ScheduleSelector
+          setPage={setPage}
+          minimumDate={minimumDate}
+          pickupTime={pickupTime}
+          setPickupTime={setPickupTime}
         />
-      </XStack>
-      <XStack alignItems="center" gap="$4">
-        <Label width={90} htmlFor="destination">
-          Drop Off
-        </Label>
-        <Input
-          flex={1}
-          id="destination"
-          disabled={!isPickupSet}
-          placeholder="1600 Pennsylvania Avenue NW"
-          onChangeText={setDest}
-        />
-      </XStack>
-
-      <Separator />
-
-      {/* Search Results */}
-      <Paragraph>
-        Drop Off Location: {destLngLat ? destLngLat.lng + ' ' + destLngLat.lat : 'unset'}
-      </Paragraph>
-
-      {!isPickupSet && pickupList && (
-        <YStack w="100%" h="$10">
-          <YGroup alignSelf="center" bordered size="$2">
-            {pickupList.map((addy) => (
-              <YGroup.Item key={addy.latitude}>
-                <ListItem hoverTheme icon={House} subTitle={addy.formattedAddress}>
-                  {addy.city}
-                </ListItem>
-              </YGroup.Item>
-            ))}
-          </YGroup>
-        </YStack>
       )}
+      {page === 2 && <RiderSearch setPage={setPage} />}
 
       <Separator />
-      {/* Pickup Time */}
-      <H6>Pickup Time</H6>
-      <Paragraph>{`${pickupTime?.toLocaleString()}`}</Paragraph>
-      <ScheduleSelector
-        minimumDate={minimumDate}
-        pickupTime={pickupTime}
-        setPickupTime={setPickupTime}
-      />
       <Separator />
       <Button
         iconAfter={isPending ? Spinner : HandMetal}
