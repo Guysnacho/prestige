@@ -1,9 +1,9 @@
-import { AuthScreen } from '@my/app/features/auth/auth-screen'
+import AuthScreen from '@my/app/features/auth/auth-screen'
 import { createClient } from '@my/app/util/server-props'
 import { User } from '@supabase/supabase-js'
-import { HomeScreen } from 'app/features/home/screen'
+import HomeScreen from 'app/features/home/screen'
+import type { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { GetServerSidePropsContext } from 'next/types'
-import type { InferGetServerSidePropsType, GetServerSideProps } from 'next'
 import { useState } from 'react'
 
 export type HomeProps = {
