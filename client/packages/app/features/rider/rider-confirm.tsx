@@ -55,13 +55,13 @@ export function RiderConfirm({ setPage }: { setPage: Dispatch<SetStateAction<num
   const isInvalid = !user?.id || isPending || !store?.pickup || !store?.destination
 
   return (
-    <YStack $gtMd={{ w: '50%' }} w="75%" gap="$4">
-      <Paragraph>Please confirm these details</Paragraph>
+    <YStack $gtMd={{ w: '50%' }} w="75%" gap="$4" mt="$5">
+      <Paragraph>Please confirm the above details for your trip</Paragraph>
       <Button
         iconAfter={isPending ? Spinner : HandMetal}
         variant={isInvalid ? 'outlined' : undefined}
         disabled={isInvalid}
-        // onPress={() => mutate()}
+        onPress={() => mutate()}
       >
         Request Trip
       </Button>
