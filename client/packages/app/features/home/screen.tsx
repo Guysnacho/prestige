@@ -92,7 +92,7 @@ export default function HomeScreen({ user }: HomeProps) {
         Rider Page
       </Button>
 
-      <SheetDemo />
+      {/* <SheetDemo /> */}
     </YStack>
   )
 }
