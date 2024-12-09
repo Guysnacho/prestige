@@ -24,7 +24,6 @@ export const ScheduleSelector = ({ setPage }: { setPage: Dispatch<SetStateAction
   }, [])
 
   const onChange = (event, selectedDate) => {
-    console.debug(event)
     const currentDate = new Date(selectedDate)
     setShow(false)
     if (event.type === 'set') {
