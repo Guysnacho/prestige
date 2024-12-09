@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "IGNORE_TS_CONFIG_PATHS=true TAMAGUI_TARGET=web TAMAGUI_DISABLE_WARN_DYNAMIC_LOAD=1 cd ../.. && yarn build && cd apps/next && next build",
-    "start": "IGNORE_TS_CONFIG_PATHS=true TAMAGUI_TARGET=web TAMAGUI_DISABLE_WARN_DYNAMIC_LOAD=1 next start",
+    "build": "cd ../.. && yarn build && cd apps/next && next build",
+    "start": "next start",
     "serve": "NODE_ENV=production next start --port 8151",
     "lint": "next lint"
   },

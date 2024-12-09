@@ -10,7 +10,7 @@ export function UserDetailScreen() {
   const store = useStore(useUserStore, (store) => store)
   const client = createClient()
   const router = useRouter()
-  const { id } = useParams()
+  const params = useParams()
 
   const {
     data: userData,
@@ -18,7 +18,7 @@ export function UserDetailScreen() {
     isLoading,
   } = useQuery({
     queryFn: async () => {
-      const user = client.from('member').select('*').eq('id', id).single()
+      const user = client.from('member').select('*').eq('id', params.id).single()
       return await user
     },
     queryKey: ['user-details'],
