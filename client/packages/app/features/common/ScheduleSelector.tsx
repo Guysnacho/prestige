@@ -1,5 +1,5 @@
 import { useRouterStore, useStore } from '@my/app/store'
-import { Button, H6, Paragraph, YStack } from '@my/ui'
+import { Button, H6, Paragraph, useToastController, YStack } from '@my/ui'
 import RNDateTimePicker, {
   AndroidNativeProps,
   DateTimePickerAndroid,
@@ -9,6 +9,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { Platform } from 'react-native'
 
 export const ScheduleSelector = ({ setPage }: { setPage: Dispatch<SetStateAction<number>> }) => {
+  const toast = useToastController()
   const [mode, setMode] = useState<AndroidNativeProps['mode'] | undefined>('date')
   const [show, setShow] = useState(false)
   const [pickupTime, setPickupTime] = useState<Date | null>(new Date())
@@ -24,10 +25,15 @@ export const ScheduleSelector = ({ setPage }: { setPage: Dispatch<SetStateAction
 
   const onChange = (event, selectedDate) => {
     console.debug(event)
-    const currentDate = selectedDate
+    const currentDate = new Date(selectedDate)
     setShow(false)
     if (event.type === 'set') {
-      store?.setPickupTime(new Date(selectedDate))
+      store?.setPickupTime(currentDate)
+      if (minimumDate.toISOString() > currentDate.toISOString()) {
+        toast.show(
+          `Make sure you schedule a trip after ${minimumDate.toDateString()} ${minimumDate.toLocaleTimeString()}`
+        )
+      }
     }
   }
 
@@ -54,6 +60,9 @@ export const ScheduleSelector = ({ setPage }: { setPage: Dispatch<SetStateAction
     showMode('time')
   }
 
+  const isInvalid =
+    !store?.pickupTime || minimumDate.toISOString() > store?.pickupTime!.toISOString()
+
   return (
     <YStack gap="$5">
       <H6 textAlign="center">Pickup Date</H6>
@@ -75,7 +84,11 @@ export const ScheduleSelector = ({ setPage }: { setPage: Dispatch<SetStateAction
         </>
       )}
 
-      <Button disabled={!store?.pickupTime} onPress={() => setPage(2)}>
+      <Button
+        disabled={isInvalid}
+        variant={isInvalid ? 'outlined' : undefined}
+        onPress={() => setPage(2)}
+      >
         Confirm
       </Button>
     </YStack>
