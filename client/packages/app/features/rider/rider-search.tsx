@@ -125,7 +125,12 @@ export function RiderSearch({ setPage }: { setPage: Dispatch<SetStateAction<numb
                   title={addy.formattedAddress}
                   onPress={() => {
                     store?.setDestination(addy)
-                    setPage(1)
+                    if (store?.pickup?.formattedAddress == addy.formattedAddress) {
+                      toast.show('Issue setting destination', {
+                        message:
+                          "Pickup location can't match your drop off location. That'd be a pretty short trip!",
+                      })
+                    } else setPage(1)
                   }}
                 />
               </YGroup.Item>

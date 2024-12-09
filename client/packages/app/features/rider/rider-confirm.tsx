@@ -3,13 +3,15 @@ import { useRouterStore, useStore, useUserStore } from '@my/app/store'
 import { TOAST_DURATION } from '@my/app/util'
 import getServerUrl from '@my/app/util/getServerUrl'
 import { Button, Heading, Paragraph, Spinner, YStack, useToastController } from '@my/ui'
-import { HandMetal } from '@tamagui/lucide-icons'
+import { HandMetal, Home } from '@tamagui/lucide-icons'
 import { useMutation } from '@tanstack/react-query'
 import { Dispatch, SetStateAction, useContext, useState } from 'react'
+import { useRouter } from 'solito/navigation'
 
 export function RiderConfirm({ setPage }: { setPage: Dispatch<SetStateAction<number>> }) {
   const auth = useContext(AuthContext)
   const toast = useToastController()
+  const router = useRouter()
   const SERVER_URL = getServerUrl()
 
   const [requested, setRequested] = useState(false)
@@ -46,12 +48,14 @@ export function RiderConfirm({ setPage }: { setPage: Dispatch<SetStateAction<num
       })
     },
     async onSuccess(data, v, c) {
-      setRequested(true)
-      var res = await data.json()
-      toast.show(res.message, {
-        message: res.requestId,
-        duration: TOAST_DURATION,
-      })
+      if (data.status === 201) {
+        setRequested(true)
+        var res = await data.json()
+        toast.show(res.message, {
+          message: res.requestId,
+          duration: TOAST_DURATION,
+        })
+      }
     },
   })
 
@@ -65,6 +69,17 @@ export function RiderConfirm({ setPage }: { setPage: Dispatch<SetStateAction<num
           <Paragraph>
             Your trip request has been recieved. Please check your email for a confirmation.
           </Paragraph>
+          <Button
+            icon={Home}
+            onPress={() => {
+              store?.clear()
+              setRequested(false)
+              setPage(0)
+              router.replace('/')
+            }}
+          >
+            Go Home
+          </Button>
         </>
       ) : (
         <>

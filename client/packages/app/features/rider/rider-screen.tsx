@@ -71,6 +71,7 @@ export function RiderHomeScreen() {
       <Separator />
 
       <Button
+        display={page == 2 ? 'none' : undefined}
         icon={ChevronLeft}
         onPress={() => {
           if (page === 0) {
@@ -79,8 +80,6 @@ export function RiderHomeScreen() {
           } else if (page === 1) {
             setPage(0)
             routeStore?.setPickupTime(undefined)
-          } else if (page === 2) {
-            setPage(1)
           }
         }}
       >
