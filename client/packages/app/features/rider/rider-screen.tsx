@@ -1,31 +1,16 @@
 import { AuthContext } from '@my/app/provider/AuthProvider'
-import { useStore, useUserStore } from '@my/app/store'
+import { useRouterStore, useStore, useUserStore } from '@my/app/store'
 import { TOAST_DURATION } from '@my/app/util'
 import getServerUrl from '@my/app/util/getServerUrl'
-import {
-  Button,
-  H6,
-  Input,
-  Label,
-  ListItem,
-  Paragraph,
-  Separator,
-  Spinner,
-  XStack,
-  YGroup,
-  YStack,
-  useDebounceValue,
-  useToastController,
-} from '@my/ui'
-import { ChevronLeft, HandMetal, House } from '@tamagui/lucide-icons'
+import { Button, Paragraph, Separator, YStack, useToastController } from '@my/ui'
+import { ChevronLeft } from '@tamagui/lucide-icons'
 import { useMutation } from '@tanstack/react-query'
-import { addHours } from 'date-fns'
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useState } from 'react'
 import { LngLat } from 'react-map-gl'
-import Radar, { RadarAddress } from 'react-native-radar'
 import { useRouter } from 'solito/navigation'
 import { MapBox } from '../common/MapBox'
 import { ScheduleSelector } from '../common/ScheduleSelector'
+import { RiderConfirm } from './rider-confirm'
 import { RiderSearch } from './rider-search'
 
 export function RiderHomeScreen() {
@@ -36,11 +21,10 @@ export function RiderHomeScreen() {
   const SERVER_URL = getServerUrl()
   const [pickUplngLat, setPickUpLnglat] = useState<LngLat | undefined>()
   const [destLngLat, setDestLnglat] = useState<LngLat | undefined>()
-  const [pickupTime, setPickupTime] = useState<Date | null>(new Date())
-  const [minimumDate, setMinDate] = useState<Date>(new Date())
-  const [page, setPage] = useState(1)
+  const [page, setPage] = useState(2)
 
   const store = useStore(useUserStore, (store) => store)
+  const routeStore = useStore(useRouterStore, (store) => store)
 
   const { mutate, isPending, isIdle } = useMutation({
     mutationFn: async () =>
@@ -49,14 +33,14 @@ export function RiderHomeScreen() {
         referrer: SERVER_URL,
         body: JSON.stringify({
           id: store?.id,
-          time: pickupTime?.toISOString(),
+          time: routeStore?.pickupTime?.toISOString(),
           pickup: {
-            lng: pickUplngLat?.lng.toPrecision(17),
-            lat: pickUplngLat?.lat.toPrecision(17),
+            lng: routeStore?.pickup?.longitude.toPrecision(17),
+            lat: routeStore?.pickup?.latitude.toPrecision(17),
           },
           destination: {
-            lng: destLngLat?.lng.toPrecision(17),
-            lat: destLngLat?.lat.toPrecision(17),
+            lng: routeStore?.destination?.longitude.toPrecision(17),
+            lat: routeStore?.destination?.latitude.toPrecision(17),
           },
         }),
         headers: {
@@ -79,26 +63,13 @@ export function RiderHomeScreen() {
     },
   })
 
-  useEffect(() => {
-    const min = new Date()
-    setMinDate(addHours(min, 1))
-    setPickupTime(addHours(min, 1))
-  }, [])
-
-  const isInvalid =
-    !store?.id ||
-    isPending ||
-    !pickUplngLat ||
-    !destLngLat ||
-    minimumDate.toISOString() > pickupTime!.toISOString()
-
   return (
     <YStack
       $platform-web={{ f: 1, mx: 'auto' }}
       px="$5"
       jc="center"
       ai="center"
-      gap="$4"
+      gap="$2"
       bg="$background"
       height="100%"
     >
@@ -114,36 +85,34 @@ export function RiderHomeScreen() {
       <Paragraph ta="center" fow="700" col="$blue10">
         {`Rider : ${store?.name ? store.name : 'Who are you??'}`}
       </Paragraph>
+      <Paragraph>Pick Up Location</Paragraph>
+      <Paragraph>{routeStore?.pickup ? routeStore.pickup.formattedAddress : 'unset'}</Paragraph>
+      <Paragraph>Drop Off Location</Paragraph>
       <Paragraph>
-        Pick Up Location: {pickUplngLat ? pickUplngLat.lng + ' ' + pickUplngLat.lat : 'unset'}
-      </Paragraph>
-      <Paragraph>
-        Drop Off Location: {destLngLat ? destLngLat.lng + ' ' + destLngLat.lat : 'unset'}
+        {routeStore?.destination ? routeStore.destination.formattedAddress : 'unset'}
       </Paragraph>
 
       {page === 0 && <RiderSearch setPage={setPage} />}
-      {page === 1 && (
-        <ScheduleSelector
-          setPage={setPage}
-          minimumDate={minimumDate}
-          pickupTime={pickupTime}
-          setPickupTime={setPickupTime}
-        />
-      )}
-      {page === 2 && <RiderSearch setPage={setPage} />}
+      {page === 1 && <ScheduleSelector setPage={setPage} />}
+      {page === 2 && <RiderConfirm setPage={setPage} />}
 
       <Separator />
-      <Separator />
+
       <Button
-        iconAfter={isPending ? Spinner : HandMetal}
-        variant={isInvalid ? 'outlined' : undefined}
-        disabled={isInvalid}
-        onPress={() => mutate()}
+        icon={ChevronLeft}
+        onPress={() => {
+          if (page === 0) {
+            routeStore?.clear()
+            router.replace('/')
+          } else if (page === 1) {
+            setPage(0)
+            routeStore?.setPickupTime(undefined)
+          } else if (page === 2) {
+            setPage(1)
+          }
+        }}
       >
-        Request Trip
-      </Button>
-      <Button icon={ChevronLeft} onPress={() => router.replace('/')}>
-        Go Home
+        {page ? 'Go Back' : 'Go Home'}
       </Button>
     </YStack>
   )

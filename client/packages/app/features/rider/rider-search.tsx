@@ -1,5 +1,6 @@
 import { useRouterStore, useStore } from '@my/app/store'
 import {
+  Button,
   Input,
   Label,
   ListItem,
@@ -94,11 +95,6 @@ export function RiderSearch({ setPage }: { setPage: Dispatch<SetStateAction<numb
       </XStack>
       <Separator />
       {/* Search Results */}
-      {store?.destination && (
-        <Paragraph>
-          Drop Off Location: {store.destination.longitude} {store.destination.latitude}
-        </Paragraph>
-      )}
       {!isPickupSet && pickupList && (
         <YStack w="100%" h="$10">
           <YGroup alignSelf="center" bordered size="$2">
@@ -137,6 +133,9 @@ export function RiderSearch({ setPage }: { setPage: Dispatch<SetStateAction<numb
           </YGroup>
         </YStack>
       )}
+      <Button mx="auto" px="$6" disabled={!store?.destination} onPress={() => setPage(1)}>
+        Confirm
+      </Button>
     </YStack>
   )
 }
