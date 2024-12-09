@@ -6,6 +6,8 @@ import { UserState, useUserStore } from '../store/userStore'
 import { createClient } from '../util/components'
 import { Database } from '../util/schema'
 
+Radar.initialize(process.env.EXPO_PUBLIC_RADAR_ANON_KEY!)
+
 interface IAuthContext {
   session: Session | null
   setSession: Dispatch<SetStateAction<IAuthContext['session']>>
