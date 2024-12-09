@@ -1,29 +1,34 @@
+import { useRouterStore, useStore } from '@my/app/store'
 import { Button, H6, Paragraph, YStack } from '@my/ui'
 import RNDateTimePicker, {
   AndroidNativeProps,
   DateTimePickerAndroid,
 } from '@react-native-community/datetimepicker'
-import { Dispatch, SetStateAction, useState } from 'react'
+import { addHours } from 'date-fns'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { Platform } from 'react-native'
 
-export const ScheduleSelector = ({
-  setPage,
-  pickupTime,
-  minimumDate,
-  setPickupTime,
-}: {
-  setPage: Dispatch<SetStateAction<number>>
-  pickupTime: Date | null | undefined
-  minimumDate: Date
-  setPickupTime: Dispatch<SetStateAction<Date | null | undefined>>
-}) => {
+export const ScheduleSelector = ({ setPage }: { setPage: Dispatch<SetStateAction<number>> }) => {
   const [mode, setMode] = useState<AndroidNativeProps['mode'] | undefined>('date')
   const [show, setShow] = useState(false)
+  const [pickupTime, setPickupTime] = useState<Date | null>(new Date())
+  const [minimumDate, setMinDate] = useState<Date>(new Date())
+
+  const store = useStore(useRouterStore, (store) => store)
+
+  useEffect(() => {
+    const min = new Date()
+    setMinDate(addHours(min, 1))
+    setPickupTime(addHours(min, 1))
+  }, [])
 
   const onChange = (event, selectedDate) => {
+    console.debug(event)
     const currentDate = selectedDate
     setShow(false)
-    setPickupTime(currentDate)
+    if (event.type === 'set') {
+      store?.setPickupTime(new Date(selectedDate))
+    }
   }
 
   const showMode = (currentMode) => {
@@ -52,7 +57,7 @@ export const ScheduleSelector = ({
   return (
     <YStack gap="$5">
       <H6 textAlign="center">Pickup Date</H6>
-      <Paragraph>{`${pickupTime?.toLocaleString()}`}</Paragraph>
+      <Paragraph>{`${store?.pickupTime?.toLocaleString() || 'unset'}`}</Paragraph>
       <Button onPress={showDatepicker}>Select Date</Button>
       <Button onPress={showTimepicker}>Select Time</Button>
       {show && Platform.OS !== 'android' && minimumDate && (
@@ -70,7 +75,7 @@ export const ScheduleSelector = ({
         </>
       )}
 
-      <Button disabled={!pickupTime} onPress={() => setPage(2)}>
+      <Button disabled={!store?.pickupTime} onPress={() => setPage(2)}>
         Confirm
       </Button>
     </YStack>
