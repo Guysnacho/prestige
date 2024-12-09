@@ -16,11 +16,13 @@ export const TripCard = (props: {
           <Paragraph>Status: {props.trip.status}</Paragraph>
           <YStack alignItems="flex-start">
             <Paragraph>Pickup</Paragraph>
+            <Paragraph>Address: {props.trip.pickup_addr}</Paragraph>
             <Paragraph>lng: {props.trip.pickup_lng}</Paragraph>
             <Paragraph>lat: {props.trip.pickup_lat}</Paragraph>
           </YStack>
           <YStack alignItems="flex-start">
             <Paragraph>Destination</Paragraph>
+            <Paragraph>Address: {props.trip.dest_addr}</Paragraph>
             <Paragraph>lng: {props.trip.dest_lng}</Paragraph>
             <Paragraph>lat: {props.trip.dest_lat}</Paragraph>
           </YStack>

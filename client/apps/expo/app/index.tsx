@@ -1,5 +1,5 @@
 import AuthScreen from '@my/app/features/auth/auth-screen'
-import { useUserStore } from '@my/app/util'
+import { useUserStore } from '@my/app/store'
 import { createClient } from '@my/app/util/components'
 import { ScrollView } from '@my/ui'
 import { User } from '@supabase/supabase-js'

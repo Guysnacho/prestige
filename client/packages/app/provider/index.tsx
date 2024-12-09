@@ -3,6 +3,9 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useColorScheme } from 'react-native'
 import { AuthContextProvider } from './AuthProvider'
 import { ToastViewport } from './ToastViewport'
+import Radar from 'react-native-radar'
+
+Radar.initialize(process.env.NEXT_PUBLIC_RADAR_ANON_KEY! || process.env.EXPO_PUBLIC_RADAR_ANON_KEY!)
 
 export function Provider({ children, ...rest }: Omit<TamaguiProviderProps, 'config'>) {
   const colorScheme = useColorScheme()

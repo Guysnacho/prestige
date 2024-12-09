@@ -1,94 +1,53 @@
-import { AuthContext } from '@my/app/provider/AuthProvider'
-import { TOAST_DURATION, useStore, useUserStore } from '@my/app/util'
-import getServerUrl from '@my/app/util/getServerUrl'
-import { Button, H6, Paragraph, Separator, Spinner, YStack, useToastController } from '@my/ui'
-import { ChevronLeft, HandMetal } from '@tamagui/lucide-icons'
-import { useMutation } from '@tanstack/react-query'
-import { addHours } from 'date-fns'
-import { useContext, useEffect, useState } from 'react'
+import { useRouterStore, useStore, useUserStore } from '@my/app/store'
+import { Button, Paragraph, Separator, YStack } from '@my/ui'
+import { ChevronLeft } from '@tamagui/lucide-icons'
+import { useEffect, useState } from 'react'
 import { LngLat } from 'react-map-gl'
-import { Platform } from 'react-native'
 import { useRouter } from 'solito/navigation'
 import { MapBox } from '../common/MapBox'
 import { ScheduleSelector } from '../common/ScheduleSelector'
+import { RiderConfirm } from './rider-confirm'
+import { RiderSearch } from './rider-search'
+import { BackHandler } from 'react-native'
 
 export function RiderHomeScreen() {
-  const auth = useContext(AuthContext)
-
   const router = useRouter()
-  const toast = useToastController()
-  const SERVER_URL = getServerUrl()
   const [pickUplngLat, setPickUpLnglat] = useState<LngLat | undefined>()
   const [destLngLat, setDestLnglat] = useState<LngLat | undefined>()
-  const [pickupTime, setPickupTime] = useState<Date | null>(new Date())
-  const [minimumDate, setMinDate] = useState<Date>(new Date())
-  const [isPolling, setIsPolling] = useState(false)
+  const [page, setPage] = useState(0)
 
   const store = useStore(useUserStore, (store) => store)
-
-  const { mutate, isPending, isIdle } = useMutation({
-    mutationFn: async () =>
-      fetch(`${SERVER_URL}/rider/trip`, {
-        method: 'POST',
-        referrer: SERVER_URL,
-        body: JSON.stringify({
-          id: store?.id,
-          time: pickupTime?.toISOString(),
-          pickup: {
-            lng: pickUplngLat?.lng.toPrecision(17),
-            lat: pickUplngLat?.lat.toPrecision(17),
-          },
-          destination: {
-            lng: destLngLat?.lng.toPrecision(17),
-            lat: destLngLat?.lat.toPrecision(17),
-          },
-        }),
-        headers: {
-          Authorization: auth!.session!.access_token,
-        },
-      }),
-    onError(err, v, c) {
-      console.error(err)
-      toast.show('Issue while requesting your ride', {
-        message: err?.message,
-        duration: TOAST_DURATION,
-      })
-    },
-    async onSuccess(data, v, c) {
-      var res = await data.json()
-      toast.show(res.message, {
-        message: res.requestId,
-        duration: TOAST_DURATION,
-      })
-    },
-  })
+  const routeStore = useStore(useRouterStore, (store) => store)
 
   useEffect(() => {
-    const min = new Date()
-    setMinDate(addHours(min, 1))
-    setPickupTime(addHours(min, 1))
-  }, [])
+    // Normal back behavior if no listeners return true
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      if (page === 0) {
+        return false
+      } else if (page === 1) {
+        routeStore?.clear()
+      } else if (page === 2) {
+        routeStore?.setPickupTime()
+      }
+      setPage(page - 1)
+    })
 
-  const isInvalid =
-    !store?.id ||
-    isPending ||
-    !pickUplngLat ||
-    !destLngLat ||
-    minimumDate.toISOString() > pickupTime!.toISOString()
+    return () => backHandler.remove()
+  }, [])
 
   return (
     <YStack
-      f={Platform.OS === 'web' ? 1 : 0}
-      mx={Platform.OS === 'web' ? 'auto' : undefined}
+      $platform-web={{ f: 1, mx: 'auto' }}
+      px="$5"
       jc="center"
       ai="center"
-      gap="$4"
+      gap="$2"
       bg="$background"
       height="100%"
     >
       <MapBox
         label="Let's handle logistics"
-        height="$20"
+        height="$12"
         width="90%"
         pickUplngLat={pickUplngLat}
         setPickUpLnglat={setPickUpLnglat}
@@ -98,43 +57,33 @@ export function RiderHomeScreen() {
       <Paragraph ta="center" fow="700" col="$blue10">
         {`Rider : ${store?.name ? store.name : 'Who are you??'}`}
       </Paragraph>
+      <Paragraph>Pick Up Location</Paragraph>
+      <Paragraph>{routeStore?.pickup ? routeStore.pickup.formattedAddress : 'unset'}</Paragraph>
+      <Paragraph>Drop Off Location</Paragraph>
       <Paragraph>
-        Pick Up Location: {pickUplngLat ? pickUplngLat.lng + ' ' + pickUplngLat.lat : 'unset'}
+        {routeStore?.destination ? routeStore.destination.formattedAddress : 'unset'}
       </Paragraph>
-      <Paragraph>
-        Drop Off Location: {destLngLat ? destLngLat.lng + ' ' + destLngLat.lat : 'unset'}
-      </Paragraph>
-      {/* <XStack alignItems="center" gap="$4">
-        <Label width={90} htmlFor="name">
-          Name
-        </Label>
-        <Input
-          flex={1}
-          id="name"
-          placeholder="Nate Wienert"
-          onChange={(e) => setId(e.target.value)}
-        />
-      </XStack> */}
-      <Separator />
-      <H6>Pickup Time</H6>
-      <Paragraph>{`${pickupTime?.toLocaleString()}`}</Paragraph>
 
-      <ScheduleSelector
-        minimumDate={minimumDate}
-        pickupTime={pickupTime}
-        setPickupTime={setPickupTime}
-      />
+      {page === 0 && <RiderSearch setPage={setPage} />}
+      {page === 1 && <ScheduleSelector setPage={setPage} />}
+      {page === 2 && <RiderConfirm setPage={setPage} />}
+
       <Separator />
+
       <Button
-        iconAfter={isPending ? Spinner : HandMetal}
-        variant={isInvalid ? 'outlined' : undefined}
-        disabled={isInvalid}
-        onPress={() => mutate()}
+        display={page == 2 ? 'none' : undefined}
+        icon={ChevronLeft}
+        onPress={() => {
+          if (page === 0) {
+            routeStore?.clear()
+            router.replace('/')
+          } else if (page === 1) {
+            setPage(0)
+            routeStore?.setPickupTime(undefined)
+          }
+        }}
       >
-        Request Trip
-      </Button>
-      <Button icon={ChevronLeft} onPress={() => router.replace('/')}>
-        Go Home
+        {page ? 'Go Back' : 'Go Home'}
       </Button>
     </YStack>
   )

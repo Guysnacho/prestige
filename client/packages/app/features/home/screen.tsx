@@ -1,4 +1,4 @@
-import { useStore, useUserStore } from '@my/app/util'
+import { useStore, useUserStore } from '@my/app/store'
 import {
   Anchor,
   Button,

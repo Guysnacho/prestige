@@ -1127,7 +1127,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.13.10, @babel/runtime@npm:^7.18.6, @babel/runtime@npm:^7.20.0, @babel/runtime@npm:^7.24.6, @babel/runtime@npm:^7.25.0, @babel/runtime@npm:^7.25.4, @babel/runtime@npm:^7.8.4":
+"@babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.13.10, @babel/runtime@npm:^7.18.6, @babel/runtime@npm:^7.20.0, @babel/runtime@npm:^7.21.0, @babel/runtime@npm:^7.24.6, @babel/runtime@npm:^7.25.0, @babel/runtime@npm:^7.25.4, @babel/runtime@npm:^7.8.4":
   version: 7.26.0
   resolution: "@babel/runtime@npm:7.26.0"
   dependencies:
@@ -1829,17 +1829,6 @@ __metadata:
     tmp: "npm:^0.0.33"
     tslib: "npm:^2.4.0"
   checksum: 10/da897fad243ff74c5c70486aa020b6ed691c3a68a2bed5758e76245d493cee0499d3c1efbc9fa8993e5addc0cf73de5eff77211780669ae122b802327cefacee
-  languageName: node
-  linkType: hard
-
-"@expo/dom-webview@npm:^0.0.1":
-  version: 0.0.1
-  resolution: "@expo/dom-webview@npm:0.0.1"
-  peerDependencies:
-    expo: "*"
-    react: "*"
-    react-native: "*"
-  checksum: 10/26435ef73de5f17b18e071facd7edceac3937dc57242f055a8a25dc84b2672970326013ec9cb0a3b15fa73f1ca16054bcea66ccc83a7c038f8a2fdd51415dc82
   languageName: node
   linkType: hard
 
@@ -2876,6 +2865,15 @@ __metadata:
     react-native-windows:
       optional: true
   checksum: 10/57b51a9423d3ba49029e2d9905db040f7091285c51578eef5273baf3dd2e22bde6d1a17962a8dc5e0ac588dccff0ab36c9774f9da76363fca458ec42d30c4d66
+  languageName: node
+  linkType: hard
+
+"@react-native-community/netinfo@npm:^7.1.3":
+  version: 7.1.12
+  resolution: "@react-native-community/netinfo@npm:7.1.12"
+  peerDependencies:
+    react-native: ">=0.59"
+  checksum: 10/b8c07bc7e3cdb0105c640b4a91300b897470e1270a3643be6a2e358b9552a27bb9de1a78bfbd797c6fb34416fa54d76d773d1a663817d719be77958f72daf89d
   languageName: node
   linkType: hard
 
@@ -6375,7 +6373,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "app@workspace:packages/app"
   dependencies:
-    "@expo/dom-webview": "npm:^0.0.1"
     "@maplibre/maplibre-react-native": "npm:^10.0.0-alpha.26"
     "@my/ui": "npm:0.0.1"
     "@react-native-async-storage/async-storage": "npm:1.23.1"
@@ -6406,6 +6403,7 @@ __metadata:
     protomaps-themes-base: "npm:^3.1.0"
     react-datepicker: "npm:^7.4.0"
     react-map-gl: "npm:^7.1.7"
+    react-native-radar: "npm:^3.18.5"
     react-native-safe-area-context: "npm:4.12.0"
     react-native-webview: "npm:13.12.2"
     solito: "npm:^4.2.2"
@@ -9597,7 +9595,6 @@ __metadata:
     "@babel/core": "npm:^7.25.2"
     "@babel/runtime": "npm:^7.24.6"
     "@expo/config-plugins": "npm:~9.0.0"
-    "@expo/dom-webview": "npm:^0.0.1"
     "@expo/metro-config": "npm:~0.19.0"
     "@expo/metro-runtime": "npm:~4.0.0"
     "@maplibre/maplibre-react-native": "npm:^10.0.0-alpha.26"
@@ -9629,6 +9626,7 @@ __metadata:
     react-dom: "npm:18.3.1"
     react-native: "npm:0.76.3"
     react-native-gesture-handler: "npm:~2.20.2"
+    react-native-radar: "npm:^3.18.5"
     react-native-reanimated: "npm:~3.16.1"
     react-native-safe-area-context: "npm:4.12.0"
     react-native-screens: "npm:~4.1.0"
@@ -14744,6 +14742,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"radar-sdk-js@npm:^3.7.1":
+  version: 3.7.1
+  resolution: "radar-sdk-js@npm:3.7.1"
+  checksum: 10/5d839934d7fbc02f3bda914bf622010a797ac5403fab8beed81d83871d1a3da5878c57e3660d0dfa1116fdbb763b1ec538c1983518ca8fd2e6976864a738aff2
+  languageName: node
+  linkType: hard
+
 "raf@npm:^3.4.1":
   version: 3.4.1
   resolution: "raf@npm:3.4.1"
@@ -14924,6 +14929,27 @@ __metadata:
     react: ">=18.2.0"
     react-native: ">=0.73.0"
   checksum: 10/4e07c1e34c01c8d50fd7c1d0460db06f6f0515197405230386a8ffb950cb724b10743af032310d1384df0a90059bfb8992ba2d93344ce86315315f0493feccc2
+  languageName: node
+  linkType: hard
+
+"react-native-radar@npm:^3.18.5":
+  version: 3.18.5
+  resolution: "react-native-radar@npm:3.18.5"
+  dependencies:
+    "@babel/runtime": "npm:^7.21.0"
+    "@react-native-community/netinfo": "npm:^7.1.3"
+    radar-sdk-js: "npm:^3.7.1"
+  peerDependencies:
+    "@maplibre/maplibre-react-native": ">=9.0.1 || >=10.0.0-alpha"
+    expo: ">=43.0.5"
+    react: ">= 16.8.6"
+    react-native: ">= 0.60.0"
+  peerDependenciesMeta:
+    "@maplibre/maplibre-react-native":
+      optional: true
+    expo:
+      optional: true
+  checksum: 10/dec2a04c160eacbda6e3f92e6f2b77229cc054c70b11b10a5c2d5c15bf5ae5efe453da1f2c01ae9a326f2dace948435fa78928d1e62ec833c20d359ef5be5c35
   languageName: node
   linkType: hard
 

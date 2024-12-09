@@ -11,7 +11,6 @@ export default function Screen() {
       <Stack.Screen
         options={{
           title: 'Rider',
-          presentation: 'fullScreenModal',
           animation: 'slide_from_right',
           gestureEnabled: true,
           gestureDirection: 'horizontal',

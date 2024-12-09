@@ -1,4 +1,4 @@
-import { useStore, useUserStore } from '@my/app/util'
+import { useStore, useUserStore } from '@my/app/store'
 import { Button, H1, Paragraph, Separator, SwitchThemeButton, XStack, YStack } from '@my/ui'
 import { Dispatch, SetStateAction } from 'react'
 import { Platform } from 'react-native'

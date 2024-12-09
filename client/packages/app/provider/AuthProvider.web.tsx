@@ -1,9 +1,10 @@
 import { Session, SupabaseClient, User } from '@supabase/supabase-js'
 import { Dispatch, SetStateAction, createContext, useEffect, useMemo, useState } from 'react'
+import Radar from 'react-native-radar'
+import { UserState, useUserStore } from '../store/userStore'
+import useStore from '../store/useStore'
 import { createClient } from '../util/components'
 import { Database } from '../util/schema'
-import useStore from '../util/useStore'
-import { UserState, useUserStore } from '../util/userStore'
 
 interface IAuthContext {
   session: Session | null
@@ -75,6 +76,8 @@ function hydrateUser(
         console.debug('Issue fetching user')
         console.debug(statusText)
       } else {
+        Radar.setUserId(session.user.id)
+        Radar.setMetadata({ role: data.type })
         store?.setId(session.user.id)
         store?.setName(data.fname + ' ' + data.lname)
         store?.setRole(data.type)
