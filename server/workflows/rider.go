@@ -36,8 +36,10 @@ func RequestTrip(req Rider, c *gin.Context) (int, string) {
 		"pickup_time": req.Time,
 		"pickup_lng":  req.Pickup.Lng,
 		"pickup_lat":  req.Pickup.Lat,
+		"pickup_addr": req.Pickup.Addr,
 		"dest_lng":    req.Destination.Lng,
 		"dest_lat":    req.Destination.Lng,
+		"dest_addr":   req.Destination.Addr,
 	}, false, "", "", "planned").ExecuteString()
 
 	if err != nil {

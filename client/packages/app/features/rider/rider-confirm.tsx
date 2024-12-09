@@ -30,10 +30,12 @@ export function RiderConfirm({ setPage }: { setPage: Dispatch<SetStateAction<num
           pickup: {
             lng: store?.pickup?.longitude.toPrecision(17),
             lat: store?.pickup?.latitude.toPrecision(17),
+            addr: store?.pickup?.formattedAddress,
           },
           destination: {
             lng: store?.destination?.longitude.toPrecision(17),
             lat: store?.destination?.latitude.toPrecision(17),
+            addr: store?.destination?.formattedAddress,
           },
         }),
         headers: {

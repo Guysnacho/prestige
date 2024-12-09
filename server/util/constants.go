@@ -5,8 +5,9 @@ type User struct {
 }
 
 type Location struct {
-	Lng string `json:"lng" binding:"required"`
-	Lat string `json:"lat" binding:"required"`
+	Lng  string `json:"lng" binding:"required"`
+	Lat  string `json:"lat" binding:"required"`
+	Addr string `json:"addr" binding:"required"`
 }
 
 type Trip struct {
