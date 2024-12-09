@@ -4,6 +4,7 @@ import {
   Input,
   Label,
   ListItem,
+  ScrollView,
   Separator,
   XStack,
   YGroup,
@@ -15,6 +16,8 @@ import { House } from '@tamagui/lucide-icons'
 import Radar from 'radar-sdk-js'
 import { RadarAddress } from 'radar-sdk-js/dist/types'
 import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+
+Radar.initialize(process.env.NEXT_PUBLIC_RADAR_ANON_KEY!)
 
 export function RiderSearch({ setPage }: { setPage: Dispatch<SetStateAction<number>> }) {
   const toast = useToastController()
@@ -96,7 +99,7 @@ export function RiderSearch({ setPage }: { setPage: Dispatch<SetStateAction<numb
       <Separator />
       {/* Search Results */}
       {!isPickupSet && pickupList && (
-        <YStack w="100%" h="$10">
+        <ScrollView w="100%" h="$20">
           <YGroup alignSelf="center" bordered size="$2">
             {pickupList.map((addy) => (
               <YGroup.Item key={addy.latitude}>
@@ -112,10 +115,10 @@ export function RiderSearch({ setPage }: { setPage: Dispatch<SetStateAction<numb
               </YGroup.Item>
             ))}
           </YGroup>
-        </YStack>
+        </ScrollView>
       )}
       {isPickupSet && destList && (
-        <YStack w="100%" h="$10">
+        <ScrollView w="100%" h="$10">
           <YGroup alignSelf="center" bordered size="$2">
             {destList.map((addy) => (
               <YGroup.Item key={addy.latitude}>
@@ -136,7 +139,7 @@ export function RiderSearch({ setPage }: { setPage: Dispatch<SetStateAction<numb
               </YGroup.Item>
             ))}
           </YGroup>
-        </YStack>
+        </ScrollView>
       )}
       <Button mx="auto" px="$6" disabled={!store?.destination} onPress={() => setPage(1)}>
         Confirm

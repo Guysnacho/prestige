@@ -37,7 +37,7 @@ export function RiderHomeScreen() {
 
   return (
     <YStack
-      $platform-web={{ f: 1, mx: 'auto' }}
+      $platform-web={{ f: 1, mx: 'auto', mt: '$7', mb: '$10' }}
       px="$5"
       jc="center"
       ai="center"
@@ -47,6 +47,7 @@ export function RiderHomeScreen() {
     >
       <MapBox
         label="Let's handle logistics"
+        $gtMd={{ h: '$20' }}
         height="$12"
         width="90%"
         pickUplngLat={pickUplngLat}

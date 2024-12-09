@@ -4,7 +4,6 @@ import {
   Input,
   Label,
   ListItem,
-  Paragraph,
   Separator,
   XStack,
   YGroup,
