@@ -12,10 +12,10 @@ import {
   useToastController,
 } from '@my/ui'
 import { User } from '@supabase/supabase-js'
+import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 import { useEffect, useState } from 'react'
 import { Platform } from 'react-native'
 import { useLink, useRouter } from 'solito/navigation'
-// import { ChevronDown, ChevronUp } from '@tamagui/lucide-icons'
 
 export type HomeProps = {
   user?: User | null
@@ -107,7 +107,7 @@ function SheetDemo() {
     <>
       <Button
         size="$6"
-        // icon={open ? ChevronDown : ChevronUp}
+        icon={open ? ChevronDown : ChevronUp}
         circular
         onPress={() => setOpen((x) => !x)}
       />
@@ -142,7 +142,7 @@ function SheetDemo() {
           <Button
             size="$6"
             circular
-            // icon={ChevronDown}
+            icon={ChevronDown}
             onPress={() => {
               setOpen(false)
               toast.show('Sheet closed!', {
