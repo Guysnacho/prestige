@@ -41,6 +41,7 @@ const plugins = [
     logTimings: true,
     disableExtraction,
     useTamaguiSVG: true,
+    platform: 'web',
     shouldExtract: (path) => {
       if (path.includes(join('packages', 'app'))) {
         return true
@@ -69,6 +70,7 @@ module.exports = function () {
       'expo-constants',
       'expo-modules-core',
     ],
+    output: 'standalone',
     experimental: {
       scrollRestoration: true,
     },
